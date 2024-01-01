@@ -55,7 +55,7 @@ export const Login = () => {
   });
   const onSubmit = (value: any) => {
     return login(value).then((data) => {
-      root.setUsername(data.username);
+      root.setUserinfo(data);
       navigate(REDIRECT__HOME_URL);
     });
   };

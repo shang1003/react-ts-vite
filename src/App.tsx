@@ -1,5 +1,4 @@
 import { useRoutes, useNavigate, useLocation } from "react-router-dom";
-import {} from "mobx-react-lite";
 import { REDIRECT__HOME_URL } from "@/utils/constants";
 import { useEffect, createContext, useContext } from "react";
 import { router } from "./router";
@@ -21,13 +20,13 @@ function App() {
   const isLogin = async () => {
     try {
       //是否过期 username为undfined 表示登录过期
-      const { username } = await getUserInfo();
+      const data = await getUserInfo();
       //过期且url不为login
-      if (!username && pathname !== "/login") {
+      if (!data.username && pathname !== "/login") {
         navigate("/login");
       } else {
         if (pathname === "/") navigate(REDIRECT__HOME_URL);
-        root.setUsername(username);
+        root.setUserinfo(data);
       }
     } catch (error) {
       console.log("error:", error);

@@ -49,6 +49,16 @@ export const editUser = (data: UserDetailType) => {
     url: "/user-edit",
   });
 };
+export const upload = (id: string, data: any) => {
+  return request.makeRequest({
+    method: "post",
+    data,
+    url: `/upload/${id}`,
+    headers: {
+      "Content-Type": "multipart/form-data"//文件上传
+    }
+  });
+};
 export const getUserRegistrationStatistics = () => {
   return request.makeRequest<UserRegistrationStatisticsType[]>({
     method: "get",

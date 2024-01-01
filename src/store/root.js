@@ -2,19 +2,23 @@ import { observable, action, makeObservable } from "mobx";
 class Root {
   constructor() {
     this.lang = localStorage.getItem("lang") || "zh";
-    this.username = "";
+    this.userinfo = {
+      username:'',
+      id:'',
+      avatar:''
+    };
     makeObservable(this, {
       lang: observable,
-      username: observable,
+      userinfo: observable,
       setLang: action,
-      setUsername: action,
+      setUserinfo: action,
     });
   }
   setLang = (lang) => {
     this.lang = lang;
   };
-  setUsername = (name) => {
-    this.username = name;
+  setUserinfo = (info) => {
+    this.userinfo = info;
   };
 }
 export default new Root();

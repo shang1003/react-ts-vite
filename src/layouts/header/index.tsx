@@ -1,12 +1,14 @@
 import React, { useRef } from "react";
 import { Layout, Button, Avatar, Select, Dropdown } from "antd";
+import { UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import imgurl from "@/assets/image/logo.png";
 import { observer } from "mobx-react-lite";
 import { useRootContext } from "@/App";
 import { logout } from "@/client/login";
+import { upload } from "@/client/user";
+import { useFormModal } from "~/hooks/modal/FormModal";
 import "./index.less";
 import {
   MenuFoldOutlined,
@@ -23,15 +25,35 @@ export const HeaderWrapper: React.FC<props> = observer(
   ({ collapsed, setCollapsed }) => {
     const root = useRootContext();
     const { t, i18n } = useTranslation();
-    const { setLang, username, lang } = root;
+    const { setLang, userinfo, lang } = root;
     const selectRef = useRef(null);
     const navigate = useNavigate();
+    const avatarUrl = root.userinfo.avatar && `http://127.0.0.1:9000/api/${root.userinfo.avatar}?timestamp=${Date.now()}`
+    const formItems = [{
+      type: 'upload',
+      name: "avator",
+      label: t('select avatar')
+    }]
     const items = [
+      {
+        label: t("upload"),
+        key: "upload",
+      },
       {
         label: t("log out"),
         key: "logout",
       },
     ];
+    const [toggle, FormModal] = useFormModal({
+      submit: async (values) => {
+        const data: any = await upload(root.userinfo.id, values.avator)
+        root.setUserinfo({ ...root.userinfo, avatar: data.avatar })
+        return data
+      },
+      title: t('upload avatar'),
+      formItems: formItems,
+      formProps: { successTip: t("{{name}} success", { name: t("upload success") }) },
+    });
     const changeLang = (lang: string) => {
       localStorage.setItem("lang", lang);
       setLang(lang); //改变antd 中英文切换
@@ -43,9 +65,10 @@ export const HeaderWrapper: React.FC<props> = observer(
         logout().then(() => {
           navigate("/login");
         });
+      } else if (key === "upload") {
+        toggle(true)
       }
     };
-    console.log(lang, "zh");
 
     return (
       <Header>
@@ -75,18 +98,21 @@ export const HeaderWrapper: React.FC<props> = observer(
             }}
           />
           <Dropdown
+
+
             menu={{
               items,
               onClick: handleMenuClick,
             }}
           >
             <div className="avatar">
-              <Avatar src={imgurl} size="large" />
+              {<Avatar icon={<UserOutlined />} src={avatarUrl} size="large" />}
               <span>
-                {username} <DownOutlined />
+                {userinfo.username} <DownOutlined />
               </span>
             </div>
           </Dropdown>
+          <FormModal />
         </div>
       </Header>
     );

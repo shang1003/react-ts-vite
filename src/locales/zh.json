@@ -46,5 +46,9 @@
   "light": "灯光",
   "mode": "模型",
   "user resgistration statistics": "用户注册统计",
-  "user information": "用户信息"
+  "user information": "用户信息",
+  "upload": "上传头像",
+  "upload avatar": "上传头像",
+  "please upload images in jpg or png format": "请上传jpg或者png格式图片",
+  "select avatar": "选择图片"
 }

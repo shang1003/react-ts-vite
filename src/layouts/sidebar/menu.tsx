@@ -46,17 +46,7 @@ const getMenu = (t: any) => {
         },
       ],
     },
-    {
-      key: "g6",
-      icon: <BlockOutlined />,
-      label: "G6",
-      children: [
-        {
-          key: "g6/case",
-          label: t("case"),
-        },
-      ],
-    },
+
   ];
 
   return menu;
