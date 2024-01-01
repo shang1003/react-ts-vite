@@ -32,6 +32,7 @@ export const HeaderWrapper: React.FC<props> = observer(
     const formItems = [{
       type: 'upload',
       name: "avator",
+      required: true,
       label: t('select avatar')
     }]
     const items = [
@@ -52,7 +53,7 @@ export const HeaderWrapper: React.FC<props> = observer(
       },
       title: t('upload avatar'),
       formItems: formItems,
-      formProps: { successTip: t("{{name}} success", { name: t("upload success") }) },
+      formProps: { successTip: t("{{name}} success", { name: t("upload avatar") }) },
     });
     const changeLang = (lang: string) => {
       localStorage.setItem("lang", lang);

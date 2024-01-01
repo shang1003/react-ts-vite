@@ -50,5 +50,6 @@
   "upload": "上传头像",
   "upload avatar": "上传头像",
   "please upload images in jpg or png format": "请上传jpg或者png格式图片",
-  "select avatar": "选择图片"
+  "select avatar": "选择图片",
+  "the uploaded image cannot be larger than 2MB": "上传图片不能大于2MB"
 }

@@ -33,9 +33,11 @@ const App: React.FC<any> = ({ onChange }) => {
     // 处理文件上传前的操作
     const beforeUpload = (file: UploadFile) => {
         const type = ['image/png', 'image/jpeg'];
-        console.log(file.type, 'file.type', type.includes(file.type || ''));
         if (!type.includes(file.type || '')) {
             message.error(`${t('please upload images in jpg or png format')}`);
+            return Upload.LIST_IGNORE;
+        } else if ((file.size ?? 0) > 2 * 1024 * 1024) {
+            message.error(`${t('the uploaded image cannot be larger than 2MB')}`);
             return Upload.LIST_IGNORE;
         }
         setFileList([file]);
