@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { Input, InputNumber, Cascader, Switch, Select } from "antd";
-import { Title, Checkbox, TableTransfer } from "./components";
+import { Title, Checkbox, TableTransfer, Upload } from "./components";
 import { Form, Tooltip, Button, Row, Col } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import Notify from "@/components/notify";
@@ -19,6 +19,7 @@ const components: Record<string, any> = {
   "input-number": InputNumber,
   textarea: Input.TextArea,
   cascader: Cascader,
+  'upload': Upload
 };
 
 export interface DynamicFormProps extends FormProps {
@@ -43,7 +44,6 @@ export interface DynamicFormType {
 export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
   const { t } = useTranslation();
   const { formItems, formProps } = props;
-  console.log(ref, "ref");
 
   const {
     successTip,
@@ -195,7 +195,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
     if (component) {
       return (
         <Col span={24 / (colNum || 1)} key={`form-item-col-${index}`}>
-          <FormItem key={`form-item-${index}`}>{component}</FormItem>
+          <FormItem {...formItemProps} key={`form-item-${index}`}>{component}</FormItem>
         </Col>
       );
     }
