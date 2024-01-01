@@ -28,7 +28,7 @@ export const HeaderWrapper: React.FC<props> = observer(
     const { setLang, userinfo, lang } = root;
     const selectRef = useRef(null);
     const navigate = useNavigate();
-    const avatarUrl = root.userinfo.avatar && `http://127.0.0.1:9000/api/${root.userinfo.avatar}?timestamp=${Date.now()}`
+    const avatarUrl = root.userinfo.avatar && `/api/${root.userinfo.avatar}?timestamp=${Date.now()}`
     const formItems = [{
       type: 'upload',
       name: "avator",
