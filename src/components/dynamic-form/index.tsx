@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { Input, InputNumber, Cascader, Switch, Select } from "antd";
 import { Title, Checkbox, TableTransfer, Upload } from "./components";
 import { Form, Tooltip, Button, Row, Col } from "antd";
@@ -44,7 +44,7 @@ export interface DynamicFormType {
 export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
   const { t } = useTranslation();
   const { formItems, formProps } = props;
-
+  const [submmitLoading, setSubmmitLoading] = useState(false)
   const {
     successTip,
     failTip,
@@ -216,13 +216,16 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
   };
 
   const onOk = (values: any) => {
+    setSubmmitLoading(true)
     if (!onSubmit) {
+      setSubmmitLoading(false)
       return;
     }
 
     return onSubmit(values).then(
       () => {
         Notify.success(t("success"), successTip || t("edit success"));
+        setSubmmitLoading(false)
       },
       (err = {}) => {
         const {
@@ -231,6 +234,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
           },
         } = err;
         Notify.error(t("error"), failTip || message);
+        setSubmmitLoading(false)
       }
     );
   };
@@ -239,7 +243,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
     return (
       isShowFooter && (
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button loading={submmitLoading} type="primary" htmlType="submit">
             {t("submit")}
           </Button>
         </Form.Item>

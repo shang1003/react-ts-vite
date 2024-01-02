@@ -3,8 +3,9 @@ import { Layout, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useRootContext } from "@/App";
 import { getMenu } from "./menu";
-import logo from "@/assets/image/logo.png";
+import logo from "@/assets/logo_1.png";
 import "./index.less";
 const { Sider } = Layout;
 type props = {
@@ -15,6 +16,7 @@ export const SideBar: React.FC<props> = function ({ collapsed }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const root = useRootContext();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   useEffect(() => {
     let selectedKey = "";
@@ -46,7 +48,7 @@ export const SideBar: React.FC<props> = function ({ collapsed }) {
       width={190}
       className="sidebar"
     >
-      <div className="sider-menu-logo">
+      <div className="sider-menu-logo" style={{ fontSize: root.lang == 'zh' ? 20 : 11 }}>
         {collapsed ? <img src={logo} /> : t("system name")}
       </div>
 

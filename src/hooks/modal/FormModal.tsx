@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Modal } from "antd";
 import { DynamicForm } from "@/components/dynamic-form";
 import { useToggle } from "@/hooks";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Notify from "@/components/notify";
 import { FormItemType, DynamicFormProps } from "@/components/dynamic-form";
 interface ModalProps {
@@ -34,20 +34,25 @@ export const useFormModal = ({
   const [isShow, toggle] = useToggle(false);
   const formRef = useRef<any>(null);
   const { t } = useTranslation();
-  const FormModal = () => (
-    <Modal
+
+  const FormModal = () => {
+    const [submmitLoading, setSubmmitLoading] = useState(false)
+    return <Modal
       title={title || t("create")}
       open={isShow}
       okText={okText}
       cancelText={cancelText}
       onCancel={() => toggle(false)}
+      confirmLoading={submmitLoading}
       onOk={() => {
         formRef?.current?.validateFields().then((values: any) => {
-          const { successTip,failTip } = formProps || {};
+          setSubmmitLoading(true)
+          const { successTip, failTip } = formProps || {};
           submit({ id, ...values }).then(
             () => {
               Notify.success(t("success"), successTip || t("edit success"));
               toggle(false);
+              setSubmmitLoading(false)
               refresh && refresh();
             },
             (err = {}) => {
@@ -56,7 +61,8 @@ export const useFormModal = ({
                   data: { message = "" },
                 },
               } = err;
-              Notify.error(t("error"),failTip|| t(message));
+              Notify.error(t("error"), failTip || t(message));
+              setSubmmitLoading(false)
               toggle(false);
             }
           );
@@ -69,6 +75,6 @@ export const useFormModal = ({
         formItems={formItems || []}
       />
     </Modal>
-  );
+  };
   return [toggle, FormModal];
 };

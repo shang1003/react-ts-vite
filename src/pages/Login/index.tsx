@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 import { DynamicForm } from "@/components/dynamic-form";
 import { useRootContext } from "@/App";
 import { REDIRECT__HOME_URL } from "@/utils/constants";
-import { Button } from "antd";
-
 export const Login = () => {
   const root = useRootContext();
   const navigate = useNavigate();
