@@ -43,10 +43,9 @@ export const useFormModal = ({
       onCancel={() => toggle(false)}
       onOk={() => {
         formRef?.current?.validateFields().then((values: any) => {
+          const { successTip,failTip } = formProps || {};
           submit({ id, ...values }).then(
             () => {
-              const { successTip } = formProps || {};
-
               Notify.success(t("success"), successTip || t("edit success"));
               toggle(false);
               refresh && refresh();
@@ -57,7 +56,7 @@ export const useFormModal = ({
                   data: { message = "" },
                 },
               } = err;
-              Notify.error(t("error"), message);
+              Notify.error(t("error"),failTip|| t(message));
               toggle(false);
             }
           );

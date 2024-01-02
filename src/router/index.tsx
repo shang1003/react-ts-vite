@@ -7,8 +7,6 @@ import { Login } from "@/pages/Login/index";
 //懒加载
 const NoMatch = lazy(() => import("@/components/404"));
 const TableCom = lazy(() => import("@/pages/table"));
-const Three = lazy(() => import("@/pages/three/index"));
-const DynamicForm = lazy(() => import("@/pages/dynamic-form"));
 const TableDetail = lazy(() => import("@/pages/table/detail"));
 const Home = lazy(() => import("@/pages/home"));
 
@@ -16,10 +14,6 @@ const Home = lazy(() => import("@/pages/home"));
 export const router: RouteObject[] = [
   {
     path: "/",
-  },
-  {
-    path: "/three",
-    element: <Navigate to="/three/case" replace />,
   },
   {
     path: "/",
@@ -30,32 +24,14 @@ export const router: RouteObject[] = [
         element: <Home />,
       },
       {
-        path: "three",
+        path: "user-management",
         children: [
           {
-            path: "case",
-            element: <Three />,
-          },
-        ],
-      },
-      {
-        path: "dynamic-form",
-        children: [
-          {
-            path: "case",
-            element: <DynamicForm />,
-          },
-        ],
-      },
-      {
-        path: "table",
-        children: [
-          {
-            path: "case",
+            path: "user-list",
             element: <TableCom />,
           },
           {
-            path: "case/detail/:id",
+            path: "user-list/detail/:id",
             element: <TableDetail />,
           },
         ],

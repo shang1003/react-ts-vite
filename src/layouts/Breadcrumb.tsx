@@ -8,10 +8,10 @@ function App() {
   const { t } = useTranslation();
   const pathMap: any = {
     three: "3D",
-    case: t("case"),
+    'user-list': t("user list"),
     g6: "G6",
     "dynamic-form": t("dynamic form"),
-    table: t("table"),
+    'user-management': t("user management"),
     detail: t("detail"),
     home: t("home"),
   };

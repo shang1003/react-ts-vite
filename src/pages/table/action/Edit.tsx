@@ -15,12 +15,6 @@ export const Edit: React.FC<any> = (props) => {
       disabled: isDisabled,
     },
     {
-      label: t("age"),
-      name: "age",
-      type: "input",
-      required: true,
-    },
-    {
       label: t("address"),
       name: "address",
       type: "input",

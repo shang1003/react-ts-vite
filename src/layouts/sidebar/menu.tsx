@@ -1,7 +1,4 @@
 import {
-  AppstoreOutlined,
-  BlockOutlined,
-  DeploymentUnitOutlined,
   GoldOutlined,
   HomeOutlined,
 } from "@ant-design/icons";
@@ -14,38 +11,38 @@ const getMenu = (t: any) => {
       label: t("home"),
     },
     {
-      key: "table",
+      key: "user-management",
       icon: <GoldOutlined />,
-      label: t("table"),
+      label: t("user management"),
       children: [
         {
-          key: "table/case",
-          label: t("case"),
+          key: "user-management/user-list",
+          label: t("user list"),
         },
       ],
     },
-    {
-      key: "dynamic-form",
-      icon: <DeploymentUnitOutlined />,
-      label: t("dynamic form"),
-      children: [
-        {
-          key: "dynamic-form/case",
-          label: t("case"),
-        },
-      ],
-    },
-    {
-      key: "three",
-      icon: <AppstoreOutlined />,
-      label: "3D",
-      children: [
-        {
-          key: "three/case",
-          label: t("case"),
-        },
-      ],
-    },
+    // {
+    //   key: "dynamic-form",
+    //   icon: <DeploymentUnitOutlined />,
+    //   label: t("dynamic form"),
+    //   children: [
+    //     {
+    //       key: "dynamic-form/case",
+    //       label: t("case"),
+    //     },
+    //   ],
+    // },
+    // {
+    //   key: "three",
+    //   icon: <AppstoreOutlined />,
+    //   label: "3D",
+    //   children: [
+    //     {
+    //       key: "three/case",
+    //       label: t("case"),
+    //     },
+    //   ],
+    // },
 
   ];
 

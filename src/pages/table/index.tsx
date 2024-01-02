@@ -26,17 +26,9 @@ const TableCom: React.FC = () => {
       required: true,
     },
     {
-      label: t("age"),
-      name: "age",
-      type: "input-number",
-      required: true,
-      min: 0,
-    },
-    {
       label: t("address"),
       name: "address",
       type: "input",
-      required: true,
     },
     {
       label: t("description"),
@@ -50,12 +42,8 @@ const TableCom: React.FC = () => {
       dataIndex: "name",
       key: "name",
       render: (value: any, { id }: UserDetailType) => {
-        return <Link to={`/table/case/detail/${id}`}>{value}</Link>;
+        return <Link to={`/user-management/user-list/detail/${id}`}>{value}</Link>;
       },
-    },
-    {
-      title: t("age"),
-      dataIndex: "age",
     },
     {
       title: t("create time"),
@@ -73,6 +61,9 @@ const TableCom: React.FC = () => {
     submit: (values) => createUser(values),
     formItems,
     refresh,
+    formProps: { 
+      successTip: t("{{name}} success", { name: t("create") }),
+  }
   });
   const [data, setData] = useState<UserDetailType[] | []>([]);
   const [loading, setLoading] = useState(true);
@@ -104,7 +95,7 @@ const TableCom: React.FC = () => {
         rowKey="id"
         columns={columns}
         data={data}
-        scrollY={300}
+        scrollY={400}
         loading={loading}
         actions={actionConfigs}
         refresh={refresh}

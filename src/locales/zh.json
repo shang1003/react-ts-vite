@@ -1,7 +1,7 @@
 {
   "greeting": "你好！",
   "farewell": "再见！",
-  "system name": "XXX系统",
+  "system name": "小树哈哈说英语",
   "Chinese": "中文",
   "English": "英文",
   "log out": "退出登录",
@@ -24,6 +24,7 @@
   "more": "更多",
   "home": "首页",
   "{{name}} success": "{{name}}成功",
+  "{{name}} failure": "{{name}}失败",
   "welcome to you": "欢迎你",
   "username": "用户名",
   "password": "密码",
@@ -51,5 +52,14 @@
   "upload avatar": "上传头像",
   "please upload images in jpg or png format": "请上传jpg或者png格式图片",
   "select avatar": "选择图片",
-  "the uploaded image cannot be larger than 2MB": "上传图片不能大于2MB"
+  "the uploaded image cannot be larger than 2MB": "上传图片不能大于2MB",
+  "user management":"用户管理",
+  "user list":"用户列表",
+  "change password":"修改密码",
+  "old password":"旧密码",
+  "new password":"新密码",
+  "confirm password":"确认密码",
+  "the two passwords are different":"两次输入的密码不一致",
+  "the old password is incorrect":"旧密码不正确",
+  "the user already exists":"该用户已存在"
 }

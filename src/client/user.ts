@@ -2,7 +2,6 @@ import request from "./request";
 export interface UserDetailType {
   id: string;
   name: string;
-  age: number;
   address: string;
   description: string;
   password: string;
@@ -57,6 +56,13 @@ export const upload = (id: string, data: any) => {
     headers: {
       "Content-Type": "multipart/form-data"//文件上传
     }
+  });
+};
+export const changePassword = (id: string, data: any) => {
+  return request.makeRequest({
+    method: "post",
+    data,
+    url: `/change-password/${id}`,
   });
 };
 export const getUserRegistrationStatistics = () => {
