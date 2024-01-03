@@ -1,6 +1,7 @@
 import {
   GoldOutlined,
   HomeOutlined,
+  DeploymentUnitOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 const getMenu = (t: any) => {
@@ -23,7 +24,7 @@ const getMenu = (t: any) => {
     },
     {
       key: "student-management",
-      icon: <GoldOutlined />,
+      icon: <DeploymentUnitOutlined />,
       label: t("student management"),
       children: [
         {

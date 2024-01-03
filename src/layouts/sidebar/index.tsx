@@ -45,7 +45,7 @@ export const SideBar: React.FC<props> = function ({ collapsed }) {
       trigger={null}
       collapsible
       collapsed={collapsed}
-      width={190}
+      width={225}
       className="sidebar"
     >
       <div className="sider-menu-logo" style={{ fontSize: root.lang == 'zh' ? 20 : 11 }}>

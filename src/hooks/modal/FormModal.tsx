@@ -9,7 +9,9 @@ interface ModalProps {
   id?: string;
   submit: (values: any) => Promise<any>;
   title?: string;
-  width?:number;
+  top?: number;
+  height?: number;
+  width?: number;
   okText?: string;
   cancelText?: string;
   formItems?: FormItemType[];
@@ -29,8 +31,10 @@ export const useFormModal = ({
   cancelText,
   formItems,
   formProps,
+  height,
   refresh,
   width,
+  top = 20,
   id,
 }: ModalProps): [(v: boolean) => void, () => JSX.Element] => {
   const [isShow, toggle] = useToggle(false);
@@ -42,6 +46,7 @@ export const useFormModal = ({
     return <Modal
       title={title || t("create")}
       open={isShow}
+      style={{ top, height: 1000 }}
       width={width}
       okText={okText}
       cancelText={cancelText}
@@ -72,11 +77,13 @@ export const useFormModal = ({
         });
       }}
     >
-      <DynamicForm
-        ref={formRef}
-        formProps={{ ...formProps, ...defaultFormProps }}
-        formItems={formItems || []}
-      />
+      <div style={{ height }}>
+        <DynamicForm
+          ref={formRef}
+          formProps={{ ...formProps, ...defaultFormProps }}
+          formItems={formItems || []}
+        />
+      </div>
     </Modal>
   };
   return [toggle, FormModal];

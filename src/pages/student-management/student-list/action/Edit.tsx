@@ -5,31 +5,66 @@ import { editUser } from "~/client/user";
 export const Edit: React.FC<any> = (props) => {
   const { t } = useTranslation();
   const { item, refresh } = props;
-  const isDisabled = item.name == "admin" || item.name == "orgadm";
   const formItems = [
     {
       name: "name",
       label: t("username"),
       type: "input",
-      required: true,
-      disabled: isDisabled,
+      disabled: true,
+      colNum: 2,
     },
     {
-      label: t("address"),
-      name: "address",
+      name: "phone",
+      label: t("phone"),
       type: "input",
+      colNum: 2,
       required: true,
     },
     {
-      label: t("description"),
-      name: "description",
+      name: "purchase_date",
+      label: t("purchase date"),
+      type: "date-picker",
+      disabled: true,
+      colNum: 2,
+      required: true,
+    },
+    {
+      name: "course_unit_price",
+      label: t("course unit price"),
       type: "input",
+      colNum: 2,
+      required: true,
+    },
+    {
+      name: "total_hours",
+      label: t("total hours"),
+      type: "input",
+      colNum: 2,
+      required: true,
+    },
+    {
+      name: "total_amount",
+      label: t("total amount"),
+      type: "input",
+      colNum: 2,
+      required: true,
+    },
+    {
+      name: "notes",
+      label: t("notes"),
+      type: "textarea",
+      labelCol: { span: 4 },
+      wrapperCol: { span: 19 }
+
     },
   ];
   const [toggle, FormModal] = useFormModal({
     submit: (values) => editUser(values),
     formItems,
     refresh,
+    height: 350,
+    width: 800,
+    top: 10,
     title: t("edit"),
     id: item.id,
     formProps: {

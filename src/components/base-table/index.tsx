@@ -12,8 +12,8 @@ interface BaseTableType {
   columns: Record<string, any>[];
   data: Record<string, any>[];
   loading?: boolean;
-  scrollY?: number|string;
-  ScrollX?: number|string;
+  scrollY?: number | string;
+  ScrollX?: number | string;
   hasItemActions?: boolean;
   actions?: ActionsType;
   refresh?: () => void;
@@ -50,7 +50,7 @@ export const BaseTable: React.FC<BaseTableType> = ({
       {
         title: t("action"),
         key: "operation",
-        width: 210,
+        width: 180,
         fixed: 'right',
         render: (_: any, record: any) => (
           <ItemActionButtons
@@ -69,7 +69,7 @@ export const BaseTable: React.FC<BaseTableType> = ({
         rowKey={rowKey}
         columns={getColumns()}
         dataSource={data}
-        scroll={{ y: scrollY,x:100 }}
+        scroll={{ y: scrollY, x: 100 }}
         loading={loading}
         {...otherProps}
       />

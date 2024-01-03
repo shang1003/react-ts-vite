@@ -5,14 +5,12 @@ import { editUser } from "~/client/user";
 export const Edit: React.FC<any> = (props) => {
   const { t } = useTranslation();
   const { item, refresh } = props;
-  const isDisabled = item.name == "admin" || item.name == "orgadm";
   const formItems = [
     {
       name: "name",
       label: t("username"),
       type: "input",
-      required: true,
-      disabled: isDisabled,
+      disabled: true,
     },
     {
       label: t("address"),

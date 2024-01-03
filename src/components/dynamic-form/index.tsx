@@ -1,6 +1,6 @@
 import { forwardRef, useState } from "react";
 import { Input, InputNumber, Cascader, Switch, Select } from "antd";
-import { Title, Checkbox, TableTransfer, Upload } from "./components";
+import { Title, Checkbox, TableTransfer, Upload, DatePicker } from "./components";
 import { Form, Tooltip, Button, Row, Col } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import Notify from "@/components/notify";
@@ -19,7 +19,8 @@ const components: Record<string, any> = {
   "input-number": InputNumber,
   textarea: Input.TextArea,
   cascader: Cascader,
-  'upload': Upload
+  'upload': Upload,
+  "date-picker": DatePicker
 };
 
 export interface DynamicFormProps extends FormProps {

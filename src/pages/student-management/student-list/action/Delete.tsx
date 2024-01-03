@@ -1,6 +1,6 @@
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { deleteUser } from "~/client/user";
+import { deleteStudent } from "~/client/student";
 import { Button, Modal } from "antd";
 import Notify from "~/components/notify";
 export const Delete: React.FC<any> = (props) => {
@@ -21,7 +21,7 @@ export const Delete: React.FC<any> = (props) => {
     });
   };
   const onOk = () => {
-    return deleteUser({ id: item.id }).then(() => {
+    return deleteStudent({ id: item.id }).then(() => {
       Notify.success(
         t("success"),
         t("{{name}} success", { name: t("delete") })
