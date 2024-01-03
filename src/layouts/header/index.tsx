@@ -113,7 +113,15 @@ export const HeaderWrapper: React.FC<props> = observer(
         toggle(true)
       } else if (key === "changePassword") {
         setModalData({
-          submit: async (values:any) => changePassword(root.userinfo.id, values),
+          submit: async (values:any) => {
+            const data:any=await changePassword(root.userinfo.id, values)
+            if(data&&data?.status==200){
+              logout().then(() => {
+                navigate("/login");
+              });
+            }     
+            return data
+          },
           title: t('change password'),
           formItems: passwordFormItems,
           formProps: { successTip: t("{{name}} success", { name: t("change password") }) }
