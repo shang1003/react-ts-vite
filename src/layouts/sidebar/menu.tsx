@@ -21,6 +21,17 @@ const getMenu = (t: any) => {
         },
       ],
     },
+    {
+      key: "student-management",
+      icon: <GoldOutlined />,
+      label: t("student management"),
+      children: [
+        {
+          key: "student-management/student-list",
+          label: t("student list"),
+        },
+      ],
+    },
     // {
     //   key: "dynamic-form",
     //   icon: <DeploymentUnitOutlined />,

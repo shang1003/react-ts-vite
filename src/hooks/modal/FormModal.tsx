@@ -9,6 +9,7 @@ interface ModalProps {
   id?: string;
   submit: (values: any) => Promise<any>;
   title?: string;
+  width?:number;
   okText?: string;
   cancelText?: string;
   formItems?: FormItemType[];
@@ -29,6 +30,7 @@ export const useFormModal = ({
   formItems,
   formProps,
   refresh,
+  width,
   id,
 }: ModalProps): [(v: boolean) => void, () => JSX.Element] => {
   const [isShow, toggle] = useToggle(false);
@@ -40,6 +42,7 @@ export const useFormModal = ({
     return <Modal
       title={title || t("create")}
       open={isShow}
+      width={width}
       okText={okText}
       cancelText={cancelText}
       onCancel={() => toggle(false)}

@@ -38,6 +38,10 @@ const TableCom: React.FC = () => {
   ];
   const columns = [
     {
+      title:t('index'),
+      dataIndex: 'index',
+  },
+    {
       title: t("username"),
       dataIndex: "name",
       key: "name",
@@ -73,7 +77,7 @@ const TableCom: React.FC = () => {
       return await getUserList();
     },
     ({ userList }) => {
-      setData(userList);
+      setData(userList.map((item,index)=>({...item,index:index+1})));
       setLoading(false);
     },
     [refreshKey]
@@ -95,11 +99,11 @@ const TableCom: React.FC = () => {
         rowKey="id"
         columns={columns}
         data={data}
-        scrollY={400}
+        scrollY='calc(100vh - 272px)'
         loading={loading}
         actions={actionConfigs}
         refresh={refresh}
-        otherProps={{ pagination: { pageSize: 5 } }}
+        otherProps={{ pagination: { pageSize: 10 } }}
       />
     </>
   );

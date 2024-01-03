@@ -61,5 +61,18 @@
   "confirm password":"确认密码",
   "the two passwords are different":"两次输入的密码不一致",
   "the old password is incorrect":"旧密码不正确",
-  "the user already exists":"该用户已存在"
+  "the user already exists":"该用户已存在",
+  "student management":"学员管理",
+  "student list":"学员列表",
+  "index":"序号",
+  "name":"用户名",
+  "phone":"手机号",
+  "purchase date":"购买日期",
+  "course category":"课程类别",
+  "course unit price":"课程单价",
+  "total hours":"总课时",
+  "total amount":"总金额",
+  "notes":"备注"
+
+
 }

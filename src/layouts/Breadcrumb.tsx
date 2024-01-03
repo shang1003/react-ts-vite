@@ -12,6 +12,8 @@ function App() {
     g6: "G6",
     "dynamic-form": t("dynamic form"),
     'user-management': t("user management"),
+    'student-management': t("student management"),
+    'student-list': t("student list"),
     detail: t("detail"),
     home: t("home"),
   };

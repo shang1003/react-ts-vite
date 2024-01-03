@@ -7,6 +7,7 @@ import { Login } from "@/pages/Login/index";
 //懒加载
 const NoMatch = lazy(() => import("@/components/404"));
 const TableCom = lazy(() => import("@/pages/table"));
+const StudentList = lazy(() => import("@/pages/student-management/student-list"));
 const TableDetail = lazy(() => import("@/pages/table/detail"));
 const Home = lazy(() => import("@/pages/home"));
 
@@ -32,6 +33,19 @@ export const router: RouteObject[] = [
           },
           {
             path: "user-list/detail/:id",
+            element: <TableDetail />,
+          },
+        ],
+      },
+      {
+        path: "student-management",
+        children: [
+          {
+            path: "student-list",
+            element: <StudentList />,
+          },
+          {
+            path: "student-list/detail/:id",
             element: <TableDetail />,
           },
         ],
