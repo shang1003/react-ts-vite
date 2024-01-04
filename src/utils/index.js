@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "dayjs";
 
 export function throttle(func, delay) {
   let timerId;
@@ -32,5 +32,5 @@ export function debounce(func, delay) {
 }
 
 export const getTime = (time) => {
-  return moment(time).format("YYYY-M-D HH:mm:ss");
+  return dayjs(time).format("YYYY-M-D HH:mm:ss");
 };
