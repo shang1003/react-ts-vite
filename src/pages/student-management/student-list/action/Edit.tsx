@@ -1,9 +1,21 @@
 import { useTranslation } from "react-i18next";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { Button } from "antd";
-import { editUser } from "~/client/user";
+import { editStudent } from "~/client/student";
 export const Edit: React.FC<any> = (props) => {
   const { t } = useTranslation();
+  const validateNumber = (_: any, value: any) => {
+    if (value && !/^\d+(\.\d+)?$/.test(value)) {
+      return Promise.reject(t('please enter a valid number.'));
+    }
+    return Promise.resolve();
+  };
+  const validatePhoneNumber = (_: any, value: any) => {
+    if (value && !/^1[0-9]{10}$/.test(value)) {
+      return Promise.reject(t('please enter a valid 11-digit phone number.'));
+    }
+    return Promise.resolve();
+  };
   const { item, refresh } = props;
   const formItems = [
     {
@@ -14,13 +26,6 @@ export const Edit: React.FC<any> = (props) => {
       colNum: 2,
     },
     {
-      name: "phone",
-      label: t("phone"),
-      type: "input",
-      colNum: 2,
-      required: true,
-    },
-    {
       name: "purchase_date",
       label: t("purchase date"),
       type: "date-picker",
@@ -29,16 +34,26 @@ export const Edit: React.FC<any> = (props) => {
       required: true,
     },
     {
+      name: "phone",
+      label: t("phone"),
+      type: "input",
+      colNum: 2,
+      validator: validatePhoneNumber,
+      required: true,
+    },
+    {
       name: "course_unit_price",
       label: t("course unit price"),
       type: "input",
       colNum: 2,
+      validator: validateNumber,
       required: true,
     },
     {
       name: "total_hours",
       label: t("total hours"),
       type: "input",
+      validator: validateNumber,
       colNum: 2,
       required: true,
     },
@@ -46,6 +61,7 @@ export const Edit: React.FC<any> = (props) => {
       name: "total_amount",
       label: t("total amount"),
       type: "input",
+      validator: validateNumber,
       colNum: 2,
       required: true,
     },
@@ -59,7 +75,7 @@ export const Edit: React.FC<any> = (props) => {
     },
   ];
   const [toggle, FormModal] = useFormModal({
-    submit: (values) => editUser(values),
+    submit: (values) => editStudent(values),
     formItems,
     refresh,
     height: 350,

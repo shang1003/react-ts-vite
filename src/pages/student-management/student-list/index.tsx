@@ -10,6 +10,18 @@ import { BaseTable } from "~/components/base-table";
 import { getTime } from "~/utils";
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
+    const validateNumber = (_: any, value: any) => {
+        if (value && !/^\d+(\.\d+)?$/.test(value)) {
+            return Promise.reject(t('please enter a valid number.'));
+        }
+        return Promise.resolve();
+    };
+    const validatePhoneNumber = (_: any, value: any) => {
+        if (value && !/^1[0-9]{10}$/.test(value)) {
+            return Promise.reject(t('please enter a valid 11-digit phone number.'));
+        }
+        return Promise.resolve();
+    };
     const formItems = [
         {
             name: "name",
@@ -23,7 +35,9 @@ const TableCom: React.FC = () => {
             label: t("phone"),
             type: "input",
             colNum: 2,
+            validator: validatePhoneNumber,
             required: true,
+
         },
         {
             name: "purchase_date",
@@ -35,6 +49,7 @@ const TableCom: React.FC = () => {
         {
             name: "course_unit_price",
             label: t("course unit price"),
+            validator: validateNumber,
             type: "input",
             colNum: 2,
             required: true,
@@ -42,6 +57,7 @@ const TableCom: React.FC = () => {
         {
             name: "total_hours",
             label: t("total hours"),
+            validator: validateNumber,
             type: "input",
             colNum: 2,
             required: true,
@@ -49,6 +65,7 @@ const TableCom: React.FC = () => {
         {
             name: "total_amount",
             label: t("total amount"),
+            validator: validateNumber,
             type: "input",
             colNum: 2,
             required: true,
@@ -79,7 +96,7 @@ const TableCom: React.FC = () => {
         {
             title: t("phone"),
             dataIndex: "phone",
-            width: 100
+            width: 110
         },
         {
             title: t("purchase date"),

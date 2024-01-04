@@ -33,3 +33,11 @@ export const deleteStudent = (data: { id: string }) => {
     url: "/student-delete",
   });
 };
+
+export const editStudent = (data: StudentType) => {
+  return request.makeRequest({
+    method: "post",
+    data,
+    url: "/student-edit",
+  });
+};
