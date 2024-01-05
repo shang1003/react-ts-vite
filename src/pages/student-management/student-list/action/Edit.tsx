@@ -66,6 +66,13 @@ export const Edit: React.FC<any> = (props) => {
       required: true,
     },
     {
+      name: "remaining_class_hours",
+      label: t("remaining class hours"),
+      type: "input",
+      colNum: 2,
+      required: true,
+  },
+    {
       name: "notes",
       label: t("notes"),
       type: "textarea",

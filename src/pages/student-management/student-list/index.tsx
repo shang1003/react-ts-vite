@@ -71,6 +71,13 @@ const TableCom: React.FC = () => {
             required: true,
         },
         {
+            name: "remaining_class_hours",
+            label: t("remaining class hours"),
+            type: "input",
+            colNum: 2,
+            required: true,
+        },
+        {
             name: "notes",
             label: t("notes"),
             type: "textarea",
@@ -118,6 +125,11 @@ const TableCom: React.FC = () => {
             title: t("total amount"),
             dataIndex: "total_amount",
             width: 120
+        },
+        {
+            title: t("remaining class hours"),
+            dataIndex: "remaining_class_hours",
+            width: 170
         },
         {
             title: t("notes"),
