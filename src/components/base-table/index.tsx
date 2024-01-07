@@ -69,7 +69,7 @@ export const BaseTable: React.FC<BaseTableType> = ({
         rowKey={rowKey}
         columns={getColumns()}
         dataSource={data}
-        scroll={{ y: scrollY, x: 100 }}
+        scroll={{ y: scrollY, x: ScrollX }}
         loading={loading}
         {...otherProps}
       />

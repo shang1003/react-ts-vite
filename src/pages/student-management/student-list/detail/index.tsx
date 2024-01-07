@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, Row, Col } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { getUserDetail, UserDetailType } from "~/client/user";
+import { getStudentDetail, StudentType } from "~/client/student";
 import { useParams } from "react-router-dom";
 import { DetailBase } from "~/components/detail";
 import { useFetch, useRefresh } from "~/hooks";
@@ -11,15 +11,22 @@ const { Meta } = Card;
 const App: React.FC = () => {
   const { id } = useParams();
   const { t } = useTranslation();
-  const listUrl = "/user-management/user-list";
-  const [data, setData] = useState<UserDetailType | {}>({});
+  const titleMap: any = {
+    phone: t('phone'),
+    course_unit_price: t('course unit price'),
+    total_hours: t('total hours'),
+    notes: t('notes'),
+    total_amount: t('total amount')
+  }
+  const listUrl = "/student-management/student-list";
+  const [data, setData] = useState<StudentType | {}>({});
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useRefresh();
 
   useFetch(
     () => {
       setLoading(true);
-      return getUserDetail({ id });
+      return getStudentDetail({ id });
     },
     (detail) => {
       setData(detail);
@@ -38,7 +45,7 @@ const App: React.FC = () => {
   const renderDetail = () => {
     return Object.entries(data).map(([key, value]) => (
       <Row key={key} style={{ paddingTop: 10 }}>
-        <Col span={12}>{key == "create_time" && t('create time') || t(key)}</Col>
+        <Col span={12}>{titleMap[key]}</Col>
         <Col span={12}>{formatTime(key, value)}</Col>
       </Row>
     ));
@@ -47,7 +54,7 @@ const App: React.FC = () => {
   return (
     <DetailBase {...{ listUrl, handleRefresh, isShowRefresh }}>
       <Card style={{ width: 500 }} loading={loading}>
-        <Meta avatar={<UserOutlined />} title={t("user information")} />
+        <Meta avatar={<UserOutlined />} title={t("student information")} />
         {renderDetail()}
       </Card>
     </DetailBase>

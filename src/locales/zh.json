@@ -75,5 +75,6 @@
   "notes": "备注",
   "please enter a valid number.": "请输入有效的数字",
   "please enter a valid 11-digit phone number.": "请输入有效的11位电话号码",
-  "remaining class hours":"剩余课时结算"
+  "remaining hours": "剩余课时结算",
+  "student information": "学员信息"
 }

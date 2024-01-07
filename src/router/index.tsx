@@ -9,6 +9,7 @@ const NoMatch = lazy(() => import("@/components/404"));
 const TableCom = lazy(() => import("@/pages/table"));
 const StudentList = lazy(() => import("@/pages/student-management/student-list"));
 const TableDetail = lazy(() => import("@/pages/table/detail"));
+const StudentDetail = lazy(() => import("@/pages/student-management/student-list/detail"));
 const Home = lazy(() => import("@/pages/home"));
 
 //路由配置
@@ -46,7 +47,7 @@ export const router: RouteObject[] = [
           },
           {
             path: "student-list/detail/:id",
-            element: <TableDetail />,
+            element: <StudentDetail />,
           },
         ],
       },

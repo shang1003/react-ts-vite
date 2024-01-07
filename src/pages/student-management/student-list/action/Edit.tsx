@@ -67,11 +67,11 @@ export const Edit: React.FC<any> = (props) => {
     },
     {
       name: "remaining_class_hours",
-      label: t("remaining class hours"),
+      label: t("remaining hours"),
       type: "input",
       colNum: 2,
       required: true,
-  },
+    },
     {
       name: "notes",
       label: t("notes"),

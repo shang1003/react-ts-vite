@@ -3,6 +3,7 @@ import { Button } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { getStudentList, createStudent } from "~/client/student";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
@@ -72,7 +73,7 @@ const TableCom: React.FC = () => {
         },
         {
             name: "remaining_class_hours",
-            label: t("remaining class hours"),
+            label: t("remaining hours"),
             type: "input",
             colNum: 2,
             required: true,
@@ -97,13 +98,16 @@ const TableCom: React.FC = () => {
             title: t("username"),
             dataIndex: "name",
             width: 100,
+            render: (value: any, { id }: any) => {
+                return <Link to={`/student-management/student-list/detail/${id}`}>{value}</Link>;
+            },
             fixed: 'left',
 
         },
         {
             title: t("phone"),
             dataIndex: "phone",
-            width: 110
+            width: 120
         },
         {
             title: t("purchase date"),
@@ -127,7 +131,7 @@ const TableCom: React.FC = () => {
             width: 120
         },
         {
-            title: t("remaining class hours"),
+            title: t("remaining hours"),
             dataIndex: "remaining_class_hours",
             width: 170
         },
@@ -178,7 +182,7 @@ const TableCom: React.FC = () => {
                 rowKey="id"
                 columns={columns}
                 data={data}
-                scrollY='calc(100vh - 272px)'
+                scrollY={500}
                 loading={loading}
                 actions={actionConfigs}
                 refresh={refresh}

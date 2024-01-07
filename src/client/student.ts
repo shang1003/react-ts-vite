@@ -41,3 +41,11 @@ export const editStudent = (data: StudentType) => {
     url: "/student-edit",
   });
 };
+
+export const getStudentDetail = (params: { id: string | undefined }) => {
+  return request.makeRequest<StudentType>({
+    method: "get",
+    params,
+    url: "/student-detail",
+  });
+};
