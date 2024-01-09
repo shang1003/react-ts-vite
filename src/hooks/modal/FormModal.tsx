@@ -11,6 +11,7 @@ interface ModalProps {
   title?: string;
   top?: number;
   height?: number;
+  isShowTip?: boolean,
   width?: number;
   okText?: string;
   cancelText?: string;
@@ -35,6 +36,7 @@ export const useFormModal = ({
   refresh,
   width,
   top = 20,
+  isShowTip = true,
   id,
 }: ModalProps): [(v: boolean) => void, () => JSX.Element] => {
   const [isShow, toggle] = useToggle(false);
@@ -58,7 +60,7 @@ export const useFormModal = ({
           const { successTip, failTip } = formProps || {};
           submit({ id, ...values }).then(
             () => {
-              Notify.success(t("success"), successTip || t("edit success"));
+              isShowTip && Notify.success(t("success"), successTip || t("edit success"));
               toggle(false);
               setSubmmitLoading(false)
               refresh && refresh();
@@ -69,7 +71,7 @@ export const useFormModal = ({
                   data: { message = "" },
                 },
               } = err;
-              Notify.error(t("error"), failTip || t(message));
+              isShowTip && Notify.error(t("error"), failTip || t(message));
               setSubmmitLoading(false)
               toggle(false);
             }

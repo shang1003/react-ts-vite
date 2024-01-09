@@ -6,6 +6,11 @@ export interface UserDetailType {
   description: string;
   password: string;
 }
+export interface CourseTableType {
+  id: string;
+  name: string;
+  bg_color: string
+}
 export interface UserRegistrationStatisticsType {
   registration_date: string;
   registration_count: number;
@@ -69,5 +74,18 @@ export const getUserRegistrationStatistics = () => {
   return request.makeRequest<UserRegistrationStatisticsType[]>({
     method: "get",
     url: "/user-count",
+  });
+};
+export const getCourseTable = () => {
+  return request.makeRequest<{ data: CourseTableType[] }>({
+    method: "get",
+    url: "/course-table",
+  });
+};
+export const editCourseTable = (data: CourseTableType) => {
+  return request.makeRequest({
+    method: "post",
+    data,
+    url: '/course-table-edit',
   });
 };

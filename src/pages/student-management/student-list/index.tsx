@@ -113,11 +113,12 @@ const TableCom: React.FC = () => {
             title: t("purchase date"),
             dataIndex: "purchase_date",
             render: (v: any) => getTime(v),
-            width: 150
+            width: 170
         },
         {
             title: t("course unit price"),
             dataIndex: "course_unit_price",
+            ellipsis: true,
             width: 150
         },
         {
@@ -138,6 +139,7 @@ const TableCom: React.FC = () => {
         {
             title: t("notes"),
             dataIndex: "notes",
+            ellipsis: true,
             width: 100
         },
     ];

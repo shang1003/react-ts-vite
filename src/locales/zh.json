@@ -76,5 +76,10 @@
   "please enter a valid number.": "请输入有效的数字",
   "please enter a valid 11-digit phone number.": "请输入有效的11位电话号码",
   "remaining hours": "剩余课时结算",
-  "student information": "学员信息"
+  "student information": "学员信息",
+  "course management": "课程管理",
+  "course table": "课程表",
+  "course info": "课程信息",
+  "course description": "课程描述",
+  "default transparent": "默认透明颜色"
 }

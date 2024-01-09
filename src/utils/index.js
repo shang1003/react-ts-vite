@@ -34,3 +34,15 @@ export function debounce(func, delay) {
 export const getTime = (time) => {
   return dayjs(time).format("YYYY-M-D HH:mm:ss");
 };
+
+
+export const getweek = () => {
+  const startDate = dayjs(getTime(Date.now())).startOf('week').add(1, 'day'); // 设置指定日期所在周的第一天（周一）
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const date = startDate.add(i, 'day');
+    dates.push(date.format('MM-DD'));
+  }
+  return dates
+}
+
