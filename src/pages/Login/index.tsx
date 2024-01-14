@@ -14,6 +14,7 @@ export const Login = () => {
 
   const onSubmit = (value: any) => {
     return login(value).then((data) => {
+      localStorage.setItem("token", data.token)
       root.setUserinfo(data);
       navigate(REDIRECT__HOME_URL);
     });

@@ -1,7 +1,8 @@
 import request from "./request";
 export type UseInfo = {
   username: string;
-  id: string
+  id: string,
+  token: string
 };
 export const login = (data: Record<string, any>) => {
   return request.makeRequest<UseInfo>({

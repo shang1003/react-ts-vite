@@ -37,6 +37,8 @@ class HttpRequest {
     //求情拦截
     instance.interceptors.request.use(
       (config) => {
+        const token = localStorage.getItem('token')
+        config.headers.Authorization = `Bearer ${token}`
         return config;
       },
       (err) => {
