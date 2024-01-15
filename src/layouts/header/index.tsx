@@ -98,6 +98,7 @@ export const HeaderWrapper: React.FC<props> = observer(
       if (key === "logout") {
         logout().then(() => {
           navigate("/login");
+          localStorage.clear()
         });
       } else if (key === "upload") {
         setModalData({
