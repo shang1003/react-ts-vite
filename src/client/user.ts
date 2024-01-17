@@ -76,10 +76,13 @@ export const getUserRegistrationStatistics = () => {
     url: "/user-count",
   });
 };
-export const getCourseTable = () => {
+export const getCourseTable = (params: { id: string }) => {
+  console.log(params, 'params');
+
   return request.makeRequest<{ data: CourseTableType[] }>({
     method: "get",
     url: "/course-table",
+    params
   });
 };
 export const editCourseTable = (data: CourseTableType) => {

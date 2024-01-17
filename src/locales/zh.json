@@ -81,5 +81,12 @@
   "course table": "课程表",
   "course info": "课程信息",
   "course description": "课程描述",
-  "default transparent": "默认透明颜色"
+  "default transparent": "默认透明颜色",
+  "teacher management": "教师管理",
+  "teacher list": "教师列表",
+  "id card": "身份证",
+  "bank account": "银行卡",
+  "gender": "性别",
+  "male": "男",
+  "female": "女"
 }

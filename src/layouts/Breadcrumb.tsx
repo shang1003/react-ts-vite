@@ -14,6 +14,8 @@ function App() {
     'user-management': t("user management"),
     'student-management': t("student management"),
     'student-list': t("student list"),
+    'teacher-list': t("teacher list"),
+    'teacher management': t("teacher management"),
     'course-table': t("course table"),
     'course-management': t("course management"),
     detail: t("detail"),

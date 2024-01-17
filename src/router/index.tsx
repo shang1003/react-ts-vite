@@ -7,8 +7,10 @@ import { Login } from "@/pages/Login/index";
 const NoMatch = lazy(() => import("@/components/404"));
 const TableCom = lazy(() => import("@/pages/table"));
 const StudentList = lazy(() => import("@/pages/student-management/student-list"));
+const TeacherList = lazy(() => import("@/pages/teacher-management/teacher-list"));
 const TableDetail = lazy(() => import("@/pages/table/detail"));
 const StudentDetail = lazy(() => import("@/pages/student-management/student-list/detail"));
+const TeacherDetail = lazy(() => import("@/pages/teacher-management/teacher-list/detail"));
 const Home = lazy(() => import("@/pages/home"));
 const Course = lazy(() => import("~/pages/course-management"));
 
@@ -48,6 +50,19 @@ export const router: RouteObject[] = [
           {
             path: "student-list/detail/:id",
             element: <StudentDetail />,
+          },
+        ],
+      },
+      {
+        path: "teacher-management",
+        children: [
+          {
+            path: "teacher-list",
+            element: <TeacherList />,
+          },
+          {
+            path: "teacher-list/detail/:id",
+            element: <TeacherDetail />,
           },
         ],
       },

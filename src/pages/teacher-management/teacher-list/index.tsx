@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { Button } from "antd";
+import { Button, Radio } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
-import { getStudentList, createStudent } from "~/client/student";
+import { getTeacherList, createTeacher } from "~/client/teacher";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
-import { getTime } from "~/utils";
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
     const validateNumber = (_: any, value: any) => {
@@ -17,75 +16,37 @@ const TableCom: React.FC = () => {
         }
         return Promise.resolve();
     };
-    const validatePhoneNumber = (_: any, value: any) => {
-        if (value && !/^1[0-9]{10}$/.test(value)) {
-            return Promise.reject(t('please enter a valid 11-digit phone number.'));
-        }
-        return Promise.resolve();
-    };
+
     const formItems = [
         {
             name: "name",
             label: t("username"),
             type: "input",
-            colNum: 2,
             required: true,
         },
         {
-            name: "phone",
-            label: t("phone"),
+            name: "gender",
+            label: t("gender"),
             type: "input",
-            colNum: 2,
-            validator: validatePhoneNumber,
+            component: <Radio.Group>
+                <Radio value="male">{t('male')}</Radio>
+                <Radio value="female">{t('female')}</Radio>
+            </Radio.Group>,
             required: true,
+        },
+        {
+            name: "id_card_number",
+            label: t("id card"),
+            type: "input",
+            required: true,
+        },
+        {
+            name: "bank_account_number",
+            label: t("bank account"),
+            type: "input",
+            required: true,
+        },
 
-        },
-        {
-            name: "purchase_date",
-            label: t("purchase date"),
-            type: "date-picker",
-            colNum: 2,
-            required: true,
-        },
-        {
-            name: "course_unit_price",
-            label: t("course unit price"),
-            validator: validateNumber,
-            type: "input",
-            colNum: 2,
-            required: true,
-        },
-        {
-            name: "total_hours",
-            label: t("total hours"),
-            validator: validateNumber,
-            type: "input",
-            colNum: 2,
-            required: true,
-        },
-        {
-            name: "total_amount",
-            label: t("total amount"),
-            validator: validateNumber,
-            type: "input",
-            colNum: 2,
-            required: true,
-        },
-        {
-            name: "remaining_class_hours",
-            label: t("remaining hours"),
-            type: "input",
-            colNum: 2,
-            required: true,
-        },
-        {
-            name: "notes",
-            label: t("notes"),
-            type: "textarea",
-            labelCol: { span: 4 },
-            wrapperCol: { span: 19 }
-
-        },
     ];
     const columns = [
         {
@@ -97,57 +58,33 @@ const TableCom: React.FC = () => {
         {
             title: t("username"),
             dataIndex: "name",
-            width: 100,
-            render: (value: any, { id }: any) => {
-                return <Link to={`/student-management/student-list/detail/${id}`}>{value}</Link>;
+
+            render: (value: any, { teacher_id }: any) => {
+                return <Link to={`/teacher-management/teacher-list/detail/${teacher_id}`}>{value}</Link>;
             },
             fixed: 'left',
 
         },
         {
-            title: t("phone"),
-            dataIndex: "phone",
-            width: 120
+            title: t("gender"),
+            dataIndex: "gender",
         },
         {
-            title: t("purchase date"),
-            dataIndex: "purchase_date",
-            render: (v: any) => getTime(v),
-            width: 170
+            title: t("id card"),
+            dataIndex: "id_card_number",
+
         },
         {
-            title: t("course unit price"),
-            dataIndex: "course_unit_price",
-            ellipsis: true,
-            width: 150
+            title: t("bank account"),
+            dataIndex: "bank_account_number",
+
         },
-        {
-            title: t("total hours"),
-            dataIndex: "total_hours",
-            width: 120
-        },
-        {
-            title: t("total amount"),
-            dataIndex: "total_amount",
-            width: 120
-        },
-        {
-            title: t("remaining hours"),
-            dataIndex: "remaining_class_hours",
-            width: 170
-        },
-        {
-            title: t("notes"),
-            dataIndex: "notes",
-            ellipsis: true,
-            width: 100
-        },
+
     ];
     const [refreshKey, refresh] = useRefresh();
     const [toggle, FormModal] = useFormModal({
-        height: 350,
-        width: 800,
-        submit: (values) => createStudent(values),
+
+        submit: (values) => createTeacher(values),
         formItems,
         refresh,
         formProps: {
@@ -159,7 +96,7 @@ const TableCom: React.FC = () => {
     useFetch(
         async () => {
             setLoading(true);
-            return await getStudentList();
+            return await getTeacherList();
         },
         (res) => {
             setData(res.data.map((item, index) => ({ ...item, index: index + 1 })));

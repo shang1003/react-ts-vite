@@ -35,6 +35,17 @@ const getMenu = (t: any) => {
       ],
     },
     {
+      key: "teacher-management",
+      icon: <DeploymentUnitOutlined />,
+      label: t("teacher management"),
+      children: [
+        {
+          key: "teacher-management/teacher-list",
+          label: t("teacher list"),
+        },
+      ],
+    },
+    {
       key: "course-management",
       icon: <TableOutlined />,
       label: t("course management"),
