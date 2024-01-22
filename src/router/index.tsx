@@ -12,7 +12,6 @@ const TableDetail = lazy(() => import("@/pages/table/detail"));
 const StudentDetail = lazy(() => import("@/pages/student-management/student-list/detail"));
 const TeacherDetail = lazy(() => import("@/pages/teacher-management/teacher-list/detail"));
 const Home = lazy(() => import("@/pages/home"));
-const Course = lazy(() => import("~/pages/course-management"));
 
 //路由配置
 export const router: RouteObject[] = [
@@ -23,10 +22,10 @@ export const router: RouteObject[] = [
     path: "/",
     element: <MainContent />,
     children: [
-      {
-        path: "home",
-        element: <Home />,
-      },
+      // {
+      //   path: "home",
+      //   element: <Home />,
+      // },
       {
         path: "user-management",
         children: [
@@ -61,17 +60,12 @@ export const router: RouteObject[] = [
             element: <TeacherList />,
           },
           {
-            path: "teacher-list/detail/:id",
+            path: "teacher-list/course-table/:id",
             element: <TeacherDetail />,
           },
-        ],
-      },
-      {
-        path: "course-management",
-        children: [
           {
-            path: "course-table",
-            element: <Course />,
+            path: "teacher-list/teacher-salary/:id",
+            element: <TeacherDetail />,
           },
         ],
       },

@@ -72,7 +72,7 @@
   "course unit price": "课程单价",
   "total hours": "总课时",
   "total amount": "总金额",
-  "notes": "备注",
+  "notes": "标签",
   "please enter a valid number.": "请输入有效的数字",
   "please enter a valid 11-digit phone number.": "请输入有效的11位电话号码",
   "remaining hours": "剩余课时结算",
@@ -88,5 +88,13 @@
   "bank account": "银行卡",
   "gender": "性别",
   "male": "男",
-  "female": "女"
+  "female": "女",
+  "class record": "上课记录",
+  "teacher salary": "工资表",
+  "salary date": "工资结算日期",
+  "gross salary": "应发工资",
+  "bonuses penalties": "奖惩",
+  "net salary": "实发工资",
+  "student name": "学员姓名",
+  "channel": "渠道"
 }

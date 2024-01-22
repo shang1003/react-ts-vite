@@ -3,6 +3,8 @@ export interface StudentType {
   id: string;
   name: string;
   phone: string;
+  channel: string;
+  course_category: string;
   purchase_date: string;
   course_unit_price: number;
   total_hours: string;

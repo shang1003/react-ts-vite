@@ -78,6 +78,6 @@ export const Ceil: React.FC<CeilType> = (props) => {
     });
     return <>
         <FormModal />
-        <div className={style.ceil} style={{ backgroundColor: content?.bg_color }} onDoubleClick={() => !props?.data?.isDisabled && toggle(true)} >{content?.name}</div>
+        <div onContextMenu={(e) => { alert('右键'), e.preventDefault() }} className={style.ceil} style={{ backgroundColor: content?.bg_color }} onClick={() => !props?.data?.isDisabled && toggle(true)} >{content?.name}</div>
     </>
 }

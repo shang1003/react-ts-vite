@@ -1,33 +1,39 @@
 import { useTranslation } from "react-i18next";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { Button } from "antd";
-import { editTeacher } from "~/client/teacher";
+import { editTeacherSalary } from "~/client/teacher";
 export const Edit: React.FC<any> = (props) => {
   const { t } = useTranslation();
   const { item, refresh } = props;
   const formItems = [
     {
-      name: "name",
-      label: t("username"),
-      type: "input",
-      disabled: true,
+      name: "salary_date",
+      label: t("salary date"),
+      type: "date-picker",
+      required: true,
     },
     {
-      name: "id_card_number",
-      label: t("id card"),
+      name: "gross_salary",
+      label: t("gross salary"),
       type: "input",
       required: true,
     },
     {
-      name: "bank_account_number",
-      label: t("bank account"),
+      name: "bonuses_penalties",
+      label: t("bonuses penalties"),
+      type: "input",
+      required: true,
+    },
+    {
+      name: "net_salary",
+      label: t("net salary"),
       type: "input",
       required: true,
     },
 
   ];
   const [toggle, FormModal] = useFormModal({
-    submit: (values) => editTeacher(values),
+    submit: (values) => editTeacherSalary({ ...values, id: item.id }),
     formItems,
     refresh,
 

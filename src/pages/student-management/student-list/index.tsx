@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "antd";
+import { Button, Tag } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { getStudentList, createStudent } from "~/client/student";
@@ -9,6 +9,10 @@ import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
 import { getTime } from "~/utils";
+const noteMap: any = {
+    1: <Tag color="red">体验课</Tag>,
+    2: <Tag color="green">正式课</Tag>
+}
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
     const validateNumber = (_: any, value: any) => {
@@ -26,7 +30,7 @@ const TableCom: React.FC = () => {
     const formItems = [
         {
             name: "name",
-            label: t("username"),
+            label: t("student name"),
             type: "input",
             colNum: 2,
             required: true,
@@ -41,9 +45,24 @@ const TableCom: React.FC = () => {
 
         },
         {
+            name: "channel",
+            label: t("channel"),
+            type: "input",
+            colNum: 2,
+            required: true,
+
+        },
+        {
             name: "purchase_date",
             label: t("purchase date"),
             type: "date-picker",
+            colNum: 2,
+            required: true,
+        },
+        {
+            name: "course_category",
+            label: t("course category"),
+            type: "input",
             colNum: 2,
             required: true,
         },
@@ -81,9 +100,12 @@ const TableCom: React.FC = () => {
         {
             name: "notes",
             label: t("notes"),
-            type: "textarea",
-            labelCol: { span: 4 },
-            wrapperCol: { span: 19 }
+            type: "select",
+            options: [
+                { label: "体验课", value: "1" },
+                { label: "正式课", value: "2" },
+            ],
+            colNum: 2,
 
         },
     ];
@@ -95,7 +117,7 @@ const TableCom: React.FC = () => {
             fixed: 'left',
         },
         {
-            title: t("username"),
+            title: t("student name"),
             dataIndex: "name",
             width: 100,
             render: (value: any, { id }: any) => {
@@ -110,9 +132,19 @@ const TableCom: React.FC = () => {
             width: 120
         },
         {
+            title: t("channel"),
+            dataIndex: "channel",
+            width: 120
+        },
+        {
             title: t("purchase date"),
             dataIndex: "purchase_date",
             render: (v: any) => getTime(v),
+            width: 170
+        },
+        {
+            title: t("course category"),
+            dataIndex: "course_category",
             width: 170
         },
         {
@@ -139,6 +171,7 @@ const TableCom: React.FC = () => {
         {
             title: t("notes"),
             dataIndex: "notes",
+            render: (v: any) => noteMap[v],
             ellipsis: true,
             width: 100
         },

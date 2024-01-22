@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { Button } from "antd";
 import { editStudent } from "~/client/student";
+// const {s}
 export const Edit: React.FC<any> = (props) => {
   const { t } = useTranslation();
   const validateNumber = (_: any, value: any) => {
@@ -34,12 +35,27 @@ export const Edit: React.FC<any> = (props) => {
       required: true,
     },
     {
+      name: "course_category",
+      label: t("course category"),
+      type: "input",
+      colNum: 2,
+      required: true,
+    },
+    {
       name: "phone",
       label: t("phone"),
       type: "input",
       colNum: 2,
       validator: validatePhoneNumber,
       required: true,
+    },
+    {
+      name: "channel",
+      label: t("channel"),
+      type: "input",
+      colNum: 2,
+      required: true,
+
     },
     {
       name: "course_unit_price",
@@ -75,9 +91,12 @@ export const Edit: React.FC<any> = (props) => {
     {
       name: "notes",
       label: t("notes"),
-      type: "textarea",
-      labelCol: { span: 4 },
-      wrapperCol: { span: 19 }
+      type: "select",
+      options: [
+        { label: "体验课", value: "1" },
+        { label: "正式课", value: "2" },
+      ],
+      colNum: 2,
 
     },
   ];

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Row, Col } from "antd";
+import { Card, Row, Col, Tag } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { getStudentDetail, StudentType } from "~/client/student";
 import { useParams } from "react-router-dom";
@@ -8,15 +8,24 @@ import { useFetch, useRefresh } from "~/hooks";
 import { useTranslation } from "react-i18next";
 import { getTime } from "~/utils";
 const { Meta } = Card;
+const noteMap: any = {
+  1: <Tag color="red">体验课</Tag>,
+  2: <Tag color="green">正式课</Tag>
+}
 const App: React.FC = () => {
   const { id } = useParams();
   const { t } = useTranslation();
   const titleMap: any = {
+    name: t('student name'),
     phone: t('phone'),
+    purchase_date: t('purchase date'),
     course_unit_price: t('course unit price'),
     total_hours: t('total hours'),
     notes: t('notes'),
-    total_amount: t('total amount')
+    total_amount: t('total amount'),
+    course_category: t('course category'),
+    channel: t('channel'),
+    remaining_class_hours: t('remaining hours')
   }
   const listUrl = "/student-management/student-list";
   const [data, setData] = useState<StudentType | {}>({});
@@ -38,7 +47,13 @@ const App: React.FC = () => {
     setRefreshKey();
   };
   const formatTime = (key: string, value: string) => {
-    return key === "create_time" ? getTime(value) : value;
+    if (key === "purchase_date") {
+      return getTime(value)
+    }
+    if (key === "notes") {
+      return noteMap[value]
+    }
+    return value
   };
 
   const isShowRefresh = true;

@@ -7,6 +7,7 @@ import { useFetch } from '~/hooks';
 const weeks = getweek()
 const App: React.FC<dynamic.ComponentProps> = (props) => {
     const { id } = props;
+    const [courses, setCourse] = useState<CourseTableType[]>([])
     useFetch(
         () => getCourseTable({ id }),
         ({ data }) => {
@@ -24,8 +25,6 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
         { id: "7", name: `周六 (${weeks[5]})`, isDisabled: true },
         { id: "8", name: `周日 (${weeks[6]})`, isDisabled: true },
     ]
-
-    const [courses, setCourse] = useState<CourseTableType[]>([])
     return <div className={style.wrapper}>
         <div className={style.flex}>
             {header.map((item, index) => {

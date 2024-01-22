@@ -7,11 +7,11 @@ import {
 import type { MenuProps } from "antd";
 const getMenu = (t: any) => {
   const menu: MenuProps["items"] = [
-    {
-      key: "home",
-      icon: <HomeOutlined />,
-      label: t("home"),
-    },
+    // {
+    //   key: "home",
+    //   icon: <HomeOutlined />,
+    //   label: t("home"),
+    // },
     {
       key: "user-management",
       icon: <GoldOutlined />,
@@ -36,7 +36,7 @@ const getMenu = (t: any) => {
     },
     {
       key: "teacher-management",
-      icon: <DeploymentUnitOutlined />,
+      icon: <TableOutlined />,
       label: t("teacher management"),
       children: [
         {
@@ -45,17 +45,7 @@ const getMenu = (t: any) => {
         },
       ],
     },
-    {
-      key: "course-management",
-      icon: <TableOutlined />,
-      label: t("course management"),
-      children: [
-        {
-          key: "course-management/course-table",
-          label: t("course table"),
-        },
-      ],
-    },
+
     // {
     //   key: "dynamic-form",
     //   icon: <DeploymentUnitOutlined />,

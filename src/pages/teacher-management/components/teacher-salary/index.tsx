@@ -1,44 +1,58 @@
 import { useState } from "react";
-import { Button, Radio } from "antd";
+import { Button } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
-import { getTeacherList, createTeacher } from "~/client/teacher";
+import { getTime } from "~/utils";
+import { getTeacherSalary, createTeacherSalary } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
-const TableCom: React.FC = () => {
+const App: React.FC<dynamic.ComponentProps> = (props) => {
+    const { id } = props;
+    const [teacherSalary, setTeacherSalary] = useState<any>([])
+    const [refreshKey, refresh] = useRefresh();
+    const [loading, setLoading] = useState(true);
+
+    useFetch(
+        () => {
+            setLoading(true)
+            return getTeacherSalary({ id })
+        },
+        ({ data }) => {
+            setLoading(false)
+            setTeacherSalary(data.map((item, index) => ({ ...item, index: index + 1 })));
+
+        },
+        [refreshKey]
+    );
     const { t } = useTranslation();
     const formItems = [
-        {
-            name: "name",
-            label: t("username"),
-            type: "input",
-            required: true,
-        },
-        {
-            name: "gender",
-            label: t("gender"),
-            type: "input",
-            component: <Radio.Group>
-                <Radio value="male">{t('male')}</Radio>
-                <Radio value="female">{t('female')}</Radio>
-            </Radio.Group>,
-            required: true,
-        },
-        {
-            name: "id_card_number",
-            label: t("id card"),
-            type: "input",
-            required: true,
-        },
-        {
-            name: "bank_account_number",
-            label: t("bank account"),
-            type: "input",
-            required: true,
-        },
 
+        {
+            name: "salary_date",
+            label: t("salary date"),
+            type: "date-picker",
+            required: true,
+        },
+        {
+            name: "gross_salary",
+            label: t("gross salary"),
+            type: "input",
+            required: true,
+        },
+        {
+            name: "bonuses_penalties",
+            label: t("bonuses penalties"),
+            type: "input",
+            required: true,
+        },
+        {
+            name: "net_salary",
+            label: t("net salary"),
+            type: "input",
+            required: true,
+        },
     ];
     const columns = [
         {
@@ -48,54 +62,35 @@ const TableCom: React.FC = () => {
             fixed: 'left',
         },
         {
-            title: t("username"),
-            dataIndex: "name",
-            width: 120,
-            fixed: 'left',
-
+            title: t("salary date"),
+            dataIndex: "salary_date",
+            render: (v: any) => getTime(v),
+            width: 140,
         },
         {
-            title: t("gender"),
-            dataIndex: "gender",
+            title: t("gross salary"),
+            dataIndex: "gross_salary",
             width: 100,
         },
         {
-            title: t("id card"),
-            dataIndex: "id_card_number",
+            title: t("bonuses penalties"),
+            dataIndex: "bonuses_penalties",
             width: 150,
-
         },
         {
-            title: t("bank account"),
-            dataIndex: "bank_account_number",
-            width: 150
+            title: t("net salary"),
+            dataIndex: "net_salary",
+            width: 150,
         },
-
     ];
-    const [refreshKey, refresh] = useRefresh();
     const [toggle, FormModal] = useFormModal({
-
-        submit: (values) => createTeacher(values),
+        submit: (values) => createTeacherSalary({ ...values, teacher_id: id }),
         formItems,
         refresh,
         formProps: {
             successTip: t("{{name}} success", { name: t("create") }),
         }
     });
-    const [data, setData] = useState<any | []>([]);
-    const [loading, setLoading] = useState(true);
-    useFetch(
-        async () => {
-            setLoading(true);
-            return await getTeacherList();
-        },
-        (res) => {
-            setData(res.data.map((item, index) => ({ ...item, index: index + 1 })));
-            setLoading(false);
-        },
-        [refreshKey]
-    );
-
     return (
         <>
             <div className={styles["header"]}>
@@ -111,7 +106,7 @@ const TableCom: React.FC = () => {
             <BaseTable
                 rowKey="id"
                 columns={columns}
-                data={data}
+                data={teacherSalary}
                 scrollY='calc(100vh - 272px)'
                 loading={loading}
                 actions={actionConfigs}
@@ -122,4 +117,4 @@ const TableCom: React.FC = () => {
     );
 };
 
-export default TableCom;
+export default App;
