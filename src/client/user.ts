@@ -9,7 +9,7 @@ export interface UserDetailType {
 export interface CourseTableType {
   id: string;
   name: string;
-  bg_color: string
+  status?: string
 }
 export interface UserRegistrationStatisticsType {
   registration_date: string;

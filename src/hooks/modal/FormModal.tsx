@@ -48,7 +48,7 @@ export const useFormModal = ({
     return <Modal
       title={title || t("create")}
       open={isShow}
-      style={{ top, height: 1000 }}
+      style={{ top}}
       width={width}
       okText={okText}
       cancelText={cancelText}

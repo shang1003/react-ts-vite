@@ -7,6 +7,7 @@
   "log out": "退出登录",
   "success": "成功",
   "edit success": "保存成功",
+  "save failure": "保存失败",
   "error": "错误",
   "form": "表单",
   "case": "案例",

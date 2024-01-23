@@ -119,7 +119,7 @@ const TableCom: React.FC = () => {
         {
             title: t("student name"),
             dataIndex: "name",
-            width: 100,
+            width: 120,
             render: (value: any, { id }: any) => {
                 return <Link to={`/student-management/student-list/detail/${id}`}>{value}</Link>;
             },

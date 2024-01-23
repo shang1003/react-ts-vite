@@ -5,9 +5,11 @@ import { getweek } from '~/utils';
 import { getCourseTable, CourseTableType } from '~/client/user';
 import { useFetch } from '~/hooks';
 const weeks = getweek()
+interface CurrentCeilType { id?: string, isShowMenu?: boolean }
 const App: React.FC<dynamic.ComponentProps> = (props) => {
     const { id } = props;
     const [courses, setCourse] = useState<CourseTableType[]>([])
+    const [currentCeil, setCurrentCeil] = useState<CurrentCeilType>({})
     useFetch(
         () => getCourseTable({ id }),
         ({ data }) => {
@@ -15,6 +17,10 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
         },
         []
     );
+    const handleData = (data: CurrentCeilType) => {
+        setCurrentCeil(data)
+    }
+
     const header = [
         { id: "1", name: "课程", isDisabled: true },
         { id: "2", name: `周一 (${weeks[0]})`, isDisabled: true },
@@ -28,10 +34,10 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
     return <div className={style.wrapper}>
         <div className={style.flex}>
             {header.map((item, index) => {
-                return <Ceil key={index} data={item} />
+                return <Ceil key={index} data={item} currentCeil={currentCeil} />
             })}
             {courses.map((item, index) => {
-                return <Ceil key={index} data={item} />
+                return <Ceil key={index} data={item} currentCeil={currentCeil} handleData={handleData} />
             })}
         </div>
     </div>;
