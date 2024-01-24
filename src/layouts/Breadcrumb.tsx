@@ -18,6 +18,7 @@ function App() {
     'teacher-management': t("teacher management"),
     'course-table': t("course table"),
     'teacher-salary': t("teacher salary"),
+    'class-records': t("class records"),
     'course-management': t("course management"),
     detail: t("detail"),
     home: t("home"),

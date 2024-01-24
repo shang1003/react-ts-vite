@@ -6,6 +6,7 @@ import { useFetch, useRefresh } from "~/hooks";
 import { useTranslation } from "react-i18next";
 import CourseTable from "../../components/course-table";
 import TeacherSalary from "../../components/teacher-salary";
+import ClassRecords from "../../components/class-records";
 import style from '../index.module.less'
 const App: React.FC = () => {
   const { id } = useParams();
@@ -15,17 +16,14 @@ const App: React.FC = () => {
 
   const listUrl = "/teacher-management/teacher-list";
   const [data, setData] = useState<any | {}>({});
-  const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useRefresh();
 
   useFetch(
     () => {
-      setLoading(true);
       return getTeacherDetail({ id });
     },
     (detail) => {
       setData(detail);
-      setLoading(false);
     },
     [refreshKey]
   );
@@ -44,7 +42,7 @@ const App: React.FC = () => {
         </div>
 
         {
-          pathname.includes('teacher-salary') && <TeacherSalary id={id} /> || <CourseTable id={id} />
+          pathname.includes('teacher-salary') && <TeacherSalary id={id} /> || pathname.includes('class-records') && <ClassRecords id={id} /> || <CourseTable id={id} />
         }
       </div>
 

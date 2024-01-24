@@ -5,7 +5,7 @@ export const ClassRecord: React.FC<any> = (props) => {
     const { item } = props;
     return (
         <>
-            <Link to={`/teacher-management/teacher-list/course-table/${item.teacher_id}`}>{t('class record')}</Link>
+            <Link to={`/teacher-management/teacher-list/class-records/${item.teacher_id}`}>{t('class record')}</Link>
         </>
     );
 };

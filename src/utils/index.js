@@ -36,12 +36,12 @@ export const getTime = (time) => {
 };
 
 
-export const getweek = () => {
+export const getweek = (format = "MM-DD") => {
   const startDate = dayjs(getTime(Date.now())).startOf('week').add(1, 'day'); // 设置指定日期所在周的第一天（周一）
   const dates = [];
   for (let i = 0; i < 7; i++) {
     const date = startDate.add(i, 'day');
-    dates.push(date.format('MM-DD'));
+    dates.push(date.format(format));
   }
   return dates
 }

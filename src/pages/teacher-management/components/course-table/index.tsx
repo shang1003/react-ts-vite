@@ -34,10 +34,10 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
     return <div className={style.wrapper}>
         <div className={style.flex}>
             {header.map((item, index) => {
-                return <Ceil key={index} data={item} currentCeil={currentCeil} />
+                return <Ceil key={index} data={item} currentCeil={currentCeil} teacher_id={id} />
             })}
             {courses.map((item, index) => {
-                return <Ceil key={index} data={item} currentCeil={currentCeil} handleData={handleData} />
+                return <Ceil key={index} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
             })}
         </div>
     </div>;

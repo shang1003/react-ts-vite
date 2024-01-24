@@ -67,6 +67,10 @@ export const router: RouteObject[] = [
             path: "teacher-list/teacher-salary/:id",
             element: <TeacherDetail />,
           },
+          {
+            path: "teacher-list/class-records/:id",
+            element: <TeacherDetail />,
+          },
         ],
       },
       {

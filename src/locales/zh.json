@@ -97,5 +97,11 @@
   "bonuses penalties": "奖惩",
   "net salary": "实发工资",
   "student name": "学员姓名",
-  "channel": "渠道"
+  "channel": "渠道",
+  "class records": "上课记录",
+  "course time": "课程时间",
+  "course name": "课程名称",
+  "course status": "课程状态",
+  "operation date": "操作日期",
+  "remarks":"备注"
 }

@@ -1,4 +1,15 @@
 import request from "./request";
+export interface ClassRecordsType {
+  teacher_id: string;
+  course: string;
+  status: string;
+  remarks: string;
+  class_time: string;
+  operation_date: string;
+}
+export interface ClassRecordsListType {
+  data: ClassRecordsType[]
+}
 export interface TeacherType {
   teacher_id: string;
   name: string;
@@ -85,5 +96,34 @@ export const deleteTeacherSalary = (data: { id: string }) => {
     method: "delete",
     data,
     url: "/teacher-salary-delete",
+  });
+};
+
+export const getClassRecords = (params: { id: string | undefined }) => {
+  return request.makeRequest<ClassRecordsListType>({
+    method: "get",
+    params,
+    url: "class-records",
+  });
+};
+export const createClassRecords = (data: ClassRecordsType) => {
+  return request.makeRequest<ClassRecordsType>({
+    method: "post",
+    data,
+    url: "class-records",
+  });
+};
+export const deleteClassRecords = (data: { id: string }) => {
+  return request.makeRequest<ClassRecordsListType>({
+    method: "delete",
+    data,
+    url: "class-records-delete",
+  });
+};
+export const editClassRecords = (data: any) => {
+  return request.makeRequest<ClassRecordsType>({
+    method: "post",
+    data,
+    url: "/class-records-edit",
   });
 };

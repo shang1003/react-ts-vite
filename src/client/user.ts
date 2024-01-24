@@ -9,7 +9,11 @@ export interface UserDetailType {
 export interface CourseTableType {
   id: string;
   name: string;
-  status?: string
+  status?: string,
+  time?: string,
+  teacher_id?: string,
+  uid?: string//每周课表唯一值
+  isChangeName?:boolean
 }
 export interface UserRegistrationStatisticsType {
   registration_date: string;
