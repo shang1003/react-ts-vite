@@ -11,12 +11,6 @@ export const Edit: React.FC<any> = (props) => {
     }
     return Promise.resolve();
   };
-  const validatePhoneNumber = (_: any, value: any) => {
-    if (value && !/^1[0-9]{10}$/.test(value)) {
-      return Promise.reject(t('please enter a valid 11-digit phone number.'));
-    }
-    return Promise.resolve();
-  };
   const { item, refresh } = props;
   const formItems = [
     {
@@ -30,7 +24,6 @@ export const Edit: React.FC<any> = (props) => {
       name: "purchase_date",
       label: t("purchase date"),
       type: "date-picker",
-      disabled: true,
       colNum: 2,
       required: true,
     },
@@ -46,7 +39,6 @@ export const Edit: React.FC<any> = (props) => {
       label: t("phone"),
       type: "input",
       colNum: 2,
-      validator: validatePhoneNumber,
       required: true,
     },
     {

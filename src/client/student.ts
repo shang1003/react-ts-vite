@@ -59,3 +59,20 @@ export const getStudentExcel = () => {
     responseType: "blob"
   });
 };
+export const uploadStudents = (data: any) => {
+  return request.makeRequest({
+    method: "post",
+    data,
+    url: `/students/upload`,
+    headers: {
+      "Content-Type": "multipart/form-data"//文件上传
+    }
+  });
+};
+export const batchDeleteStudents = (data: any) => {
+  return request.makeRequest({
+    method: "delete",
+    data,
+    url: "/batch-delete-students",
+  });
+};

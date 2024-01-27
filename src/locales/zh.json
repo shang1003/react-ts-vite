@@ -105,5 +105,9 @@
   "operation date": "操作日期",
   "remarks": "备注",
   "import": "导出",
-  "teacher name": "教师姓名"
+  "teacher name": "教师姓名",
+  "upload file":"上传",
+  "batch delete":"批量删除",
+  "select file":"选择文件",
+  "are you sure delete?":"确认删除吗？"
 }

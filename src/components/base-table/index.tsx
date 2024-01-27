@@ -17,6 +17,7 @@ interface BaseTableType {
   hasItemActions?: boolean;
   actions?: ActionsType;
   refresh?: () => void;
+  rowSelection?:object,
   rowKey?: string;
   otherProps?: TableProps<Record<string, any>>;
 }
@@ -34,6 +35,7 @@ export const BaseTable: React.FC<BaseTableType> = ({
     },
   },
   rowKey = "id",
+  rowSelection,
   refresh,
   otherProps = {},
 }) => {
@@ -68,6 +70,7 @@ export const BaseTable: React.FC<BaseTableType> = ({
     <>
       <Table
         rowKey={rowKey}
+        rowSelection={rowSelection}
         columns={getColumns()}
         dataSource={data}
         scroll={{ y: scrollY, x: ScrollX }}

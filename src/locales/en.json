@@ -20,5 +20,6 @@
   "description": "description",
   "checkbox": "checkbox",
   "address": "address",
-  "create time": "create time"
+  "create time": "create time",
+  "upload file": "upload"
 }

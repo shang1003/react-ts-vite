@@ -1,20 +1,31 @@
 import { useState } from "react";
-import { Button, Tag } from "antd";
+import { Button, Tag, Radio } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
-import { getStudentList, createStudent, getStudentExcel } from "~/client/student";
+import { getStudentList, createStudent, getStudentExcel, uploadStudents } from "~/client/student";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
+import { BatchDelete } from "./action/BatchDelete";
 import { getTime, download } from "~/utils";
+
 const noteMap: any = {
     1: <Tag color="red">体验课</Tag>,
     2: <Tag color="green">正式课</Tag>
 }
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
+const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const [modalData, setModalData] = useState<any>({})
+    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+        setSelectedRowKeys(newSelectedRowKeys);
+      };
+      const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange,
+      };
     const validateNumber = (_: any, value: any) => {
         if (value && !/^\d+(\.\d+)?$/.test(value)) {
             return Promise.reject(t('please enter a valid number.'));
@@ -24,12 +35,44 @@ const TableCom: React.FC = () => {
     const handleClick = () => {
         download(getStudentExcel, '学员信息')
     }
-    const validatePhoneNumber = (_: any, value: any) => {
-        if (value && !/^1[0-9]{10}$/.test(value)) {
-            return Promise.reject(t('please enter a valid 11-digit phone number.'));
+    const avatarFormItems = [{
+        type: 'upload',
+        name: "content",
+        required: true,
+        beforeUpload: () => false,
+        label: t('select file')
+    }]
+
+    const open = (v: any) => {
+        if (v == "create") {
+            setModalData(
+                {
+                    height: 350,
+                    width: 800,
+                    submit: (values: any) => createStudent(values),
+                    formItems,
+                    refresh,
+                    formProps: {
+                        successTip: t("{{name}} success", { name: t("create") }),
+                    }
+                }
+            )
+        } else {
+            setModalData({
+                submit: async (values: any) => {
+                    const data: any = await uploadStudents(values.content)
+                    return data
+                },
+                refresh,
+                title: t('upload file'),
+                formItems: avatarFormItems,
+                formProps: { successTip: t("{{name}} success", { name: t("upload avatar") }) }
+            })
+            toggle(true)
         }
-        return Promise.resolve();
-    };
+        toggle(true)
+
+    }
     const formItems = [
         {
             name: "name",
@@ -43,9 +86,18 @@ const TableCom: React.FC = () => {
             label: t("phone"),
             type: "input",
             colNum: 2,
-            validator: validatePhoneNumber,
             required: true,
-
+        },
+        {
+            name: "gender",
+            label: t("gender"),
+            type: "input",
+            colNum: 2,
+            component: <Radio.Group>
+                <Radio value="male">{t('male')}</Radio>
+                <Radio value="female">{t('female')}</Radio>
+            </Radio.Group>,
+            required: true,
         },
         {
             name: "channel",
@@ -130,6 +182,11 @@ const TableCom: React.FC = () => {
 
         },
         {
+            title: t("gender"),
+            dataIndex: "gender",
+            width: 120
+        },
+        {
             title: t("phone"),
             dataIndex: "phone",
             width: 120
@@ -180,16 +237,7 @@ const TableCom: React.FC = () => {
         },
     ];
     const [refreshKey, refresh] = useRefresh();
-    const [toggle, FormModal] = useFormModal({
-        height: 350,
-        width: 800,
-        submit: (values) => createStudent(values),
-        formItems,
-        refresh,
-        formProps: {
-            successTip: t("{{name}} success", { name: t("create") }),
-        }
-    });
+    const [toggle, FormModal] = useFormModal(modalData);
     const [data, setData] = useState<any | []>([]);
     const [loading, setLoading] = useState(true);
     useFetch(
@@ -207,23 +255,35 @@ const TableCom: React.FC = () => {
     return (
         <>
             <div className={styles["header"]}>
-                <Button
-                    type="primary"
-                    style={{ marginBottom: "10px" }}
-                    onClick={() => toggle(true)}
-                >
-                    {t("create")}
-                </Button>
-                <Button
-                    type="primary"
+                <div className={styles['button-group']}>
+                    <Button
+                        type="primary"
+                        onClick={() => open("create")}
+                    >
+                        {t("create")}
+                    </Button>
+                    <BatchDelete selectedRowKeys={selectedRowKeys} refresh={refresh} isDisabled={!data.length}/>
+                </div>
+                <div className={styles['button-group']}>
+                    <Button
+                        type="primary"
 
-                    onClick={handleClick}
-                >
-                    {t("import")}
-                </Button>
+                        onClick={handleClick}
+                    >
+                        {t("import")}
+                    </Button>
+                    <Button
+                        type="primary"
+
+                        onClick={() => open("upload")}
+                    >
+                        {t("upload file")}
+                    </Button>
+                </div>
             </div>
             <FormModal />
             <BaseTable
+               rowSelection={rowSelection}
                 rowKey="id"
                 columns={columns}
                 data={data}
