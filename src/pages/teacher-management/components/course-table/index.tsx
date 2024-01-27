@@ -31,14 +31,18 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
         { id: "7", name: `周六 (${weeks[5]})`, isDisabled: true },
         { id: "8", name: `周日 (${weeks[6]})`, isDisabled: true },
     ]
-    return <div className={style.wrapper}>
-        <div className={style.flex}>
-            {header.map((item, index) => {
-                return <Ceil key={index} data={item} currentCeil={currentCeil} teacher_id={id} />
-            })}
-            {courses.map((item, index) => {
-                return <Ceil key={index} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
-            })}
+    return <div >
+        <div className={style.wrapper}>
+            <div className={style.flex}>
+                {header.map((item, index) => {
+                    return <Ceil key={index} data={item} currentCeil={currentCeil} teacher_id={id} />
+                })}
+            </div>
+            <div className={`${style.flex} ${style.content}`}>
+                {courses.map((item, index) => {
+                    return <Ceil key={index} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
+                })}
+            </div>
         </div>
     </div>;
 };

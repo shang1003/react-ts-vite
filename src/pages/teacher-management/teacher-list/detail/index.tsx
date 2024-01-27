@@ -15,7 +15,7 @@ const App: React.FC = () => {
 
 
   const listUrl = "/teacher-management/teacher-list";
-  const [data, setData] = useState<any | {}>({});
+  const [data, setData] = useState<any | {}>(null);
   const [refreshKey, setRefreshKey] = useRefresh();
 
   useFetch(
@@ -38,11 +38,11 @@ const App: React.FC = () => {
     <DetailBase {...{ listUrl, handleRefresh, isShowRefresh }}>
       <div>
         <div className={style['header-detail']}>
-          {<span>老师姓名</span>} : {<span className={style['header-name']}>{data.name}</span>}
+          {<span>{t("teacher name")}</span>} : {<span>{data?.name}</span>}
         </div>
 
         {
-          pathname.includes('teacher-salary') && <TeacherSalary id={id} /> || pathname.includes('class-records') && <ClassRecords id={id} /> || <CourseTable id={id} />
+         data&& (pathname.includes('teacher-salary') && <TeacherSalary id={id} name={data.name} /> || pathname.includes('class-records') && <ClassRecords id={id} name={data.name}/> || <CourseTable id={id} />)
         }
       </div>
 

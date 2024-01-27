@@ -4,6 +4,12 @@ import { Button } from "antd";
 import { editTeacher } from "~/client/teacher";
 export const Edit: React.FC<any> = (props) => {
   const { t } = useTranslation();
+  const validatePhoneNumber = (_: any, value: any) => {
+    if (value && !/^1[0-9]{10}$/.test(value)) {
+      return Promise.reject(t('please enter a valid 11-digit phone number.'));
+    }
+    return Promise.resolve();
+  };
   const { item, refresh } = props;
   const formItems = [
     {
@@ -11,6 +17,13 @@ export const Edit: React.FC<any> = (props) => {
       label: t("username"),
       type: "input",
       disabled: true,
+    },
+    {
+      name: "phone",
+      label: t("phone"),
+      type: "input",
+      validator: validatePhoneNumber,
+      required: true,
     },
     {
       name: "id_card_number",

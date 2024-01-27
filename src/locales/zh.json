@@ -103,5 +103,7 @@
   "course name": "课程名称",
   "course status": "课程状态",
   "operation date": "操作日期",
-  "remarks":"备注"
+  "remarks": "备注",
+  "import": "导出",
+  "teacher name": "教师姓名"
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
-import { getUserList, UserDetailType } from "~/client/user";
+import { getUserList, UserDetailType, getUserExcel } from "~/client/user";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { createUser } from "~/client/user";
@@ -9,8 +9,11 @@ import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
-import { getTime } from "~/utils";
+import { getTime,download } from "~/utils";
 const TableCom: React.FC = () => {
+  const handleClick =  () => {
+    download(getUserExcel,'用户信息')
+  }
   const { t } = useTranslation();
   const formItems = [
     {
@@ -38,9 +41,9 @@ const TableCom: React.FC = () => {
   ];
   const columns = [
     {
-      title:t('index'),
+      title: t('index'),
       dataIndex: 'index',
-  },
+    },
     {
       title: t("username"),
       dataIndex: "name",
@@ -65,9 +68,9 @@ const TableCom: React.FC = () => {
     submit: (values) => createUser(values),
     formItems,
     refresh,
-    formProps: { 
+    formProps: {
       successTip: t("{{name}} success", { name: t("create") }),
-  }
+    }
   });
   const [data, setData] = useState<UserDetailType[] | []>([]);
   const [loading, setLoading] = useState(true);
@@ -77,7 +80,7 @@ const TableCom: React.FC = () => {
       return await getUserList();
     },
     ({ userList }) => {
-      setData(userList.map((item,index)=>({...item,index:index+1})));
+      setData(userList.map((item, index) => ({ ...item, index: index + 1 })));
       setLoading(false);
     },
     [refreshKey]
@@ -88,10 +91,16 @@ const TableCom: React.FC = () => {
       <div className={styles["header"]}>
         <Button
           type="primary"
-          style={{ marginBottom: "10px" }}
           onClick={() => toggle(true)}
         >
           {t("create")}
+        </Button>
+        <Button
+          type="primary"
+
+          onClick={handleClick}
+        >
+          {t("import")}
         </Button>
       </div>
       <FormModal />

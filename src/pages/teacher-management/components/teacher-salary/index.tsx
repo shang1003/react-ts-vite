@@ -3,17 +3,20 @@ import { Button } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { getTime } from "~/utils";
-import { getTeacherSalary, createTeacherSalary } from "~/client/teacher";
+import { getTeacherSalary, createTeacherSalary,getTeacherSalaryExcel } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
+import { download } from "~/utils";
 const App: React.FC<dynamic.ComponentProps> = (props) => {
-    const { id } = props;
+    const { id ,name} = props;
     const [teacherSalary, setTeacherSalary] = useState<any>([])
     const [refreshKey, refresh] = useRefresh();
     const [loading, setLoading] = useState(true);
-
+const handleClick=()=>{
+    download(()=>getTeacherSalaryExcel({id,teacher_name:name}),'教师工资表')
+}
     useFetch(
         () => {
             setLoading(true)
@@ -96,10 +99,15 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             <div className={styles["header"]}>
                 <Button
                     type="primary"
-                    style={{ marginBottom: "10px" }}
                     onClick={() => toggle(true)}
                 >
                     {t("create")}
+                </Button>
+                <Button
+                    type="primary"
+                    onClick={handleClick}
+                >
+                    {t("import")}
                 </Button>
             </div>
             <FormModal />

@@ -158,6 +158,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
       tip,
       required,
       valuePropName,
+      validateTrigger = "onBlur",
     } = item;
     const base = {
       name,
@@ -171,6 +172,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
       wrapperCol,
       required,
       valuePropName,
+      validateTrigger,
       rules: getRules(item),
     };
     switch (type) {

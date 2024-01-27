@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useFetch, useRefresh } from "~/hooks";
 import { getTime } from "~/utils";
-import { getClassRecords } from "~/client/teacher";
+import { getClassRecords, getClassRecordsExcel } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
+import { Button } from "antd";
+import styles from "./index.module.less";
+import { download } from "~/utils";
 const dataMap: any = {
     1: "正常出勤",
     2: "取消课程",
@@ -12,7 +15,7 @@ const dataMap: any = {
 
 }
 const App: React.FC<dynamic.ComponentProps> = (props) => {
-    const { id } = props;
+    const { id, name } = props;
     const [teacherSalary, setTeacherSalary] = useState<any>([])
     const [refreshKey, refresh] = useRefresh();
     const [loading, setLoading] = useState(true);
@@ -20,7 +23,8 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
     useFetch(
         () => {
             setLoading(true)
-            return getClassRecords({ id })
+
+            return getClassRecords({ id, teacher_name: name })
         },
         ({ data }) => {
             setLoading(false)
@@ -31,6 +35,10 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
         },
         [refreshKey]
     );
+
+    const handleClick = () => {
+        download(() => getClassRecordsExcel({ id, teacher_name: name }), '教师上课记录')
+    }
     const { t } = useTranslation();
     const columns = [
         {
@@ -71,11 +79,20 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
     ];
     return (
         <>
+            <div className={styles["header"]}>
+                <Button
+                    type="primary"
+
+                    onClick={handleClick}
+                >
+                    {t("import")}
+                </Button>
+            </div>
             <BaseTable
                 rowKey="id"
                 columns={columns}
                 data={teacherSalary}
-                scrollY='calc(100vh - 272px)'
+                scrollY='calc(100vh - 312px)'
                 loading={loading}
                 actions={actionConfigs}
                 refresh={refresh}

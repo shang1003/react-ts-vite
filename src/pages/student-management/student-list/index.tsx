@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Button, Tag } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
-import { getStudentList, createStudent } from "~/client/student";
+import { getStudentList, createStudent, getStudentExcel } from "~/client/student";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
-import { getTime } from "~/utils";
+import { getTime, download } from "~/utils";
 const noteMap: any = {
     1: <Tag color="red">体验课</Tag>,
     2: <Tag color="green">正式课</Tag>
@@ -21,6 +21,9 @@ const TableCom: React.FC = () => {
         }
         return Promise.resolve();
     };
+    const handleClick = () => {
+        download(getStudentExcel, '学员信息')
+    }
     const validatePhoneNumber = (_: any, value: any) => {
         if (value && !/^1[0-9]{10}$/.test(value)) {
             return Promise.reject(t('please enter a valid 11-digit phone number.'));
@@ -210,6 +213,13 @@ const TableCom: React.FC = () => {
                     onClick={() => toggle(true)}
                 >
                     {t("create")}
+                </Button>
+                <Button
+                    type="primary"
+
+                    onClick={handleClick}
+                >
+                    {t("import")}
                 </Button>
             </div>
             <FormModal />

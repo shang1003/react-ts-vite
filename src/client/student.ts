@@ -51,3 +51,11 @@ export const getStudentDetail = (params: { id: string | undefined }) => {
     url: "/student-detail",
   });
 };
+
+export const getStudentExcel = () => {
+  return request.makeRequest({
+    method: "get",
+    url: "/student-excel",
+    responseType: "blob"
+  });
+};

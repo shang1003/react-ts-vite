@@ -96,3 +96,11 @@ export const editCourseTable = (data: CourseTableType) => {
     url: '/course-table-edit',
   });
 };
+export const getUserExcel = () => {
+  return request.makeRequest({
+    method: "get",
+    url: "/user-excel",
+    responseType: "blob"
+  });
+};
+

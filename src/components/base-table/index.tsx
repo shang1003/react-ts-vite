@@ -26,7 +26,7 @@ export const BaseTable: React.FC<BaseTableType> = ({
   loading = false,
   hasItemActions = true,
   scrollY = 700,
-  ScrollX = 650,
+  ScrollX = 'max-content',
   actions = {
     rowActions: {
       firstAction: null,
@@ -50,6 +50,7 @@ export const BaseTable: React.FC<BaseTableType> = ({
       {
         title: t("action"),
         key: "operation",
+        ellipsis: true,
         width: 180,
         fixed: 'right',
         render: (_: any, record: any) => (

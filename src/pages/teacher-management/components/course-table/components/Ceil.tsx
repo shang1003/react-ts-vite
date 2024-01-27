@@ -60,10 +60,10 @@ export const Ceil: React.FC<CeilType> = (props) => {
         if (isMenu) {
             props.handleData && props.handleData({ id, isShowMenu: false })
         } else {
-            if(!content.name){
+            if (!content.name) {
                 return
             }
-            props.handleData && props.handleData({ id, isShowMenu: content.name&&true })
+            props.handleData && props.handleData({ id, isShowMenu: content.name && true })
         }
     }
     useEffect(() => {
@@ -74,22 +74,22 @@ export const Ceil: React.FC<CeilType> = (props) => {
         }
     }, [currentCeil])
     const id = props.data.id
-    
+
     const formItems = [
         {
             name: "name",
             label: t("course description"),
             type: "input",
-            required:true
+            required: true
         }
     ];
     const [toggle, FormModal] = useFormModal({
         submit:
             (values) => {
                 setContent({ ...content, ...values })
-                console.log(content,values,'{ ...content, ...values,isChangeName:true }');
-                
-                return editCourseTable({ id,name:values.name,isChangeName:true })
+                console.log(content, values, '{ ...content, ...values,isChangeName:true }');
+
+                return editCourseTable({ id, name: values.name, isChangeName: true, status: content.status })
             },
         title: t('course info'),
         formItems,

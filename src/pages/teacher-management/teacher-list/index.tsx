@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Button, Radio } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
-import { getTeacherList, createTeacher } from "~/client/teacher";
+import { getTeacherList, createTeacher, getTeacherExcel } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
+import { download } from "~/utils";
 import { BaseTable } from "~/components/base-table";
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
@@ -27,8 +28,15 @@ const TableCom: React.FC = () => {
             required: true,
         },
         {
+            name: "phone",
+            label: t("phone"),
+            type: "input",
+            required: true,
+        },
+        {
             name: "id_card_number",
             label: t("id card"),
+            validateTrigger:"onBlur",
             type: "input",
             required: true,
         },
@@ -40,35 +48,50 @@ const TableCom: React.FC = () => {
         },
 
     ];
+
+    const handleClick = () => {
+        download(getTeacherExcel, '教师信息')
+    }
     const columns = [
         {
             title: t('index'),
             dataIndex: 'index',
             width: 70,
+            ellipsis: true,
             fixed: 'left',
         },
         {
             title: t("username"),
             dataIndex: "name",
             width: 120,
+            ellipsis: true,
             fixed: 'left',
 
         },
         {
             title: t("gender"),
             dataIndex: "gender",
+            ellipsis: true,
             width: 100,
+        },
+        {
+            title: t("phone"),
+            dataIndex: "phone",
+            ellipsis: true,
+            width: 120,
         },
         {
             title: t("id card"),
             dataIndex: "id_card_number",
-            width: 150,
+            ellipsis: true,
+            width: 100,
 
         },
         {
             title: t("bank account"),
+            ellipsis: true,
             dataIndex: "bank_account_number",
-            width: 150
+            width: 100
         },
 
     ];
@@ -101,13 +124,20 @@ const TableCom: React.FC = () => {
             <div className={styles["header"]}>
                 <Button
                     type="primary"
-                    style={{ marginBottom: "10px" }}
                     onClick={() => toggle(true)}
                 >
                     {t("create")}
                 </Button>
+                <Button
+                    type="primary"
+
+                    onClick={handleClick}
+                >
+                    {t("import")}
+                </Button>
             </div>
             <FormModal />
+            <div style={{height:"600px"}}>
             <BaseTable
                 rowKey="id"
                 columns={columns}
@@ -118,6 +148,7 @@ const TableCom: React.FC = () => {
                 refresh={refresh}
                 otherProps={{ pagination: { pageSize: 10 } }}
             />
+            </div>
         </>
     );
 };

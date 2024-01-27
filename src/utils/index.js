@@ -46,3 +46,15 @@ export const getweek = (format = "MM-DD") => {
   return dates
 }
 
+export const download=async(callback,title="download")=>{
+    const data = await callback()
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${title}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+}
+

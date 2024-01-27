@@ -14,6 +14,7 @@ export interface TeacherType {
   teacher_id: string;
   name: string;
   gender: string;
+  phone:string;
   id_card_number: string;
   bank_account_number: string;
 }
@@ -99,7 +100,7 @@ export const deleteTeacherSalary = (data: { id: string }) => {
   });
 };
 
-export const getClassRecords = (params: { id: string | undefined }) => {
+export const getClassRecords = (params: { id: string | undefined,teacher_name:string }) => {
   return request.makeRequest<ClassRecordsListType>({
     method: "get",
     params,
@@ -125,5 +126,28 @@ export const editClassRecords = (data: any) => {
     method: "post",
     data,
     url: "/class-records-edit",
+  });
+};
+export const getTeacherExcel = () => {
+  return request.makeRequest({
+    method: "get",
+    url: "/teacher-excel",
+    responseType: "blob"
+  });
+};
+export const getClassRecordsExcel = (params: { id: string | undefined,teacher_name:string }) => {
+  return request.makeRequest({
+    method: "get",
+    params,
+    url: "/class-records-excel",
+    responseType: "blob"
+  });
+};
+export const getTeacherSalaryExcel = (params: { id: string | undefined,teacher_name:string }) => {
+  return request.makeRequest({
+    method: "get",
+    params,
+    url: "/teacher-salary-excel",
+    responseType: "blob"
   });
 };
