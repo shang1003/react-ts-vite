@@ -32,6 +32,9 @@ export function debounce(func, delay) {
 }
 
 export const getTime = (time) => {
+  if(!time){
+    return "-"
+  }
   return dayjs(time).format("YYYY-M-D HH:mm:ss");
 };
 

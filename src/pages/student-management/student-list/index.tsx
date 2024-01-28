@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Tag, Radio } from "antd";
+import { Button, Space, Tag, Radio, message, Input } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { getStudentList, createStudent, getStudentExcel, uploadStudents } from "~/client/student";
@@ -10,22 +10,26 @@ import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
 import { BatchDelete } from "./action/BatchDelete";
 import { getTime, download } from "~/utils";
-
+const { Search } = Input;
 const noteMap: any = {
     1: <Tag color="red">体验课</Tag>,
     2: <Tag color="green">正式课</Tag>
 }
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
-const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [modalData, setModalData] = useState<any>({})
+    const [searchName, setSearchName] = useState<any>()
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
         setSelectedRowKeys(newSelectedRowKeys);
-      };
-      const rowSelection = {
+    };
+    const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,
-      };
+    };
+    const onSearch = (v: string) => {
+        setSearchName(v)
+    }
     const validateNumber = (_: any, value: any) => {
         if (value && !/^\d+(\.\d+)?$/.test(value)) {
             return Promise.reject(t('please enter a valid number.'));
@@ -35,11 +39,21 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const handleClick = () => {
         download(getStudentExcel, '学员信息')
     }
+    const beforeUpload = (file: any, err: any) => {
+        console.log(file.name.includes('.xls'));
+
+        if (!file.name.includes('.xls') && !file.name.includes('.xlsx')) {
+            message.error(t('please upload els or elsx files'))
+            return err
+        }
+
+        return false
+    }
     const avatarFormItems = [{
         type: 'upload',
         name: "content",
         required: true,
-        beforeUpload: () => false,
+        beforeUpload: beforeUpload,
         label: t('select file')
     }]
 
@@ -94,8 +108,8 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
             type: "input",
             colNum: 2,
             component: <Radio.Group>
-                <Radio value="male">{t('male')}</Radio>
-                <Radio value="female">{t('female')}</Radio>
+                <Radio value="男">{t('male')}</Radio>
+                <Radio value="女">{t('female')}</Radio>
             </Radio.Group>,
             required: true,
         },
@@ -104,22 +118,18 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
             label: t("channel"),
             type: "input",
             colNum: 2,
-            required: true,
-
         },
         {
             name: "purchase_date",
             label: t("purchase date"),
             type: "date-picker",
             colNum: 2,
-            required: true,
         },
         {
             name: "course_category",
             label: t("course category"),
             type: "input",
             colNum: 2,
-            required: true,
         },
         {
             name: "course_unit_price",
@@ -127,7 +137,6 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
             validator: validateNumber,
             type: "input",
             colNum: 2,
-            required: true,
         },
         {
             name: "total_hours",
@@ -135,7 +144,6 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
             validator: validateNumber,
             type: "input",
             colNum: 2,
-            required: true,
         },
         {
             name: "total_amount",
@@ -143,14 +151,12 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
             validator: validateNumber,
             type: "input",
             colNum: 2,
-            required: true,
         },
         {
             name: "remaining_class_hours",
             label: t("remaining hours"),
             type: "input",
             colNum: 2,
-            required: true,
         },
         {
             name: "notes",
@@ -189,7 +195,7 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
         {
             title: t("phone"),
             dataIndex: "phone",
-            width: 120
+            width: 140
         },
         {
             title: t("channel"),
@@ -243,47 +249,45 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     useFetch(
         async () => {
             setLoading(true);
-            return await getStudentList();
+            return await getStudentList({ name: searchName });
         },
         (res) => {
             setData(res.data.map((item, index) => ({ ...item, index: index + 1 })));
             setLoading(false);
         },
-        [refreshKey]
+        [refreshKey, searchName]
     );
 
     return (
         <>
             <div className={styles["header"]}>
-                <div className={styles['button-group']}>
+                <Space>
+                    <Search placeholder={t('please enter the student name')} allowClear enterButton={t('search')} onSearch={onSearch} />
                     <Button
                         type="primary"
                         onClick={() => open("create")}
                     >
                         {t("create")}
                     </Button>
-                    <BatchDelete selectedRowKeys={selectedRowKeys} refresh={refresh} isDisabled={!data.length}/>
-                </div>
-                <div className={styles['button-group']}>
+                    <BatchDelete selectedRowKeys={selectedRowKeys} refresh={refresh} isDisabled={!selectedRowKeys.length} />
                     <Button
                         type="primary"
 
                         onClick={handleClick}
                     >
-                        {t("import")}
+                        {t("export")}
                     </Button>
                     <Button
                         type="primary"
-
                         onClick={() => open("upload")}
                     >
                         {t("upload file")}
                     </Button>
-                </div>
+                </Space>
             </div>
             <FormModal />
             <BaseTable
-               rowSelection={rowSelection}
+                rowSelection={rowSelection}
                 rowKey="id"
                 columns={columns}
                 data={data}
@@ -291,7 +295,6 @@ const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
                 loading={loading}
                 actions={actionConfigs}
                 refresh={refresh}
-                otherProps={{ pagination: { pageSize: 10 } }}
             />
         </>
     );

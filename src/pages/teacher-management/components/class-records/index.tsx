@@ -85,7 +85,7 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
 
                     onClick={handleClick}
                 >
-                    {t("import")}
+                    {t("export")}
                 </Button>
             </div>
             <BaseTable
@@ -96,7 +96,6 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
                 loading={loading}
                 actions={actionConfigs}
                 refresh={refresh}
-                otherProps={{ pagination: { pageSize: 10 } }}
             />
         </>
     );

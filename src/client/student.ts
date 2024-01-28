@@ -14,9 +14,10 @@ export interface StudentType {
 export interface StudentListType {
   data: StudentType[] | [];
 }
-export const getStudentList = async () => {
+export const getStudentList = async (params?:{name:string}) => {
   return request.makeRequest<StudentListType>({
     method: "get",
+    params,
     url: "/student-list",
   });
 };

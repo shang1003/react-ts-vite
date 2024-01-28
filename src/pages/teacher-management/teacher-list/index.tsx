@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Radio } from "antd";
+import { Button, Radio, Space } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { getTeacherList, createTeacher, getTeacherExcel } from "~/client/teacher";
@@ -22,8 +22,8 @@ const TableCom: React.FC = () => {
             label: t("gender"),
             type: "input",
             component: <Radio.Group>
-                <Radio value="male">{t('male')}</Radio>
-                <Radio value="female">{t('female')}</Radio>
+                <Radio value="男">{t('male')}</Radio>
+                <Radio value="女">{t('female')}</Radio>
             </Radio.Group>,
             required: true,
         },
@@ -36,7 +36,7 @@ const TableCom: React.FC = () => {
         {
             name: "id_card_number",
             label: t("id card"),
-            validateTrigger:"onBlur",
+            validateTrigger: "onBlur",
             type: "input",
             required: true,
         },
@@ -122,32 +122,33 @@ const TableCom: React.FC = () => {
     return (
         <>
             <div className={styles["header"]}>
-                <Button
-                    type="primary"
-                    onClick={() => toggle(true)}
-                >
-                    {t("create")}
-                </Button>
-                <Button
-                    type="primary"
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => toggle(true)}
+                    >
+                        {t("create")}
+                    </Button>
+                    <Button
+                        type="primary"
 
-                    onClick={handleClick}
-                >
-                    {t("import")}
-                </Button>
+                        onClick={handleClick}
+                    >
+                        {t("export")}
+                    </Button>
+                </Space>
             </div>
             <FormModal />
-            <div style={{height:"600px"}}>
-            <BaseTable
-                rowKey="id"
-                columns={columns}
-                data={data}
-                scrollY='calc(100vh - 272px)'
-                loading={loading}
-                actions={actionConfigs}
-                refresh={refresh}
-                otherProps={{ pagination: { pageSize: 10 } }}
-            />
+            <div style={{ height: "600px" }}>
+                <BaseTable
+                    rowKey="id"
+                    columns={columns}
+                    data={data}
+                    scrollY='calc(100vh - 272px)'
+                    loading={loading}
+                    actions={actionConfigs}
+                    refresh={refresh}
+                />
             </div>
         </>
     );

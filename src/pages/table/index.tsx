@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "antd";
+import { Button, Space } from "antd";
 import { Link } from "react-router-dom";
 import { getUserList, UserDetailType, getUserExcel } from "~/client/user";
 import { useFetch, useRefresh } from "~/hooks";
@@ -9,10 +9,10 @@ import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
-import { getTime,download } from "~/utils";
+import { getTime, download } from "~/utils";
 const TableCom: React.FC = () => {
-  const handleClick =  () => {
-    download(getUserExcel,'用户信息')
+  const handleClick = () => {
+    download(getUserExcel, '用户信息')
   }
   const { t } = useTranslation();
   const formItems = [
@@ -89,19 +89,21 @@ const TableCom: React.FC = () => {
   return (
     <>
       <div className={styles["header"]}>
-        <Button
-          type="primary"
-          onClick={() => toggle(true)}
-        >
-          {t("create")}
-        </Button>
-        <Button
-          type="primary"
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => toggle(true)}
+          >
+            {t("create")}
+          </Button>
+          <Button
+            type="primary"
 
-          onClick={handleClick}
-        >
-          {t("import")}
-        </Button>
+            onClick={handleClick}
+          >
+            {t("export")}
+          </Button>
+        </Space>
       </div>
       <FormModal />
       <BaseTable
@@ -112,7 +114,6 @@ const TableCom: React.FC = () => {
         loading={loading}
         actions={actionConfigs}
         refresh={refresh}
-        otherProps={{ pagination: { pageSize: 10 } }}
       />
     </>
   );

@@ -104,10 +104,15 @@
   "course status": "课程状态",
   "operation date": "操作日期",
   "remarks": "备注",
-  "import": "导出",
+  "import": "导入",
+  "export": "导出",
   "teacher name": "教师姓名",
   "upload file":"上传",
   "batch delete":"批量删除",
   "select file":"选择文件",
-  "are you sure delete?":"确认删除吗？"
+  "are you sure delete?":"确认删除吗？",
+  "please upload els or elsx files":"请上传els或者elsx格式文件",
+  "failure":"失败",
+  "search":"查询",
+  "please enter the student name":"请输入学员姓名"
 }

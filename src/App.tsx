@@ -15,9 +15,11 @@ export const useRootContext = () => useContext(RootContext);
 function App() {
   const routing = useRoutes(router);
   const { pathname } = useLocation();
-
   const navigate = useNavigate();
   const isLogin = async () => {
+    if(pathname == "/login"){
+      return
+    }
     try {
       //是否过期 username为undfined 表示登录过期
       const data = await getUserInfo();

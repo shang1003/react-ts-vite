@@ -32,7 +32,7 @@ const App: React.FC = () => {
   };
 
 
-  const isShowRefresh = true;
+  const isShowRefresh = false;
 
   return (
     <DetailBase {...{ listUrl, handleRefresh, isShowRefresh }}>

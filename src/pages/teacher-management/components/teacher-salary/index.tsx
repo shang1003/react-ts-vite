@@ -1,22 +1,22 @@
 import { useState } from "react";
-import { Button } from "antd";
+import { Button, Input, Space } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { getTime } from "~/utils";
-import { getTeacherSalary, createTeacherSalary,getTeacherSalaryExcel } from "~/client/teacher";
+import { getTeacherSalary, createTeacherSalary, getTeacherSalaryExcel } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
 import { download } from "~/utils";
 const App: React.FC<dynamic.ComponentProps> = (props) => {
-    const { id ,name} = props;
+    const { id, name } = props;
     const [teacherSalary, setTeacherSalary] = useState<any>([])
     const [refreshKey, refresh] = useRefresh();
     const [loading, setLoading] = useState(true);
-const handleClick=()=>{
-    download(()=>getTeacherSalaryExcel({id,teacher_name:name}),'教师工资表')
-}
+    const handleClick = () => {
+        download(() => getTeacherSalaryExcel({ id, teacher_name: name }), '教师工资表')
+    }
     useFetch(
         () => {
             setLoading(true)
@@ -97,18 +97,20 @@ const handleClick=()=>{
     return (
         <>
             <div className={styles["header"]}>
-                <Button
-                    type="primary"
-                    onClick={() => toggle(true)}
-                >
-                    {t("create")}
-                </Button>
-                <Button
-                    type="primary"
-                    onClick={handleClick}
-                >
-                    {t("import")}
-                </Button>
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => toggle(true)}
+                    >
+                        {t("create")}
+                    </Button>
+                    <Button
+                        type="primary"
+                        onClick={handleClick}
+                    >
+                        {t("export")}
+                    </Button>
+                </Space>
             </div>
             <FormModal />
             <BaseTable
@@ -119,7 +121,6 @@ const handleClick=()=>{
                 loading={loading}
                 actions={actionConfigs}
                 refresh={refresh}
-                otherProps={{ pagination: { pageSize: 10 } }}
             />
         </>
     );
