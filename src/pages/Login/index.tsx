@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { DynamicForm } from "@/components/dynamic-form";
 import { useRootContext } from "@/App";
-import { REDIRECT__HOME_URL } from "@/utils/constants";
+import { REDIRECT__HOME_URL, REDIRECT__TEACBER_URL } from "@/utils/constants";
 export const Login = () => {
   const root = useRootContext();
   const navigate = useNavigate();
@@ -16,7 +16,8 @@ export const Login = () => {
     return login(value).then((data) => {
       localStorage.setItem("token", data.token)
       root.setUserinfo(data);
-      navigate(REDIRECT__HOME_URL);
+      const path = data.role == 'orgadm' ? REDIRECT__HOME_URL : REDIRECT__TEACBER_URL;
+      navigate(path);
     });
   };
 

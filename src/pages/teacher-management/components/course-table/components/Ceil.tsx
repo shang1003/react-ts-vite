@@ -3,37 +3,45 @@ import { useFormModal } from '~/hooks/modal/FormModal'
 import { useTranslation } from "react-i18next";
 import { message } from 'antd';
 import { useState, useEffect } from 'react';
+import classNames from 'classnames';
 import { Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { editCourseTable } from '~/client/user';
-import { getweek } from '~/utils';
-const weeks = getweek("YYYY-MM-DD") //周一至周日的月份
+import root from '~/store/root';
 interface CeilType {
-    handleData?: (data: any) => void,
-    teacher_id?: string,
+    handleData?: (data: any) => void;
+    teacher_id?: string;
+    flex?: string;
+    studentInfo?: { student_id: string, student_name: string };
     data: {
-        id: string,
+        id: string;
         name: string;//名称
         status?: string;// 课程状态
         row?: string;
         col?: string;
         time?: string;
+        date?: string;
         isDisabled?: boolean; //是否可以双击
-    },
+    };
     currentCeil: { id?: string, isShowMenu?: boolean }
 }
 // 颜色映射
 const colorMap: any = {
     1: "#00bc44",
-    2: "#ff9300",
-    3: "#fff"
+    2: "grey",
+    3: "red"
 }
 export const Ceil: React.FC<CeilType> = (props) => {
     const { t } = useTranslation();
+    const isOrgadm = root.userinfo.role == "orgadm"
     const [content, setContent] = useState<any>(props.data)
-    const { currentCeil } = props
+    const { studentInfo } = props
+    const { currentCeil, flex = "flex7" } = props
     const [isMenu, setIsMenu] = useState<boolean | undefined>(false)
     const handleClick = () => {
+        if (!isOrgadm) {
+            return
+        }
         // 取消右键列表
         props.handleData && props.handleData({ id: "", isShowMenu: false })
         // 打开弹框
@@ -42,7 +50,8 @@ export const Ceil: React.FC<CeilType> = (props) => {
     const handleSelect = ({ key }: any) => {
         //关闭右键列表
         setIsMenu(false)
-        editCourseTable({ id, uid: `${weeks[content.col - 1]}_${content.row}_${props.teacher_id}`, status: key, name: content.name, time: `${weeks[content.col - 1]} ${content.time}`, teacher_id: props.teacher_id }).then(() => {
+
+        editCourseTable({ id, timeSlot: content.timeSlot, student_name: studentInfo?.student_name, student_id: studentInfo?.student_id, date: content.date, status: key, name: content.name, teacher_id: props.teacher_id }).then(() => {
             setContent({ ...content, status: key, name: content.name })
             message.success(`${t('edit success')}`)
         }).catch(() => {
@@ -56,20 +65,29 @@ export const Ceil: React.FC<CeilType> = (props) => {
         { key: '3', label: "体验课" },
     ];
     const handle = (e: any, id: string) => {
+        if (!studentInfo?.student_id) {
+            message.error(`${t('请绑定学员！')}`)
+            return
+        }
+
+        if (!isOrgadm) {
+            return
+        }
         e.preventDefault()
         if (isMenu) {
-            props.handleData && props.handleData({ id, isShowMenu: false })
+            setIsMenu(false)
+            // props.handleData && props.handleData({ id, isShowMenu: false })
         } else {
+
             if (!content.name) {
                 return
             }
-            props.handleData && props.handleData({ id, isShowMenu: content.name && true })
+            setIsMenu(true)
+            props.handleData && props.handleData({ id })
         }
     }
     useEffect(() => {
-        if (currentCeil.id == content.id) {
-            setIsMenu(currentCeil.isShowMenu)
-        } else {
+        if (currentCeil.id !== content.id) {
             setIsMenu(false)
         }
     }, [currentCeil])
@@ -86,10 +104,7 @@ export const Ceil: React.FC<CeilType> = (props) => {
     const [toggle, FormModal] = useFormModal({
         submit:
             (values) => {
-                setContent({ ...content, ...values })
-                console.log(content, values, '{ ...content, ...values,isChangeName:true }');
-
-                return editCourseTable({ id, name: values.name, isChangeName: true, status: content.status })
+                return editCourseTable({ id, teacher_id: props.teacher_id, timeSlot: content.timeSlot, date: content.date, name: values.name, isChangeName: true, status: content.status })
             },
         title: t('course info'),
         formItems,
@@ -103,7 +118,7 @@ export const Ceil: React.FC<CeilType> = (props) => {
     return <>
         <FormModal />
         <Dropdown placement="bottomLeft" open={isMenu} menu={{ items, onClick: handleSelect }} trigger={['contextMenu']}>
-            < div onContextMenu={(e) => handle(e, content.id)} id={content.id} className={style.ceil} style={{ backgroundColor: content.isDisabled && 'transparent' || colorMap[content.status] || 'grey', border: isMenu && "2px solid red" || '' }} onClick={handleClick} >{content?.name}</div>
+            < div onContextMenu={(e) => handle(e, content.id)} id={content.id} className={classNames(style.ceil, style[flex || 'flex8'])} style={{ backgroundColor: content.isDisabled && 'transparent' || colorMap[content.status] || '#fff', border: isMenu && "2px solid red" || '' }} onClick={handleClick} >{content?.name}</div>
         </Dropdown >
 
     </>

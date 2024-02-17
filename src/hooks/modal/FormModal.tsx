@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Modal } from "antd";
 import { DynamicForm } from "@/components/dynamic-form";
 import { useToggle } from "@/hooks";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, forwardRef } from "react";
 import Notify from "@/components/notify";
 import { FormItemType, DynamicFormProps } from "@/components/dynamic-form";
 interface ModalProps {
@@ -38,17 +38,17 @@ export const useFormModal = ({
   top = 20,
   isShowTip = true,
   id,
-}: ModalProps): [(v: boolean) => void, () => JSX.Element] => {
+}: ModalProps): [(v: boolean) => void, any, any] => {
   const [isShow, toggle] = useToggle(false);
   const formRef = useRef<any>(null);
   const { t } = useTranslation();
 
-  const FormModal = () => {
+  const FormModal = forwardRef(() => {
     const [submmitLoading, setSubmmitLoading] = useState(false)
     return <Modal
       title={title || t("create")}
       open={isShow}
-      style={{ top}}
+      style={{ top }}
       width={width}
       okText={okText}
       cancelText={cancelText}
@@ -73,6 +73,7 @@ export const useFormModal = ({
               } = err;
               isShowTip && Notify.error(t("error"), failTip || t(message));
               setSubmmitLoading(false)
+              refresh && refresh();
               toggle(false);
             }
           );
@@ -87,6 +88,6 @@ export const useFormModal = ({
         />
       </div>
     </Modal>
-  };
-  return [toggle, FormModal];
+  })
+  return [toggle, FormModal, formRef];
 };

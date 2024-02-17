@@ -6,7 +6,7 @@ export const CourseTable: React.FC<any> = (props) => {
 
     return (
         <>
-            <Link to={`/teacher-management/teacher-list/course-table/${item.teacher_id}`}>{t('course table')}</Link>
+            <Link to={`/teacher-management/teacher-list/course-table/${item.id}`}>{t('course table')}</Link>
 
         </>
     );

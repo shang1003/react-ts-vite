@@ -11,6 +11,12 @@ export const Edit: React.FC<any> = (props) => {
     }
     return Promise.resolve();
   };
+  const validateInNumber = (_: any, value: any) => {
+    if (value && !/^\d+$/.test(value)) {
+      return Promise.reject(t('please enter a valid number.'));
+    }
+    return Promise.resolve();
+  };
   const { item, refresh } = props;
   const formItems = [
     {
@@ -25,7 +31,6 @@ export const Edit: React.FC<any> = (props) => {
       label: t("purchase date"),
       type: "date-picker",
       colNum: 2,
-      required: true,
     },
     {
       name: "course_category",
@@ -50,6 +55,12 @@ export const Edit: React.FC<any> = (props) => {
 
     },
     {
+      name: "student_bg",
+      label: t("student background"),
+      type: "input",
+      colNum: 2,
+    },
+    {
       name: "course_unit_price",
       label: t("course unit price"),
       type: "input",
@@ -61,7 +72,7 @@ export const Edit: React.FC<any> = (props) => {
       name: "total_hours",
       label: t("total hours"),
       type: "input",
-      validator: validateNumber,
+      validator: validateInNumber,
       colNum: 2,
       required: true,
     },
@@ -70,13 +81,6 @@ export const Edit: React.FC<any> = (props) => {
       label: t("total amount"),
       type: "input",
       validator: validateNumber,
-      colNum: 2,
-      required: true,
-    },
-    {
-      name: "remaining_class_hours",
-      label: t("remaining hours"),
-      type: "input",
       colNum: 2,
       required: true,
     },

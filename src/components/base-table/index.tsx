@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { TableProps } from "antd";
 interface ActionsType {
   rowActions: {
-    firstAction: React.FC<any>;
+    firstAction?: React.FC<any>;
     moreActions: Record<"action", React.FC<any>>[];
   };
 }
@@ -17,7 +17,7 @@ interface BaseTableType {
   hasItemActions?: boolean;
   actions?: ActionsType;
   refresh?: () => void;
-  rowSelection?:object,
+  rowSelection?: object,
   rowKey?: string;
   otherProps?: TableProps<Record<string, any>>;
 }

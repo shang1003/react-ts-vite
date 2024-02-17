@@ -3,10 +3,8 @@ import { useFetch, useRefresh } from "~/hooks";
 import { getTime } from "~/utils";
 import { getClassRecords, getClassRecordsExcel } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
-import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
-import { Button } from "antd";
-import styles from "./index.module.less";
+
 import { download } from "~/utils";
 const dataMap: any = {
     1: "正常出勤",
@@ -15,7 +13,7 @@ const dataMap: any = {
 
 }
 const App: React.FC<dynamic.ComponentProps> = (props) => {
-    const { id, name } = props.data;
+    const { id, name } = props;
     const [teacherSalary, setTeacherSalary] = useState<any>([])
     const [refreshKey, refresh] = useRefresh();
     const [loading, setLoading] = useState(true);
@@ -23,7 +21,8 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
     useFetch(
         () => {
             setLoading(true)
-            return getClassRecords({ id })
+
+            return getClassRecords({ student_id: id })
         },
         ({ data }) => {
             setLoading(false)
@@ -43,6 +42,11 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             dataIndex: 'index',
             width: 70,
             fixed: 'left',
+        },
+        {
+            title: t("username"),
+            dataIndex: "student_name",
+            width: 180,
         },
         {
             title: t("course time"),
@@ -67,31 +71,16 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             render: (v: any) => getTime(v),
             width: 150,
         },
-        {
-            title: t("remarks"),
-            dataIndex: "remarks",
-            ellipsis: true,
-            width: 150,
-        },
     ];
     return (
         <>
-            <div className={styles["header"]}>
-                <Button
-                    type="primary"
-
-                    onClick={handleClick}
-                >
-                    {t("export")}
-                </Button>
-            </div>
             <BaseTable
                 rowKey="id"
+                hasItemActions={false}
                 columns={columns}
                 data={teacherSalary}
                 scrollY='calc(100vh - 312px)'
                 loading={loading}
-                actions={actionConfigs}
                 refresh={refresh}
             />
         </>

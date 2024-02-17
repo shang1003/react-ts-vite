@@ -7,14 +7,15 @@ export interface StudentType {
   course_category: string;
   purchase_date: string;
   course_unit_price: number;
-  total_hours: string;
+  total_hours: number;
   total_amount: number;
-  notes: string
+  notes: string;
+  remaining_class_hours: number;
 }
 export interface StudentListType {
   data: StudentType[] | [];
 }
-export const getStudentList = async (params?:{name:string}) => {
+export const getStudentList = async (params?: { name: string, course_category?: string }) => {
   return request.makeRequest<StudentListType>({
     method: "get",
     params,

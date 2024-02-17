@@ -35,6 +35,16 @@ export const SideBar: React.FC<props> = function ({ collapsed }) {
   }, [location.pathname]);
   const [open, setOpenKeys] = useState<string[]>();
   const onClick: MenuProps["onClick"] = ({ key }) => {
+    if (key == "key1") {
+      window.open('https://console.51menke.com/home.html#/homeResource');
+
+      return
+    }
+    if (key == "key2") {
+      window.open('https://www.51menke.com');
+
+      return
+    }
     navigate(key);
   };
   const handleOpenChange = (openKeys: string[]) => {
@@ -56,7 +66,7 @@ export const SideBar: React.FC<props> = function ({ collapsed }) {
         theme="dark"
         mode="inline"
         onClick={onClick}
-        items={getMenu(t)}
+        items={getMenu(t, root.userinfo.role == 'orgadm')}
         openKeys={open}
         selectedKeys={selectedKeys}
         onOpenChange={handleOpenChange}

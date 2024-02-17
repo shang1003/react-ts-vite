@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-export const TeacherSalary: React.FC<any> = (props) => {
+export const ClassRecord: React.FC<any> = (props) => {
     const { t } = useTranslation();
     const { item } = props;
     return (
         <>
-            <Link to={`/teacher-management/teacher-list/teacher-salary/${item.id}`}>{t('teacher salary')}</Link>
+            <Link to={`/student-management/student-list/class-records/${item.id}`}>{t('class record')}</Link>
         </>
     );
 };

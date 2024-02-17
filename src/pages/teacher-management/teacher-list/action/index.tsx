@@ -1,15 +1,11 @@
-import { Delete } from "./Delete";
-import { Edit } from "./Edit";
 import { CourseTable } from "./CourseTable";
 import { ClassRecord } from "./ClassRecord";
 import { TeacherSalary } from "./TeacherSalary";
+import { Bind } from "./Bind";
 export const actionConfigs = {
   rowActions: {
-    firstAction: Delete,
+    firstAction: Bind,
     moreActions: [
-      {
-        action: Edit,
-      },
       {
         action: CourseTable,
       },

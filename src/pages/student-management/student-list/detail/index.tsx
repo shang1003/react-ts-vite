@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Card, Row, Col, Tag } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { getStudentDetail, StudentType } from "~/client/student";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { DetailBase } from "~/components/detail";
 import { useFetch, useRefresh } from "~/hooks";
+import ClassRecords from "../components/class-records";
 import { useTranslation } from "react-i18next";
 import { getTime } from "~/utils";
 const { Meta } = Card;
@@ -14,6 +15,7 @@ const noteMap: any = {
 }
 const App: React.FC = () => {
   const { id } = useParams();
+  const { pathname } = useLocation()
   const { t } = useTranslation();
   const titleMap: any = {
     name: t('student name'),
@@ -25,7 +27,8 @@ const App: React.FC = () => {
     total_amount: t('total amount'),
     course_category: t('course category'),
     channel: t('channel'),
-    remaining_class_hours: t('remaining hours')
+    remaining_class_hours: t('remaining hours'),
+    student_bg: t('student background'),
   }
   const listUrl = "/student-management/student-list";
   const [data, setData] = useState<StudentType | {}>({});
@@ -65,13 +68,15 @@ const App: React.FC = () => {
       </Row>
     ));
   };
-
   return (
     <DetailBase {...{ listUrl, handleRefresh, isShowRefresh }}>
-      <Card style={{ width: 500 }} loading={loading}>
-        <Meta avatar={<UserOutlined />} title={t("student information")} />
-        {renderDetail()}
-      </Card>
+      <div>
+        {pathname.includes('class-records') && <ClassRecords id={id} name={22} />}
+        {pathname.includes('detail') && <Card style={{ width: 500 }} loading={loading}>
+          <Meta avatar={<UserOutlined />} title={t("student information")} />
+          {renderDetail()}
+        </Card>}
+      </div>
     </DetailBase>
   );
 };

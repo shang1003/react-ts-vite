@@ -21,7 +21,7 @@ export const Delete: React.FC<any> = (props) => {
     });
   };
   const onOk = () => {
-    return deleteClassRecords({ id: item.id }).then(() => {
+    return deleteClassRecords({ id: item.id, student_id: item.student_id }).then(() => {
       Notify.success(
         t("success"),
         t("{{name}} success", { name: t("delete") })

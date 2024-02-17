@@ -42,7 +42,7 @@ const App: React.FC = () => {
         </div>
 
         {
-         data&& (pathname.includes('teacher-salary') && <TeacherSalary id={id} name={data.name} /> || pathname.includes('class-records') && <ClassRecords id={id} name={data.name}/> || <CourseTable id={id} />)
+          data && (pathname.includes('teacher-salary') && <TeacherSalary id={id} name={data.name} /> || pathname.includes('class-records') && <ClassRecords data={data} /> || <CourseTable data={data} />)
         }
       </div>
 

@@ -1,53 +1,15 @@
 import { useState } from "react";
-import { Button, Radio, Space } from "antd";
+import { Button, Space } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
-import { useFormModal } from "~/hooks/modal/FormModal";
-import { getTeacherList, createTeacher, getTeacherExcel } from "~/client/teacher";
+import { getTeacherList, getTeacherExcel } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
-import { download } from "~/utils";
+import { download, renderLabel } from "~/utils";
 import { BaseTable } from "~/components/base-table";
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
-    const formItems = [
-        {
-            name: "name",
-            label: t("username"),
-            type: "input",
-            required: true,
-        },
-        {
-            name: "gender",
-            label: t("gender"),
-            type: "input",
-            component: <Radio.Group>
-                <Radio value="男">{t('male')}</Radio>
-                <Radio value="女">{t('female')}</Radio>
-            </Radio.Group>,
-            required: true,
-        },
-        {
-            name: "phone",
-            label: t("phone"),
-            type: "input",
-            required: true,
-        },
-        {
-            name: "id_card_number",
-            label: t("id card"),
-            validateTrigger: "onBlur",
-            type: "input",
-            required: true,
-        },
-        {
-            name: "bank_account_number",
-            label: t("bank account"),
-            type: "input",
-            required: true,
-        },
 
-    ];
 
     const handleClick = () => {
         download(getTeacherExcel, '教师信息')
@@ -61,12 +23,19 @@ const TableCom: React.FC = () => {
             fixed: 'left',
         },
         {
-            title: t("username"),
+            title: t("教师"),
             dataIndex: "name",
             width: 120,
             ellipsis: true,
             fixed: 'left',
-
+        },
+        {
+            title: t("学员"),
+            dataIndex: "student_name",
+            width: 120,
+            render: renderLabel,
+            ellipsis: true,
+            fixed: 'left',
         },
         {
             title: t("gender"),
@@ -96,15 +65,7 @@ const TableCom: React.FC = () => {
 
     ];
     const [refreshKey, refresh] = useRefresh();
-    const [toggle, FormModal] = useFormModal({
 
-        submit: (values) => createTeacher(values),
-        formItems,
-        refresh,
-        formProps: {
-            successTip: t("{{name}} success", { name: t("create") }),
-        }
-    });
     const [data, setData] = useState<any | []>([]);
     const [loading, setLoading] = useState(true);
     useFetch(
@@ -125,12 +86,6 @@ const TableCom: React.FC = () => {
                 <Space>
                     <Button
                         type="primary"
-                        onClick={() => toggle(true)}
-                    >
-                        {t("create")}
-                    </Button>
-                    <Button
-                        type="primary"
 
                         onClick={handleClick}
                     >
@@ -138,7 +93,7 @@ const TableCom: React.FC = () => {
                     </Button>
                 </Space>
             </div>
-            <FormModal />
+
             <div style={{ height: "600px" }}>
                 <BaseTable
                     rowKey="id"

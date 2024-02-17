@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Input, Space } from "antd";
+import { Button, Space } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { getTime } from "~/utils";
@@ -30,6 +30,12 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
         [refreshKey]
     );
     const { t } = useTranslation();
+    const validateNumber = (_: any, value: any) => {
+        if (value && !/^(-)?\d+(\.\d+)?$/.test(value)) {
+            return Promise.reject(t('please enter a valid number.'));
+        }
+        return Promise.resolve();
+    };
     const formItems = [
 
         {
@@ -41,12 +47,14 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
         {
             name: "gross_salary",
             label: t("gross salary"),
+            validator: validateNumber,
             type: "input",
             required: true,
         },
         {
             name: "bonuses_penalties",
             label: t("bonuses penalties"),
+            validator: validateNumber,
             type: "input",
             required: true,
         },
@@ -54,6 +62,8 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             name: "net_salary",
             label: t("net salary"),
             type: "input",
+            disabled: true,
+            validator: validateNumber,
             required: true,
         },
     ];
@@ -86,11 +96,14 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             width: 150,
         },
     ];
-    const [toggle, FormModal] = useFormModal({
+    const [toggle, FormModal, formRef] = useFormModal({
         submit: (values) => createTeacherSalary({ ...values, teacher_id: id }),
         formItems,
         refresh,
         formProps: {
+            onValuesChange: (_: any, { gross_salary, bonuses_penalties }: any) => {
+                formRef?.current.setFieldsValue({ net_salary: Number(gross_salary || 0) + Number(bonuses_penalties || 0) })
+            },
             successTip: t("{{name}} success", { name: t("create") }),
         }
     });

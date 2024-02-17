@@ -2,6 +2,7 @@ import request from "./request";
 export interface ClassRecordsType {
   teacher_id: string;
   course: string;
+  student_id: string;
   status: string;
   remarks: string;
   class_time: string;
@@ -10,11 +11,16 @@ export interface ClassRecordsType {
 export interface ClassRecordsListType {
   data: ClassRecordsType[]
 }
+export interface BindType {
+  id: string;
+  student_id: string;
+  student_name: string;
+}
 export interface TeacherType {
   teacher_id: string;
   name: string;
   gender: string;
-  phone:string;
+  phone: string;
   id_card_number: string;
   bank_account_number: string;
 }
@@ -61,6 +67,13 @@ export const editTeacher = (data: TeacherType) => {
     url: "/teacher-edit",
   });
 };
+export const bindStudent = (data: BindType) => {
+  return request.makeRequest({
+    method: "post",
+    data,
+    url: "/bind-student",
+  });
+};
 
 export const getTeacherDetail = (params: { id: string | undefined }) => {
   return request.makeRequest<TeacherType>({
@@ -70,8 +83,6 @@ export const getTeacherDetail = (params: { id: string | undefined }) => {
   });
 };
 export const getTeacherSalary = (params: { id: string | undefined }) => {
-  console.log(params, 'params');
-
   return request.makeRequest<TeacherSalaryListType>({
     method: "get",
     params,
@@ -100,7 +111,7 @@ export const deleteTeacherSalary = (data: { id: string }) => {
   });
 };
 
-export const getClassRecords = (params: { id: string | undefined,teacher_name:string }) => {
+export const getClassRecords = (params: { id?: string | undefined, teacher_name?: string, student_id?: string }) => {
   return request.makeRequest<ClassRecordsListType>({
     method: "get",
     params,
@@ -114,7 +125,7 @@ export const createClassRecords = (data: ClassRecordsType) => {
     url: "class-records",
   });
 };
-export const deleteClassRecords = (data: { id: string }) => {
+export const deleteClassRecords = (data: { id: string, student_id: string }) => {
   return request.makeRequest<ClassRecordsListType>({
     method: "delete",
     data,
@@ -135,7 +146,7 @@ export const getTeacherExcel = () => {
     responseType: "blob"
   });
 };
-export const getClassRecordsExcel = (params: { id: string | undefined,teacher_name:string }) => {
+export const getClassRecordsExcel = (params: { id: string | undefined, teacher_name: string }) => {
   return request.makeRequest({
     method: "get",
     params,
@@ -143,7 +154,7 @@ export const getClassRecordsExcel = (params: { id: string | undefined,teacher_na
     responseType: "blob"
   });
 };
-export const getTeacherSalaryExcel = (params: { id: string | undefined,teacher_name:string }) => {
+export const getTeacherSalaryExcel = (params: { id: string | undefined, teacher_name: string }) => {
   return request.makeRequest({
     method: "get",
     params,

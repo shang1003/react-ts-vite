@@ -5,13 +5,8 @@ import {
   TableOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-const getMenu = (t: any) => {
+const getMenu = (t: any, isAdmin: boolean) => {
   const menu: MenuProps["items"] = [
-    // {
-    //   key: "home",
-    //   icon: <HomeOutlined />,
-    //   label: t("home"),
-    // },
     {
       key: "user-management",
       icon: <GoldOutlined />,
@@ -45,31 +40,34 @@ const getMenu = (t: any) => {
         },
       ],
     },
-
-    // {
-    //   key: "dynamic-form",
-    //   icon: <DeploymentUnitOutlined />,
-    //   label: t("dynamic form"),
-    //   children: [
-    //     {
-    //       key: "dynamic-form/case",
-    //       label: t("case"),
-    //     },
-    //   ],
-    // },
-    // {
-    //   key: "three",
-    //   icon: <AppstoreOutlined />,
-    //   label: "3D",
-    //   children: [
-    //     {
-    //       key: "three/case",
-    //       label: t("case"),
-    //     },
-    //   ],
-    // },
+    {
+      key: "key1",
+      label: t("门课后台")
+    },
+    {
+      key: "key2",
+      label: t("门课上课APP")
+    },
 
   ];
+  if (isAdmin) {
+    return menu
+  } else {
+    const teacher_menu: MenuProps["items"] = [
+      {
+        key: "course-table",
+        icon: <TableOutlined />,
+        label: t("课表"),
+      },
+      {
+        key: "key2",
+        label: t("门课上课APP")
+      },
+
+    ];
+    return teacher_menu
+  }
+
 
   return menu;
 };

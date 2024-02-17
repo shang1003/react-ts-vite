@@ -11,6 +11,7 @@ const TeacherList = lazy(() => import("@/pages/teacher-management/teacher-list")
 const TableDetail = lazy(() => import("@/pages/table/detail"));
 const StudentDetail = lazy(() => import("@/pages/student-management/student-list/detail"));
 const TeacherDetail = lazy(() => import("@/pages/teacher-management/teacher-list/detail"));
+const CourseTable = lazy(() => import("@/pages/teacher-management/components/course-table"));
 const Home = lazy(() => import("@/pages/home"));
 
 //路由配置
@@ -50,6 +51,10 @@ export const router: RouteObject[] = [
             path: "student-list/detail/:id",
             element: <StudentDetail />,
           },
+          {
+            path: "student-list/class-records/:id",
+            element: <StudentDetail />,
+          },
         ],
       },
       {
@@ -72,6 +77,30 @@ export const router: RouteObject[] = [
             element: <TeacherDetail />,
           },
         ],
+      },
+      {
+        path: "*",
+
+        element: <NoMatch />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+];
+export const teacherRouter: RouteObject[] = [
+  {
+    path: "/",
+  },
+  {
+    path: "/",
+    element: <MainContent />,
+    children: [
+      {
+        path: "course-table",
+        element: <CourseTable />,
       },
       {
         path: "*",

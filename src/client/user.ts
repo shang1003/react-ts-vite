@@ -9,11 +9,15 @@ export interface UserDetailType {
 export interface CourseTableType {
   id: string;
   name: string;
-  status?: string,
-  time?: string,
-  teacher_id?: string,
+  status?: string;
+  time?: string;
+  date?: string;
+  timeSlot?: string;
+  teacher_id?: string;
+  student_id?: string;
+  student_name?: string;
   uid?: string//每周课表唯一值
-  isChangeName?:boolean
+  isChangeName?: boolean
 }
 export interface UserRegistrationStatisticsType {
   registration_date: string;
@@ -80,9 +84,7 @@ export const getUserRegistrationStatistics = () => {
     url: "/user-count",
   });
 };
-export const getCourseTable = (params: { id: string }) => {
-  console.log(params, 'params');
-
+export const getCourseTable = (params: { id: string, date: any }) => {
   return request.makeRequest<{ data: CourseTableType[] }>({
     method: "get",
     url: "/course-table",

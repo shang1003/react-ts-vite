@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button, Space, Tag, Radio, message, Input } from "antd";
+import { useState, useRef } from "react";
+import { Button, Space, Tag, Radio, message, Input, Select } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import { getStudentList, createStudent, getStudentExcel, uploadStudents } from "~/client/student";
@@ -9,17 +9,23 @@ import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
 import { BatchDelete } from "./action/BatchDelete";
-import { getTime, download } from "~/utils";
+import { getTime, download, renderLabel } from "~/utils";
 const { Search } = Input;
-const noteMap: any = {
-    1: <Tag color="red">体验课</Tag>,
-    2: <Tag color="green">正式课</Tag>
+
+const transformNum = (v: any) => {
+    return Number(v || 0)
 }
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
+    const noteMap: any = {
+        1: <Tag color="red">{t('experience course')}</Tag>,
+        2: <Tag color="green">{t('formal course')}</Tag>
+    }
+    const modelRef = useRef<any>(null);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [modalData, setModalData] = useState<any>({})
-    const [searchName, setSearchName] = useState<any>()
+    const [classInfo, setClassInfo] = useState<any>({})
+    const [searchData, setSearchData] = useState<any>({})
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
         setSelectedRowKeys(newSelectedRowKeys);
     };
@@ -28,7 +34,10 @@ const TableCom: React.FC = () => {
         onChange: onSelectChange,
     };
     const onSearch = (v: string) => {
-        setSearchName(v)
+        setSearchData({ name: v, notes: searchData.notes })
+    }
+    const handleSelect = (v: string) => {
+        setSearchData({ name: searchData.name, notes: v })
     }
     const validateNumber = (_: any, value: any) => {
         if (value && !/^\d+(\.\d+)?$/.test(value)) {
@@ -36,12 +45,16 @@ const TableCom: React.FC = () => {
         }
         return Promise.resolve();
     };
+    const validateInNumber = (_: any, value: any) => {
+        if (value && !/^\d+$/.test(value)) {
+            return Promise.reject(t('please enter a valid integer'));
+        }
+        return Promise.resolve();
+    };
     const handleClick = () => {
         download(getStudentExcel, '学员信息')
     }
     const beforeUpload = (file: any, err: any) => {
-        console.log(file.name.includes('.xls'));
-
         if (!file.name.includes('.xls') && !file.name.includes('.xlsx')) {
             message.error(t('please upload els or elsx files'))
             return err
@@ -67,6 +80,9 @@ const TableCom: React.FC = () => {
                     formItems,
                     refresh,
                     formProps: {
+                        onValuesChange: (_: any, { course_unit_price, total_hours }: any) => {
+                            formRef?.current.setFieldsValue({ total_amount: course_unit_price * total_hours })
+                        },
                         successTip: t("{{name}} success", { name: t("create") }),
                     }
                 }
@@ -114,15 +130,22 @@ const TableCom: React.FC = () => {
             required: true,
         },
         {
-            name: "channel",
-            label: t("channel"),
-            type: "input",
-            colNum: 2,
-        },
-        {
             name: "purchase_date",
             label: t("purchase date"),
             type: "date-picker",
+            colNum: 2,
+        },
+        {
+            name: "student_bg",
+            label: t("student background"),
+            type: "input",
+            colNum: 2,
+        },
+
+        {
+            name: "channel",
+            label: t("channel"),
+            type: "input",
             colNum: 2,
         },
         {
@@ -135,26 +158,22 @@ const TableCom: React.FC = () => {
             name: "course_unit_price",
             label: t("course unit price"),
             validator: validateNumber,
+
             type: "input",
             colNum: 2,
         },
         {
             name: "total_hours",
             label: t("total hours"),
-            validator: validateNumber,
+            validator: validateInNumber,
             type: "input",
             colNum: 2,
         },
         {
             name: "total_amount",
             label: t("total amount"),
+            disabled: true,
             validator: validateNumber,
-            type: "input",
-            colNum: 2,
-        },
-        {
-            name: "remaining_class_hours",
-            label: t("remaining hours"),
             type: "input",
             colNum: 2,
         },
@@ -188,81 +207,137 @@ const TableCom: React.FC = () => {
 
         },
         {
-            title: t("gender"),
-            dataIndex: "gender",
-            width: 120
-        },
-        {
-            title: t("phone"),
-            dataIndex: "phone",
-            width: 140
-        },
-        {
-            title: t("channel"),
-            dataIndex: "channel",
-            width: 120
-        },
-        {
-            title: t("purchase date"),
-            dataIndex: "purchase_date",
-            render: (v: any) => getTime(v),
-            width: 170
-        },
-        {
-            title: t("course category"),
-            dataIndex: "course_category",
-            width: 170
-        },
-        {
-            title: t("course unit price"),
-            dataIndex: "course_unit_price",
-            ellipsis: true,
-            width: 150
-        },
-        {
             title: t("total hours"),
             dataIndex: "total_hours",
+            render: renderLabel,
             width: 120
         },
         {
             title: t("total amount"),
             dataIndex: "total_amount",
+            render: renderLabel,
             width: 120
         },
         {
             title: t("remaining hours"),
             dataIndex: "remaining_class_hours",
+            render: renderLabel,
             width: 170
+        },
+        {
+            title: t("course unit price"),
+            dataIndex: "course_unit_price",
+            render: renderLabel,
+            ellipsis: true,
+            width: 150
+        },
+        {
+            title: t("phone"),
+            dataIndex: "phone",
+            render: renderLabel,
+            width: 140
+        },
+        {
+            title: t("gender"),
+            dataIndex: "gender",
+            width: 120
+        },
+
+        {
+            title: t("channel"),
+            dataIndex: "channel",
+            render: renderLabel,
+            width: 120
         },
         {
             title: t("notes"),
             dataIndex: "notes",
-            render: (v: any) => noteMap[v],
+            render: (v: any) => noteMap[v] || "-",
             ellipsis: true,
             width: 100
         },
+        {
+            title: t("student background"),
+            dataIndex: "student_bg",
+            render: renderLabel,
+            width: 200
+        },
+        {
+            title: t("purchase date"),
+            dataIndex: "purchase_date",
+            render: getTime,
+            width: 170
+        },
+        {
+            title: t("course category"),
+            dataIndex: "course_category",
+            render: renderLabel,
+            width: 170
+        },
     ];
     const [refreshKey, refresh] = useRefresh();
-    const [toggle, FormModal] = useFormModal(modalData);
+
+    const [toggle, FormModal, formRef] = useFormModal(modalData);
+
     const [data, setData] = useState<any | []>([]);
     const [loading, setLoading] = useState(true);
     useFetch(
         async () => {
             setLoading(true);
-            return await getStudentList({ name: searchName });
+            return await getStudentList(searchData);
         },
         (res) => {
             setData(res.data.map((item, index) => ({ ...item, index: index + 1 })));
+
+            if (res.data.length) {
+                const data = (res.data as any).reduce((pre: any, cur: any) => {
+                    return {
+                        total_amount: transformNum(pre.total_amount) + transformNum(cur.total_amount),
+                        total_hours: transformNum(pre.total_hours) + transformNum(cur.total_hours),
+                        remaining_class_hours: transformNum(pre.remaining_class_hours) + transformNum(cur.remaining_class_hours)
+
+                    }
+                })
+                setClassInfo(data)
+            } else {
+                setClassInfo({})
+            }
             setLoading(false);
         },
-        [refreshKey, searchName]
+        [refreshKey, searchData]
     );
 
     return (
         <>
+            <div className={styles.foot}>
+                <Space>
+                    <span>
+                        <span>{t('total amount')}：</span>
+                        <span>{(Number(classInfo.total_amount || 0)).toFixed(2)} {t('RMB')}</span>
+                    </span>
+                    <span>
+                        <span>{t('total hours')}：</span>
+                        <span>{classInfo.total_hours || "0"}</span>
+                    </span>
+                    <span>
+                        <span>{t('total remaining hours')}：</span>
+                        <span>{classInfo.remaining_class_hours || "0"}</span>
+                    </span>
+                </Space>
+            </div>
             <div className={styles["header"]}>
                 <Space>
                     <Search placeholder={t('please enter the student name')} allowClear enterButton={t('search')} onSearch={onSearch} />
+                    <Select
+                        defaultValue="all"
+                        style={{ width: 120 }}
+                        onChange={handleSelect}
+                        options={[
+                            { value: 'all', label: t('all') },
+                            { value: '2', label: t('formal course') },
+                            { value: '1', label: t('experience course') },
+                        ]}
+                    />
                     <Button
                         type="primary"
                         onClick={() => open("create")}
@@ -296,6 +371,7 @@ const TableCom: React.FC = () => {
                 actions={actionConfigs}
                 refresh={refresh}
             />
+
         </>
     );
 };

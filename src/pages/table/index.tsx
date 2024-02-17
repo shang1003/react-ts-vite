@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Space } from "antd";
+import { Button, Radio, Space } from "antd";
 import { Link } from "react-router-dom";
 import { getUserList, UserDetailType, getUserExcel } from "~/client/user";
 import { useFetch, useRefresh } from "~/hooks";
@@ -15,26 +15,61 @@ const TableCom: React.FC = () => {
     download(getUserExcel, '用户信息')
   }
   const { t } = useTranslation();
+  const roleOptions = [{ label: t('orgadm'), value: "orgadm" }, { label: t('teacher'), value: "teacher", }]
   const formItems = [
     {
       name: "name",
       label: t("username"),
       type: "input",
+      colNum: 2,
       required: true,
     },
     {
       name: "password",
       label: t("password"),
+      colNum: 2,
       type: "input-password",
       required: true,
     },
     {
-      label: t("address"),
-      name: "address",
+      name: "role",
+      label: t("role"),
+      colNum: 2,
+      type: "select",
+      options: roleOptions,
+    },
+    {
+      name: "gender",
+      colNum: 2,
+      label: t("gender"),
+      type: "input",
+      component: <Radio.Group>
+        <Radio value="男">{t('male')}</Radio>
+        <Radio value="女">{t('female')}</Radio>
+      </Radio.Group>,
+    },
+    {
+      name: "phone",
+      label: t("phone"),
+      colNum: 2,
+      type: "input",
+    },
+    {
+      name: "id_card_number",
+      colNum: 2,
+      label: t("id card"),
+      validateTrigger: "onBlur",
+      type: "input",
+    },
+    {
+      name: "bank_account_number",
+      colNum: 2,
+      label: t("bank account"),
       type: "input",
     },
     {
       label: t("description"),
+      colNum: 2,
       name: "description",
       type: "textarea",
     },
@@ -53,6 +88,11 @@ const TableCom: React.FC = () => {
       },
     },
     {
+      title: t("role"),
+      dataIndex: "role",
+      render: (v: any) => t(v),
+    },
+    {
       title: t("create time"),
       dataIndex: "create_time",
       render: (v: any) => getTime(v),
@@ -67,8 +107,11 @@ const TableCom: React.FC = () => {
   const [toggle, FormModal] = useFormModal({
     submit: (values) => createUser(values),
     formItems,
+    height: 350,
+    width: 800,
     refresh,
     formProps: {
+      initialValues: { role: "teacher" },
       successTip: t("{{name}} success", { name: t("create") }),
     }
   });

@@ -1,14 +1,37 @@
 .wrapper {
     width: 100%;
     min-width: 650px;
-    height: calc(100vh - 170px);
-    background: linear-gradient(rgb(83, 194, 250) 50%, rgba(83, 194, 250, 0.2) 100%);
+    height: calc(100vh - 190px);
+    font-size: 12px;
     overflow: hidden;
+    // display: flex;
+}
+
+.wrapper2 {
+    height: calc(100vh - 110px);
+}
+
+.bottom {
+    height: calc(100% - 40px);
+    display: flex;
+    overflow: auto;
+}
+
+.right {
+    flex: 0 0 87.5%;
+}
+
+.left {
+    flex: 0 0 12.5%;
+}
+
+.blod {
+    font-weight: bold;
 }
 
 .content {
     height: calc(100% - 40px);
-    overflow: auto;
+
 }
 
 .flex {
@@ -19,18 +42,28 @@
 
 }
 
+.header {
+    position: absolute;
+    right: 8px;
+    margin-top: -48px;
+}
+
 .ceil {
     position: relative;
-    flex: 0 0 12.5%;
     min-height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid #ececec;
 
-    &:nth-child(n+9) {
-        border-radius: 5px;
-    }
+}
+
+.flex8 {
+    flex: 0 0 calc(100% / 8);
+}
+
+.flex7 {
+    flex: 0 0 calc(100% / 7);
 }
 
 .menu {
