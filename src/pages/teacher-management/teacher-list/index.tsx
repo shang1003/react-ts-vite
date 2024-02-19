@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button, Space } from "antd";
+import Notify from "~/components/notify";
 import { useFetch, useRefresh } from "~/hooks";
-import { getTeacherList, getTeacherExcel } from "~/client/teacher";
+import { getTeacherList, getTeacherExcel, syncCourse, deleteCourseWeek } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
@@ -9,8 +10,30 @@ import { download, renderLabel } from "~/utils";
 import { BaseTable } from "~/components/base-table";
 const TableCom: React.FC = () => {
     const { t } = useTranslation();
-
-
+    // 本周课程同步到下周
+    const handleSyncCourse = () => {
+        syncCourse().then(() => {
+            Notify.success(
+                t("success"),
+                t("{{name}} success", { name: t("sync") })
+            );
+        }).catch(() => {
+            Notify.error(t("error"),
+                t("{{name}} failure", { name: t("sync") }))
+        })
+    }
+    // 删除下周所有课程
+    const deleteCourse = () => {
+        deleteCourseWeek().then(() => {
+            Notify.success(
+                t("success"),
+                t("{{name}} success", { name: t("delete") })
+            );
+        }).catch(() => {
+            Notify.error(t("error"),
+                t("{{name}} failure", { name: t("delete") }))
+        })
+    }
     const handleClick = () => {
         download(getTeacherExcel, '教师信息')
     }
@@ -90,6 +113,20 @@ const TableCom: React.FC = () => {
                         onClick={handleClick}
                     >
                         {t("export")}
+                    </Button>
+                    <Button
+                        type="primary"
+
+                        onClick={handleSyncCourse}
+                    >
+                        {t("this week are synchronized to next week")}
+                    </Button>
+                    <Button
+                        type="primary"
+
+                        onClick={deleteCourse}
+                    >
+                        {t("delete all classes for the next week")}
                     </Button>
                 </Space>
             </div>

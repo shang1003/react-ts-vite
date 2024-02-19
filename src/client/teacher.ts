@@ -162,3 +162,16 @@ export const getTeacherSalaryExcel = (params: { id: string | undefined, teacher_
     responseType: "blob"
   });
 };
+
+export const syncCourse = () => {
+  return request.makeRequest({
+    method: "post",
+    url: "/course-table-sync",
+  });
+};
+export const deleteCourseWeek = () => {
+  return request.makeRequest({
+    method: "delete",
+    url: "/course-table-delete-week",
+  });
+};

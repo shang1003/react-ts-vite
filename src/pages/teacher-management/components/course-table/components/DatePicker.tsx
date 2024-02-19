@@ -13,7 +13,7 @@ const App: React.FC<any> = (props) => {
 
         return false; // 允许选择当前日期
     };
-    return <DatePicker disabledDate={disabledDate} allowClear={false} defaultValue={dayjs()} picker='week' onChange={handleClickDate} />;
+    return <DatePicker allowClear={false} defaultValue={dayjs()} picker='week' onChange={handleClickDate} />;
 };
 
 export default App;
