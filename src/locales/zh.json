@@ -126,5 +126,9 @@
   "all": "全部",
   "RMB": "元",
   "bind": "绑定",
-  "bind student": "绑定学员"
+  "bind student": "绑定学员",
+  "normal attendance":"正常出勤",
+  "cancel course":"取消课程",
+  "delete course":"删除课程",
+  "please bind students":"请绑定学员！"
 }

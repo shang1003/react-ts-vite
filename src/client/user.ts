@@ -98,6 +98,13 @@ export const editCourseTable = (data: CourseTableType) => {
     url: '/course-table-edit',
   });
 };
+export const deleteCourseTable = (data:{id:string}) => {
+  return request.makeRequest({
+    method: "delete",
+    data,
+    url: '/course-table-delete',
+  });
+};
 export const getUserExcel = () => {
   return request.makeRequest({
     method: "get",

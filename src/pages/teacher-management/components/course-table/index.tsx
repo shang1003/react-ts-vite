@@ -5,7 +5,7 @@ import { useState } from 'react';
 import root from '~/store/root';
 import { getweek } from '~/utils';
 import { getCourseTable, CourseTableType } from '~/client/user';
-import { useFetch } from '~/hooks';
+import { useFetch,useRefresh } from '~/hooks';
 import classNames from 'classnames';
 
 interface CurrentCeilType { id?: string, isShowMenu?: boolean }
@@ -16,6 +16,7 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
     const [weeks, setWeeks] = useState(getweek()) // 格式YY-MM-DD
     const [weeksY, setWeeksY] = useState(getweek("YYYY-MM-DD")) // 格式YYYY-MM-DD
     const [currentCeil, setCurrentCeil] = useState<CurrentCeilType>({})
+    const [refreshKey, refresh] = useRefresh();
     useFetch(
         () => getCourseTable({ id: id || root.userinfo.id, date: [weeksY[0], weeksY[6]] }),
         ({ data }) => {
@@ -25,7 +26,7 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             const timetable: any[] = Array.from({ length: 12 }, (_, timeSlot) =>
                 Array.from({ length: 7 }, (_, dayOfWeek) => ({ name: undefined, dayOfWeek, date: weeksY[dayOfWeek], timeSlot }))
             );
-            // 将 TeacherCourse 数据填充到课程表数组中
+            // 将 TeacherCourse 数据填充到课程表数组中            
             data.forEach((course: any) => {
                 const { timeSlot, date, name, id, status } = course;
                 //new Date(date).getDay() 为0时，是周日
@@ -40,7 +41,7 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
 
             setCourse(result);
         },
-        [weeksY, root.userinfo.id]
+        [weeksY, root.userinfo.id,refreshKey]
     );
 
     const handleData = (data: CurrentCeilType) => {
@@ -55,14 +56,14 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
     }
 
     const header = [
-        { id: "1", name: "课程", isDisabled: true },
-        { id: "2", name: `周一 (${weeks[0]})`, isDisabled: true },
-        { id: "3", name: `周二 (${weeks[1]})`, isDisabled: true },
-        { id: "4", name: `周三 (${weeks[2]})`, isDisabled: true },
-        { id: "5", name: `周四 (${weeks[3]})`, isDisabled: true },
-        { id: "6", name: `周五 (${weeks[4]})`, isDisabled: true },
-        { id: "7", name: `周六 (${weeks[5]})`, isDisabled: true },
-        { id: "8", name: `周日 (${weeks[6]})`, isDisabled: true },
+        { id: "", name: "课程", isDisabled: true },
+        { id: "", name: `周一 (${weeks[0]})`, isDisabled: true },
+        { id: "", name: `周二 (${weeks[1]})`, isDisabled: true },
+        { id: "", name: `周三 (${weeks[2]})`, isDisabled: true },
+        { id: "", name: `周四 (${weeks[3]})`, isDisabled: true },
+        { id: "", name: `周五 (${weeks[4]})`, isDisabled: true },
+        { id: "", name: `周六 (${weeks[5]})`, isDisabled: true },
+        { id: "", name: `周日 (${weeks[6]})`, isDisabled: true },
     ]
     const courseTime = [
         { timeSlot: 1, name: "09:00-09:45", isDisabled: true },
@@ -86,22 +87,21 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
         <div className={classNames(!isOrgadm && style.wrapper2, style.wrapper)}>
             <div className={classNames(style.flex, style.blod)}>
                 {
-                    // <span>{header[1].name}</span>
-                    header.map((item, index) => {
-                        return <Ceil flex="flex8" key={item.name} data={item} currentCeil={currentCeil} teacher_id={id} />
+                    header.map((item) => {
+                        return <Ceil  flex="flex8" key={item.name} data={item} currentCeil={currentCeil} teacher_id={id} />
                     })
                 }
             </div>
             <div className={style.bottom}>
                 <div className={style.left}>
                     {courseTime.map((item: any, index: any) => {
-                        return <Ceil key={index} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
+                        return <Ceil  key={index} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
                     })}
                 </div>
                 <div className={style.right}>
                     <div className={`${style.flex} ${style.content}`}>
                         {courses.map((item: any, index: any) => {
-                            return <Ceil key={`${item.date}${item.timeSlot}${root.userinfo.id}`} studentInfo={{ student_id, student_name }} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
+                            return <Ceil refresh={refresh} key={`${item.date}${item.timeSlot}${root.userinfo.id}${refreshKey}`} studentInfo={{ student_id, student_name }} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
                         })}
                     </div>
                 </div>

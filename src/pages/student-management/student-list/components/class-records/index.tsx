@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { useFetch, useRefresh } from "~/hooks";
+import { useFetch } from "~/hooks";
 import { getTime } from "~/utils";
-import { getClassRecords, getClassRecordsExcel } from "~/client/teacher";
+import { getClassRecords } from "~/client/teacher";
 import { useTranslation } from "react-i18next";
 import { BaseTable } from "~/components/base-table";
 
-import { download } from "~/utils";
 const dataMap: any = {
     1: "正常出勤",
     2: "取消课程",
@@ -13,9 +12,8 @@ const dataMap: any = {
 
 }
 const App: React.FC<dynamic.ComponentProps> = (props) => {
-    const { id, name } = props;
+    const { id } = props;
     const [teacherSalary, setTeacherSalary] = useState<any>([])
-    const [refreshKey, refresh] = useRefresh();
     const [loading, setLoading] = useState(true);
 
     useFetch(
@@ -29,12 +27,9 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             setTeacherSalary(data.map((item, index) => ({ ...item, index: index + 1 })));
 
         },
-        [refreshKey]
+        []
     );
 
-    const handleClick = () => {
-        download(() => getClassRecordsExcel({ id, teacher_name: name }), '教师上课记录')
-    }
     const { t } = useTranslation();
     const columns = [
         {
@@ -79,9 +74,8 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
                 hasItemActions={false}
                 columns={columns}
                 data={teacherSalary}
-                scrollY='calc(100vh - 312px)'
+                scrollY='calc(100vh - 270px)'
                 loading={loading}
-                refresh={refresh}
             />
         </>
     );
