@@ -8,10 +8,18 @@ function App() {
   const { t } = useTranslation();
   const pathMap: any = {
     three: "3D",
-    case: t("case"),
+    'user-list': t("user list"),
     g6: "G6",
     "dynamic-form": t("dynamic form"),
-    table: t("table"),
+    'user-management': t("user management"),
+    'student-management': t("student management"),
+    'student-list': t("student list"),
+    'teacher-list': t("teacher list"),
+    'teacher-management': t("teacher management"),
+    'course-table': t("course table"),
+    'teacher-salary': t("teacher salary"),
+    'class-records': t("class records"),
+    'course-management': t("course management"),
     detail: t("detail"),
     home: t("home"),
   };

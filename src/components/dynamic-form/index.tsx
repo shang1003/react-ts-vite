@@ -1,6 +1,6 @@
-import { forwardRef } from "react";
-import { Input, InputNumber, Cascader, Switch, Select } from "antd";
-import { Title, Checkbox, TableTransfer, Upload } from "./components";
+import { forwardRef, useState } from "react";
+import { Input, InputNumber, Cascader, Switch, Select, ColorPicker } from "antd";
+import { Title, Checkbox, TableTransfer, Upload, DatePicker } from "./components";
 import { Form, Tooltip, Button, Row, Col } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import Notify from "@/components/notify";
@@ -19,7 +19,9 @@ const components: Record<string, any> = {
   "input-number": InputNumber,
   textarea: Input.TextArea,
   cascader: Cascader,
-  'upload': Upload
+  'upload': Upload,
+  "date-picker": DatePicker,
+  "color-picker": ColorPicker,
 };
 
 export interface DynamicFormProps extends FormProps {
@@ -44,7 +46,7 @@ export interface DynamicFormType {
 export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
   const { t } = useTranslation();
   const { formItems, formProps } = props;
-
+  const [submmitLoading, setSubmmitLoading] = useState(false)
   const {
     successTip,
     failTip,
@@ -156,6 +158,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
       tip,
       required,
       valuePropName,
+      validateTrigger = "onBlur",
     } = item;
     const base = {
       name,
@@ -169,6 +172,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
       wrapperCol,
       required,
       valuePropName,
+      validateTrigger,
       rules: getRules(item),
     };
     switch (type) {
@@ -216,13 +220,16 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
   };
 
   const onOk = (values: any) => {
+    setSubmmitLoading(true)
     if (!onSubmit) {
+      setSubmmitLoading(false)
       return;
     }
 
     return onSubmit(values).then(
       () => {
         Notify.success(t("success"), successTip || t("edit success"));
+        setSubmmitLoading(false)
       },
       (err = {}) => {
         const {
@@ -231,6 +238,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
           },
         } = err;
         Notify.error(t("error"), failTip || message);
+        setSubmmitLoading(false)
       }
     );
   };
@@ -239,7 +247,7 @@ export const DynamicForm = forwardRef((props: DynamicFormType, ref: any) => {
     return (
       isShowFooter && (
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button loading={submmitLoading} type="primary" htmlType="submit">
             {t("submit")}
           </Button>
         </Form.Item>

@@ -11,7 +11,7 @@ const { Meta } = Card;
 const App: React.FC = () => {
   const { id } = useParams();
   const { t } = useTranslation();
-  const listUrl = "/table/case";
+  const listUrl = "/user-management/user-list";
   const [data, setData] = useState<UserDetailType | {}>({});
   const [loading, setLoading] = useState(true);
   const [refreshKey, setRefreshKey] = useRefresh();
@@ -37,8 +37,8 @@ const App: React.FC = () => {
   const isShowRefresh = true;
   const renderDetail = () => {
     return Object.entries(data).map(([key, value]) => (
-      <Row key={key}>
-        <Col span={12}>{key}</Col>
+      <Row key={key} style={{ paddingTop: 10 }}>
+        <Col span={12}>{key == "create_time" && t('create time') || t(key)}</Col>
         <Col span={12}>{formatTime(key, value)}</Col>
       </Row>
     ));
@@ -46,7 +46,7 @@ const App: React.FC = () => {
 
   return (
     <DetailBase {...{ listUrl, handleRefresh, isShowRefresh }}>
-      <Card style={{ width: 300 }} loading={loading}>
+      <Card style={{ width: 500 }} loading={loading}>
         <Meta avatar={<UserOutlined />} title={t("user information")} />
         {renderDetail()}
       </Card>

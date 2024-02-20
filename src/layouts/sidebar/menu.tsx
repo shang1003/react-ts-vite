@@ -1,53 +1,73 @@
 import {
-  AppstoreOutlined,
-  BlockOutlined,
-  DeploymentUnitOutlined,
   GoldOutlined,
   HomeOutlined,
+  DeploymentUnitOutlined,
+  TableOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-const getMenu = (t: any) => {
+const getMenu = (t: any, isAdmin: boolean) => {
   const menu: MenuProps["items"] = [
     {
-      key: "home",
-      icon: <HomeOutlined />,
-      label: t("home"),
-    },
-    {
-      key: "table",
+      key: "user-management",
       icon: <GoldOutlined />,
-      label: t("table"),
+      label: t("user management"),
       children: [
         {
-          key: "table/case",
-          label: t("case"),
+          key: "user-management/user-list",
+          label: t("user list"),
         },
       ],
     },
     {
-      key: "dynamic-form",
+      key: "student-management",
       icon: <DeploymentUnitOutlined />,
-      label: t("dynamic form"),
+      label: t("student management"),
       children: [
         {
-          key: "dynamic-form/case",
-          label: t("case"),
+          key: "student-management/student-list",
+          label: t("student list"),
         },
       ],
     },
     {
-      key: "three",
-      icon: <AppstoreOutlined />,
-      label: "3D",
+      key: "teacher-management",
+      icon: <TableOutlined />,
+      label: t("teacher management"),
       children: [
         {
-          key: "three/case",
-          label: t("case"),
+          key: "teacher-management/teacher-list",
+          label: t("teacher list"),
         },
       ],
+    },
+    {
+      key: "key1",
+      label: t("门课后台")
+    },
+    {
+      key: "key2",
+      label: t("门课上课APP")
     },
 
   ];
+  if (isAdmin) {
+    return menu
+  } else {
+    const teacher_menu: MenuProps["items"] = [
+      {
+        key: "course-table",
+        icon: <TableOutlined />,
+        label: t("课表"),
+      },
+      {
+        key: "key2",
+        label: t("门课上课APP")
+      },
+
+    ];
+    return teacher_menu
+  }
+
 
   return menu;
 };

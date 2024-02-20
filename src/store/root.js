@@ -3,9 +3,10 @@ class Root {
   constructor() {
     this.lang = localStorage.getItem("lang") || "zh";
     this.userinfo = {
-      username:'',
-      id:'',
-      avatar:''
+      username: '',
+      id: '',
+      role: 'teacher',
+      avatar: ''
     };
     makeObservable(this, {
       lang: observable,

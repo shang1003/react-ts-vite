@@ -12,7 +12,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
         reader.onerror = (error) => reject(error);
     });
 
-const App: React.FC<any> = ({ onChange }) => {
+const App: React.FC<any> = ({ onChange, listType = "picture-card", beforeUpload }) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
@@ -31,7 +31,10 @@ const App: React.FC<any> = ({ onChange }) => {
     };
 
     // 处理文件上传前的操作
-    const beforeUpload = (file: UploadFile) => {
+    const beforeUploadImage = (file: UploadFile) => {
+        if (beforeUpload) {
+            return beforeUpload(file, Upload.LIST_IGNORE)
+        }
         const type = ['image/png', 'image/jpeg'];
         if (!type.includes(file.type || '')) {
             message.error(`${t('please upload images in jpg or png format')}`);
@@ -48,7 +51,7 @@ const App: React.FC<any> = ({ onChange }) => {
         const formData = new FormData();
         newFileList[0] && formData.append('file', newFileList[0]!.originFileObj!); // 将上传的文件添加到 FormData
         setFileList(newFileList);
-        onChange && onChange(formData)
+        onChange && onChange(newFileList[0] && formData)
     }
 
     const uploadButton = (
@@ -62,9 +65,9 @@ const App: React.FC<any> = ({ onChange }) => {
             <Upload
                 action='api/upload'
                 method='post'
-                listType="picture-card"
+                listType={listType}
                 fileList={fileList}
-                beforeUpload={beforeUpload}
+                beforeUpload={beforeUploadImage}
                 onPreview={handlePreview}
                 onChange={handleChange}
             >

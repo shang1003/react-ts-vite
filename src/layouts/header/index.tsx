@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Layout, Button, Avatar, Select, Dropdown } from "antd";
 import { UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from "antd";
@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { observer } from "mobx-react-lite";
 import { useRootContext } from "@/App";
 import { logout } from "@/client/login";
-import { upload } from "@/client/user";
+import { upload, changePassword } from "@/client/user";
 import { useFormModal } from "~/hooks/modal/FormModal";
 import "./index.less";
 import {
@@ -29,31 +29,64 @@ export const HeaderWrapper: React.FC<props> = observer(
     const selectRef = useRef(null);
     const navigate = useNavigate();
     const avatarUrl = root.userinfo.avatar && `/api/${root.userinfo.avatar}?timestamp=${Date.now()}`
-    const formItems = [{
+    const avatarFormItems = [{
       type: 'upload',
       name: "avator",
       required: true,
       label: t('select avatar')
     }]
+    const passwordFormItems = [
+      {
+        type: 'input-password',
+        name: "oldPassword",
+        required: true,
+        label: t('old password')
+      },
+      {
+        type: 'input-password',
+        name: "newPassword",
+        required: true,
+        label: t('new password')
+      },
+      {
+        type: 'input-password',
+        name: "confirmPassword",
+        required: true,
+        dependencies: ['newPassword'],
+        rules: [
+          {
+            required: true,
+          },
+          ({ getFieldValue }: any) => ({
+            validator(_: any, value: any) {
+              if (!value || getFieldValue('newPassword') === value) {
+                return Promise.resolve();
+              }
+              return Promise.reject(new Error(t('the two passwords are different')));
+            },
+          }),
+        ],
+        label: t('confirm password')
+      },
+    ]
     const items = [
       {
-        label: t("upload"),
+        label: t("upload avatar"),
         key: "upload",
+      },
+      {
+        label: t("change password"),
+        key: "changePassword",
       },
       {
         label: t("log out"),
         key: "logout",
       },
     ];
+
+    const [modalData, setModalData] = useState<any>({})
     const [toggle, FormModal] = useFormModal({
-      submit: async (values) => {
-        const data: any = await upload(root.userinfo.id, values.avator)
-        root.setUserinfo({ ...root.userinfo, avatar: data.avatar })
-        return data
-      },
-      title: t('upload avatar'),
-      formItems: formItems,
-      formProps: { successTip: t("{{name}} success", { name: t("upload avatar") }) },
+      ...modalData
     });
     const changeLang = (lang: string) => {
       localStorage.setItem("lang", lang);
@@ -65,8 +98,35 @@ export const HeaderWrapper: React.FC<props> = observer(
       if (key === "logout") {
         logout().then(() => {
           navigate("/login");
+          localStorage.clear()
         });
       } else if (key === "upload") {
+        setModalData({
+          submit: async (values: any) => {
+            const data: any = await upload(root.userinfo.id, values.avator)
+            root.setUserinfo({ ...root.userinfo, avatar: data.avatar })
+            return data
+          },
+          title: t('upload avatar'),
+          formItems: avatarFormItems,
+          formProps: { successTip: t("{{name}} success", { name: t("upload avatar") }) }
+        })
+        toggle(true)
+      } else if (key === "changePassword") {
+        setModalData({
+          submit: async (values: any) => {
+            const data: any = await changePassword(root.userinfo.id, values)
+            if (data && data?.status == 200) {
+              logout().then(() => {
+                navigate("/login");
+              });
+            }
+            return data
+          },
+          title: t('change password'),
+          formItems: passwordFormItems,
+          formProps: { successTip: t("{{name}} success", { name: t("change password") }) }
+        })
         toggle(true)
       }
     };
@@ -88,7 +148,7 @@ export const HeaderWrapper: React.FC<props> = observer(
           <Select
             ref={selectRef}
             key={lang}
-            style={{ width: "100px" }}
+            style={{ width: "150px" }}
             defaultValue={lang}
             options={[
               { label: t("Chinese"), value: "zh" },
@@ -99,18 +159,17 @@ export const HeaderWrapper: React.FC<props> = observer(
             }}
           />
           <Dropdown
-
-
             menu={{
               items,
               onClick: handleMenuClick,
             }}
+
           >
             <div className="avatar">
               {<Avatar icon={<UserOutlined />} src={avatarUrl} size="large" />}
-              <span>
+              <div>
                 {userinfo.username} <DownOutlined />
-              </span>
+              </div>
             </div>
           </Dropdown>
           <FormModal />

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { TableProps } from "antd";
 interface ActionsType {
   rowActions: {
-    firstAction: React.FC<any>;
+    firstAction?: React.FC<any>;
     moreActions: Record<"action", React.FC<any>>[];
   };
 }
@@ -12,10 +12,12 @@ interface BaseTableType {
   columns: Record<string, any>[];
   data: Record<string, any>[];
   loading?: boolean;
-  scrollY?: number;
+  scrollY?: number | string;
+  ScrollX?: number | string;
   hasItemActions?: boolean;
   actions?: ActionsType;
   refresh?: () => void;
+  rowSelection?: object,
   rowKey?: string;
   otherProps?: TableProps<Record<string, any>>;
 }
@@ -24,7 +26,8 @@ export const BaseTable: React.FC<BaseTableType> = ({
   data = [],
   loading = false,
   hasItemActions = true,
-  scrollY = 300,
+  scrollY = 700,
+  ScrollX = 'max-content',
   actions = {
     rowActions: {
       firstAction: null,
@@ -32,6 +35,7 @@ export const BaseTable: React.FC<BaseTableType> = ({
     },
   },
   rowKey = "id",
+  rowSelection,
   refresh,
   otherProps = {},
 }) => {
@@ -48,7 +52,9 @@ export const BaseTable: React.FC<BaseTableType> = ({
       {
         title: t("action"),
         key: "operation",
-        width: 210,
+        ellipsis: true,
+        width: 180,
+        fixed: 'right',
         render: (_: any, record: any) => (
           <ItemActionButtons
             firstAction={firstAction}
@@ -64,9 +70,10 @@ export const BaseTable: React.FC<BaseTableType> = ({
     <>
       <Table
         rowKey={rowKey}
+        rowSelection={rowSelection}
         columns={getColumns()}
         dataSource={data}
-        scroll={{ y: scrollY }}
+        scroll={{ y: scrollY, x: ScrollX }}
         loading={loading}
         {...otherProps}
       />

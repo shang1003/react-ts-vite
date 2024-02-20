@@ -2,7 +2,9 @@ import { UserRegistrationStatistics } from "./charts/UserRegistrationStatisticsL
 const Home: React.FC = () => {
   return (
     <>
-      <UserRegistrationStatistics />
+      <div style={{ padding: 10 }}>
+        <UserRegistrationStatistics />
+      </div>
     </>
   );
 };

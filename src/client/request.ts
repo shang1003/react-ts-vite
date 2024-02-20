@@ -3,6 +3,7 @@ import Axios, {
   AxiosRequestConfig,
   CancelTokenSource,
 } from "axios";
+import { message } from 'antd';
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 class HttpRequest {
   axiosInstance: AxiosInstance;
@@ -37,6 +38,8 @@ class HttpRequest {
     //求情拦截
     instance.interceptors.request.use(
       (config) => {
+        const token = localStorage.getItem('token')
+        config.headers.Authorization = `Bearer ${token}`
         return config;
       },
       (err) => {
@@ -53,6 +56,10 @@ class HttpRequest {
         return data;
       },
       (err) => {
+        if (err.response.status == 401) {
+          return message.error('权限过期，重新登录')
+        }
+
         if (err.response) {
           return Promise.reject(err);
         }
