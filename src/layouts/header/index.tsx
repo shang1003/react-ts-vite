@@ -167,9 +167,10 @@ export const HeaderWrapper: React.FC<props> = observer(
           >
             <div className="avatar">
               {<Avatar icon={<UserOutlined />} src={avatarUrl} size="large" />}
-              <div>
-                {userinfo.username} <DownOutlined />
+              <div className="name">
+                {userinfo.username}
               </div>
+              <DownOutlined width={10} />
             </div>
           </Dropdown>
           <FormModal />

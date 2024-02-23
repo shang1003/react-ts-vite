@@ -57,7 +57,7 @@ const getMenu = (t: any, isAdmin: boolean) => {
       {
         key: "course-table",
         icon: <TableOutlined />,
-        label: t("课表"),
+        label: t("course table"),
       },
       {
         key: "key2",
