@@ -78,10 +78,13 @@ const TableCom: React.FC = () => {
     {
       title: t('index'),
       dataIndex: 'index',
+      width: 70,
     },
     {
       title: t("username"),
       dataIndex: "name",
+      width: 150,
+      ellipsis: true,
       key: "name",
       render: (value: any, { id }: UserDetailType) => {
         return <Link to={`/user-management/user-list/detail/${id}`}>{value}</Link>;
@@ -89,18 +92,21 @@ const TableCom: React.FC = () => {
     },
     {
       title: t("role"),
+      width: 80,
       dataIndex: "role",
       render: (v: any) => t(v),
     },
     {
       title: t("create time"),
       dataIndex: "create_time",
+      width: 200,
       render: (v: any) => getTime(v),
     },
 
     {
       title: t("description"),
       dataIndex: "description",
+      ellipsis: true,
     },
   ];
   const [refreshKey, refresh] = useRefresh();
