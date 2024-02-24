@@ -127,11 +127,20 @@
   "RMB": "元",
   "bind": "绑定",
   "bind student": "绑定学员",
+  "bind teacher": "绑定教师",
   "normal attendance": "正常出勤",
   "cancel course": "取消课程",
   "delete course": "删除课程",
   "please bind students": "请绑定学员！",
   "sync": "同步",
   "this week are synchronized to next week": "全部课程同步到下周",
-  "delete all classes for the next week": "删除下周所有课程"
+  "delete all classes for the next week": "删除下周所有课程",
+  "student": "学生",
+  "Mo": "周一",
+  "Tu": "周二",
+  "We": "周三",
+  "Th": "周四",
+  "Fr": "周五",
+  "Sa": "周六",
+  "Su": "周日"
 }

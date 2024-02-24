@@ -46,17 +46,9 @@ const TableCom: React.FC = () => {
             fixed: 'left',
         },
         {
-            title: t("教师"),
+            title: t("teacher"),
             dataIndex: "name",
             width: 120,
-            ellipsis: true,
-            fixed: 'left',
-        },
-        {
-            title: t("学员"),
-            dataIndex: "student_name",
-            width: 120,
-            render: renderLabel,
             ellipsis: true,
             fixed: 'left',
         },

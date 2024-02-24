@@ -80,6 +80,7 @@ export const Edit: React.FC<any> = (props) => {
       name: "total_amount",
       label: t("total amount"),
       type: "input",
+      disabled: true,
       validator: validateNumber,
       colNum: 2,
       required: true,
@@ -96,7 +97,7 @@ export const Edit: React.FC<any> = (props) => {
 
     },
   ];
-  const [toggle, FormModal] = useFormModal({
+  const [toggle, FormModal, formRef] = useFormModal({
     submit: (values) => editStudent(values),
     formItems,
     refresh,
@@ -105,7 +106,11 @@ export const Edit: React.FC<any> = (props) => {
     top: 10,
     title: t("edit"),
     id: item.id,
+
     formProps: {
+      onValuesChange: (_: any, { course_unit_price, total_hours }: any) => {
+        formRef?.current.setFieldsValue({ total_amount: course_unit_price * total_hours })
+      },
       initialValues: {
         ...item,
       },

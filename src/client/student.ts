@@ -78,3 +78,11 @@ export const batchDeleteStudents = (data: any) => {
     url: "/batch-delete-students",
   });
 };
+
+export const bindTeacher = (data: any) => {
+  return request.makeRequest({
+    method: "post",
+    data,
+    url: "/bind-teacher",
+  });
+};

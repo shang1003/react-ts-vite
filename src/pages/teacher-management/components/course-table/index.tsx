@@ -5,18 +5,21 @@ import { useState } from 'react';
 import root from '~/store/root';
 import { getweek } from '~/utils';
 import { getCourseTable, CourseTableType } from '~/client/user';
-import { useFetch,useRefresh } from '~/hooks';
+import { useFetch, useRefresh } from '~/hooks';
+import { getBindStudentList, StudentType } from '~/client/teacher';
 import classNames from 'classnames';
-
+import { useTranslation } from "react-i18next";
 interface CurrentCeilType { id?: string, isShowMenu?: boolean }
 const App: React.FC<dynamic.ComponentProps> = (props) => {
     const isOrgadm = root.userinfo.role == "orgadm"
     const { id, student_id, student_name } = isOrgadm && props.data || {};
     const [courses, setCourse] = useState<CourseTableType[]>([])
+    const [studentList, setStudentList] = useState<StudentType[]>([])
     const [weeks, setWeeks] = useState(getweek()) // 格式YY-MM-DD
     const [weeksY, setWeeksY] = useState(getweek("YYYY-MM-DD")) // 格式YYYY-MM-DD
     const [currentCeil, setCurrentCeil] = useState<CurrentCeilType>({})
     const [refreshKey, refresh] = useRefresh();
+    const { t } = useTranslation();
     useFetch(
         () => getCourseTable({ id: id || root.userinfo.id, date: [weeksY[0], weeksY[6]] }),
         ({ data }) => {
@@ -28,11 +31,11 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             );
             // 将 TeacherCourse 数据填充到课程表数组中            
             data.forEach((course: any) => {
-                const { timeSlot, date, name, id, status } = course;
+                const { timeSlot, date, name, id, status, student_id, student_name } = course;
                 //new Date(date).getDay() 为0时，是周日
                 const dayOfWeek = new Date(date).getDay() == 0 ? 6 : new Date(date).getDay() - 1; // 获取日期对应的星期几（0-6）
 
-                timetable[timeSlot][dayOfWeek] = { ...timetable[timeSlot][dayOfWeek], name, id, status }; // 注意索引从0开始，所以需要减1
+                timetable[timeSlot][dayOfWeek] = { ...timetable[timeSlot][dayOfWeek], name, id, status, student_id, student_name }; // 注意索引从0开始，所以需要减1
             });
             let result: any = []
             timetable.forEach(item => {
@@ -41,7 +44,14 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
 
             setCourse(result);
         },
-        [weeksY, root.userinfo.id,refreshKey]
+        [weeksY, root.userinfo.id, refreshKey]
+    );
+    useFetch(
+        () => getBindStudentList(id),
+        ({ data }) => {
+            setStudentList(data)
+        },
+        []
     );
 
     const handleData = (data: CurrentCeilType) => {
@@ -56,14 +66,14 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
     }
 
     const header = [
-        { id: "", name: "课程", isDisabled: true },
-        { id: "", name: `周一 (${weeks[0]})`, isDisabled: true },
-        { id: "", name: `周二 (${weeks[1]})`, isDisabled: true },
-        { id: "", name: `周三 (${weeks[2]})`, isDisabled: true },
-        { id: "", name: `周四 (${weeks[3]})`, isDisabled: true },
-        { id: "", name: `周五 (${weeks[4]})`, isDisabled: true },
-        { id: "", name: `周六 (${weeks[5]})`, isDisabled: true },
-        { id: "", name: `周日 (${weeks[6]})`, isDisabled: true },
+        { id: "", name: t("course table"), isDisabled: true },
+        { id: "", name: `${t('Mo')} (${weeks[0]})`, isDisabled: true },
+        { id: "", name: `${t('Tu')} (${weeks[1]})`, isDisabled: true },
+        { id: "", name: `${t('We')} (${weeks[2]})`, isDisabled: true },
+        { id: "", name: `${t('Th')} (${weeks[3]})`, isDisabled: true },
+        { id: "", name: `${t('Fr')} (${weeks[4]})`, isDisabled: true },
+        { id: "", name: `${t('Sa')} (${weeks[5]})`, isDisabled: true },
+        { id: "", name: `${t('Su')} (${weeks[6]})`, isDisabled: true },
     ]
     const courseTime = [
         { timeSlot: 1, name: "09:00-09:45", isDisabled: true },
@@ -88,20 +98,20 @@ const App: React.FC<dynamic.ComponentProps> = (props) => {
             <div className={classNames(style.flex, style.blod)}>
                 {
                     header.map((item) => {
-                        return <Ceil  flex="flex8" key={item.name} data={item} currentCeil={currentCeil} teacher_id={id} />
+                        return <Ceil studentList={studentList} flex="flex8" key={item.name} data={item} currentCeil={currentCeil} teacher_id={id} />
                     })
                 }
             </div>
             <div className={style.bottom}>
                 <div className={style.left}>
                     {courseTime.map((item: any, index: any) => {
-                        return <Ceil  key={index} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
+                        return <Ceil studentList={studentList} key={index} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
                     })}
                 </div>
                 <div className={style.right}>
                     <div className={`${style.flex} ${style.content}`}>
                         {courses.map((item: any, index: any) => {
-                            return <Ceil refresh={refresh} key={`${item.date}${item.timeSlot}${root.userinfo.id}${refreshKey}`} studentInfo={{ student_id, student_name }} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
+                            return <Ceil studentList={studentList} refresh={refresh} key={`${item.date}${item.timeSlot}${root.userinfo.id}${refreshKey}`} studentInfo={{ student_id, student_name }} data={item} currentCeil={currentCeil} handleData={handleData} teacher_id={id} />
                         })}
                     </div>
                 </div>

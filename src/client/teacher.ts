@@ -8,6 +8,10 @@ export interface ClassRecordsType {
   class_time: string;
   operation_date: string;
 }
+export interface StudentType {
+  id: string,
+  name: string
+}
 export interface ClassRecordsListType {
   data: ClassRecordsType[]
 }
@@ -173,5 +177,13 @@ export const deleteCourseWeek = () => {
   return request.makeRequest({
     method: "delete",
     url: "/course-table-delete-week",
+  });
+};
+
+export const getBindStudentList = async (teacher_id: string) => {
+  return request.makeRequest<{ data: StudentType[] }>({
+    method: "get",
+    url: "/student-bind-list",
+    params: { id: teacher_id }
   });
 };

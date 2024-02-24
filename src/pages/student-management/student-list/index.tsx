@@ -232,6 +232,13 @@ const TableCom: React.FC = () => {
             width: 150
         },
         {
+            title: t("teacher"),
+            dataIndex: "teacher_name",
+            render: renderLabel,
+            ellipsis: true,
+            width: 150
+        },
+        {
             title: t("phone"),
             dataIndex: "phone",
             render: renderLabel,
