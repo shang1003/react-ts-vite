@@ -2,11 +2,17 @@ import {
   GoldOutlined,
   HomeOutlined,
   DeploymentUnitOutlined,
-  TableOutlined
+  TableOutlined,
+  AppstoreOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 const getMenu = (t: any, isAdmin: boolean) => {
   const menu: MenuProps["items"] = [
+    {
+      key: "home",
+      icon: <HomeOutlined />,
+      label: t("home"),
+    },
     {
       key: "user-management",
       icon: <GoldOutlined />,
@@ -37,6 +43,17 @@ const getMenu = (t: any, isAdmin: boolean) => {
         {
           key: "teacher-management/teacher-list",
           label: t("teacher list"),
+        },
+      ],
+    },
+        {
+      key: "three",
+      icon: <AppstoreOutlined />,
+      label: "3D",
+      children: [
+        {
+          key: "three/case",
+          label: t("case"),
         },
       ],
     },
