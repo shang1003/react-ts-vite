@@ -1,9 +1,12 @@
 import request from "./request";
 export type UseInfo = {
   username: string;
+  id: string;
+  role: string;
+  token: string;
 };
 export const login = (data: Record<string, any>) => {
-  return request.makeRequest<UseInfo>({
+  return request.makeRequest<{ data: UseInfo }>({
     method: "post",
     data,
     url: "/login",
@@ -11,12 +14,12 @@ export const login = (data: Record<string, any>) => {
 };
 export const logout = () => {
   return request.makeRequest({
-    method: "get",
+    method: "post",
     url: "/logout",
   });
 };
 export const getUserInfo = () => {
-  return request.makeRequest<UseInfo>({
+  return request.makeRequest<{ data: UseInfo }>({
     method: "get",
     url: "/userinfo",
   });

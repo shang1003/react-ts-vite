@@ -27,6 +27,14 @@ export const Delete: React.FC<any> = (props) => {
         t("{{name}} success", { name: t("delete") })
       );
       refresh();
+    }).catch(({ response: { data
+      : { message } }
+    }) => {
+      Notify.error(
+        t("failure"),
+        message
+      );
+
     });
   };
 

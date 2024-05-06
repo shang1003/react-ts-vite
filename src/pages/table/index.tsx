@@ -1,79 +1,162 @@
 import { useState } from "react";
-import { Button } from "antd";
+import { Button, Radio, Space } from "antd";
 import { Link } from "react-router-dom";
 import { getUserList, UserDetailType } from "~/client/user";
 import { useFetch, useRefresh } from "~/hooks";
-import { useFormModal } from "~/hooks/modal/FormModal";
 import { createUser } from "~/client/user";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 import { actionConfigs } from "./action";
 import { BaseTable } from "~/components/base-table";
 import { getTime } from "~/utils";
+import { FormModal } from "@/components/modal/Modal";
+import root from "~/store/root";
 const TableCom: React.FC = () => {
+  const [isShow, toggle] = useState(false);
+  const isAdmin = root.userinfo.role == "orgadm";
   const { t } = useTranslation();
+  const nameMap: any = {
+    teacher: t("teacher"),
+    orgadm: t("orgadm"),
+    clerk: t("clerk"),
+    course_consultant: t("course consultant"),
+    learning_consultant: t("learning consultant"),
+  };
+  let roleOptions = [
+    { label: t("teacher"), value: "teacher" },
+    { label: t("clerk"), value: "clerk" },
+    { label: t("course consultant"), value: "course_consultant" },
+    { label: t("learning consultant"), value: "learning_consultant" },
+  ];
+  if (isAdmin) {
+    roleOptions.unshift({ label: t("orgadm"), value: "orgadm" });
+  }
   const formItems = [
+    {
+      name: "role",
+      label: t("role"),
+      colNum: 2,
+      type: "select",
+      options: roleOptions,
+    },
     {
       name: "name",
       label: t("username"),
       type: "input",
+      colNum: 2,
       required: true,
     },
+    {
+      name: "chinese_name",
+      label: t("chinese name"),
+      type: "input",
+      required: true,
+      colNum: 2,
+    },
+    {
+      name: "english_name",
+      label: t("english name"),
+      type: "input",
+      required: true,
+      colNum: 2,
+    },
+
     {
       name: "password",
       label: t("password"),
+      colNum: 2,
       type: "input-password",
       required: true,
     },
+
     {
-      label: t("age"),
-      name: "age",
-      type: "input-number",
-      required: true,
-      min: 0,
-    },
-    {
-      label: t("address"),
-      name: "address",
+      name: "gender",
+      colNum: 2,
+      label: t("gender"),
       type: "input",
       required: true,
+      component: (
+        <Radio.Group>
+          <Radio value='male'>{t("male")}</Radio>
+          <Radio value='female'>{t("female")}</Radio>
+        </Radio.Group>
+      ),
     },
     {
-      label: t("description"),
-      name: "description",
-      type: "textarea",
+      name: "phone",
+      label: t("phone"),
+      colNum: 2,
+      type: "input",
+    },
+    {
+      name: "id_card_number",
+      colNum: 2,
+      label: t("id card"),
+      validateTrigger: "onBlur",
+      type: "input",
+    },
+    {
+      name: "deposit_bank",
+      label: t("deposit bank"),
+      type: "input",
+      colNum: 2,
+    },
+    {
+      name: "bank_account_number",
+      colNum: 2,
+      label: t("bank account"),
+      type: "input",
+    },
+    {
+      name: "employment_date",
+      colNum: 2,
+      label: t("employment date"),
+      format: "YYYY-MM-DD",
+      showTime: false,
+      required: true,
+      type: "date-picker",
     },
   ];
   const columns = [
     {
+      title: t("index"),
+      dataIndex: "index",
+      width: 70,
+    },
+    {
       title: t("username"),
       dataIndex: "name",
+      width: 150,
+      ellipsis: true,
       key: "name",
       render: (value: any, { id }: UserDetailType) => {
-        return <Link to={`/table/case/detail/${id}`}>{value}</Link>;
+        return <Link to={`/user-management/user-list/detail/${id}`}>{value}</Link>;
       },
     },
     {
-      title: t("age"),
-      dataIndex: "age",
+      title: t("chinese name"),
+      dataIndex: "chinese_name",
+      width: 120,
+    },
+    {
+      title: t("english name"),
+      dataIndex: "english_name",
+      width: 120,
+    },
+    {
+      title: t("role"),
+      width: 110,
+      dataIndex: "role",
+      render: (v: any) => nameMap[v],
     },
     {
       title: t("create time"),
-      dataIndex: "create_time",
+      dataIndex: "created_time",
+      width: 200,
       render: (v: any) => getTime(v),
-    },
-
-    {
-      title: t("description"),
-      dataIndex: "description",
     },
   ];
   const [refreshKey, refresh] = useRefresh();
-  const [toggle, FormModal] = useFormModal({
-    submit: (values) => createUser(values),
-    formItems,
-    refresh,
-  });
   const [data, setData] = useState<UserDetailType[] | []>([]);
   const [loading, setLoading] = useState(true);
   useFetch(
@@ -82,7 +165,8 @@ const TableCom: React.FC = () => {
       return await getUserList();
     },
     ({ userList }) => {
-      setData(userList);
+      setData(userList.map((item, index) => ({ ...item, index: index + 1 })));
+      root.refresh();
       setLoading(false);
     },
     [refreshKey]
@@ -91,24 +175,40 @@ const TableCom: React.FC = () => {
   return (
     <>
       <div className={styles["header"]}>
-        <Button
-          type="primary"
-          style={{ marginBottom: "10px" }}
-          onClick={() => toggle(true)}
-        >
-          {t("create")}
-        </Button>
+        <Space>
+          <Button type='primary' onClick={() => toggle(true)}>
+            {t("create")}
+          </Button>
+        </Space>
       </div>
-      <FormModal />
+      {isShow && (
+        <FormModal
+          {...{
+            submit: (values) => {
+              console.log(values, "values");
+
+              return createUser(values);
+            },
+            formItems,
+            height: 350,
+            width: 800,
+            refresh,
+            toggle,
+            formProps: {
+              initialValues: { role: "teacher" },
+              successTip: t("{{name}} success", { name: t("create") }),
+            },
+          }}
+        />
+      )}
       <BaseTable
-        rowKey="id"
+        rowKey='id'
         columns={columns}
         data={data}
-        scrollY={300}
+        scrollY='calc(100vh - 270px)'
         loading={loading}
         actions={actionConfigs}
         refresh={refresh}
-        otherProps={{ pagination: { pageSize: 5 } }}
       />
     </>
   );

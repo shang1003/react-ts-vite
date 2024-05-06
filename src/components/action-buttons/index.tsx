@@ -3,7 +3,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import React from "react";
 interface ItemActionButtonsType {
-  firstAction: React.FC<any> | null;
+  firstAction?: React.FC<any> | null;
   moreActions: Record<"action", React.FC<any>>[];
   item: Record<string, any>;
   refresh?: () => void;

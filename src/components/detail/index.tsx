@@ -24,13 +24,11 @@ export const DetailBase: React.FC<DetailBaseType> = ({
   const detailTitle = () => {
     return (
       <div className={styles["title"]}>
-        <Button onClick={goBack} type="link">
+        <Button onClick={goBack} type='link'>
           <ArrowLeftOutlined />
           {t("back")}
         </Button>
-        {isShowRefresh && (
-          <Button type="link" icon={<SyncOutlined />} onClick={handleRefresh} />
-        )}
+        {isShowRefresh && <Button type='link' icon={<SyncOutlined />} onClick={handleRefresh} />}
       </div>
     );
   };

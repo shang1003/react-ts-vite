@@ -10,14 +10,10 @@ interface TableTransferProps extends TransferProps<TransferItem> {
   rightColumns: ColumnsType<TransferItem>;
 }
 interface Props extends TableTransferProps {
-  onChange: (v: string[]) => void;
+  onChange: (v: any) => void;
 }
 
-const TableTransfer = ({
-  leftColumns,
-  rightColumns,
-  ...restProps
-}: TableTransferProps) => (
+const TableTransfer = ({ leftColumns, rightColumns, ...restProps }: TableTransferProps) => (
   <Transfer {...restProps}>
     {({
       direction,
@@ -53,7 +49,7 @@ const TableTransfer = ({
           rowSelection={rowSelection}
           columns={columns}
           dataSource={filteredItems}
-          size="small"
+          size='small'
           pagination={{
             pageSize: 5,
           }}
@@ -64,10 +60,7 @@ const TableTransfer = ({
           onRow={({ key, disabled: itemDisabled }) => ({
             onClick: () => {
               if (itemDisabled || listDisabled) return;
-              onItemSelect(
-                key as string,
-                !listSelectedKeys.includes(key as string)
-              );
+              onItemSelect(key as string, !listSelectedKeys.includes(key as string));
             },
           })}
         />
@@ -80,7 +73,7 @@ const App: React.FC<Props> = (props) => {
   const { dataSource, showSearch, leftColumns, rightColumns } = props;
   const [targetKeys, setTargetKeys] = useState<string[]>();
 
-  const onChange = (nextTargetKeys: string[]) => {
+  const onChange = (nextTargetKeys: any) => {
     props.onChange && props.onChange(nextTargetKeys);
     setTargetKeys(nextTargetKeys);
   };
@@ -92,9 +85,7 @@ const App: React.FC<Props> = (props) => {
         targetKeys={targetKeys}
         showSearch={showSearch}
         onChange={onChange}
-        filterOption={(inputValue, item) =>
-          item.title!.indexOf(inputValue) !== -1
-        }
+        filterOption={(inputValue, item) => item.title!.indexOf(inputValue) !== -1}
         leftColumns={leftColumns}
         rightColumns={rightColumns}
       />

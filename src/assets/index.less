@@ -1,3 +1,24 @@
 body {
   margin: 0;
 }
+
+a {
+  color: #1677ff !important;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px; /* 设置滚动条的宽度 */
+}
+
+// /* 设置滚动条的滑块样式 */
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* 设置滚动条滑块的背景颜色 */
+  border-radius: 5px; /* 设置滚动条滑块的圆角 */
+}
+
+:global(.ant-table-body) {
+  overflow-y: auto !important;
+}
+

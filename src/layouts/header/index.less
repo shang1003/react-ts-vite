@@ -2,22 +2,37 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
   line-height: 60px;
   padding: 0;
   background: #fff !important;
   height: 60px !important;
+
   .right-content {
-    width: 200px;
+    max-width: 351px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-right: 40px;
+    margin-right: 10px;
+
     .avatar {
       display: flex;
       align-items: center;
       justify-content: space-around;
-      width: 200px;
+      padding-left: 10px;
+      max-width: 300px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      .name {
+        flex: 1;
+        padding: 0 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
+
+
   }
 }

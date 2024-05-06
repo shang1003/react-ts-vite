@@ -1,7 +1,7 @@
 {
   "greeting": "Hello!",
   "farewell": "Goodbye!",
-  "system name": "SYSTEM",
+  "system name": "TEACHER COURSE",
   "welcome to you": "welcome to you",
   "password": "password",
   "success": "success",
@@ -20,5 +20,6 @@
   "description": "description",
   "checkbox": "checkbox",
   "address": "address",
-  "create time": "create time"
+  "create time": "create time",
+  "upload file": "upload"
 }
