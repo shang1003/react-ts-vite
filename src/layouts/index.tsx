@@ -19,12 +19,13 @@ const MainContent: React.FC = function () {
   return (
     <Layout>
       <SideBar {...{ collapsed }} />
+
       <Layout>
         <HeaderWrapper
           {...{ collapsed, setCollapsed: handleToggleCollapsed }}
         />
         <Content style={contentStyle}>
-          <Breadcrumb />
+          {/* { <Breadcrumb />} */}
           <Suspense fallback={<PageLoading />}>
             <Outlet />
           </Suspense>

@@ -10,7 +10,7 @@ interface TableTransferProps extends TransferProps<TransferItem> {
   rightColumns: ColumnsType<TransferItem>;
 }
 interface Props extends TableTransferProps {
-  onChange: (v: string[]) => void;
+  onChange: (v: any) => void;
 }
 
 const TableTransfer = ({
@@ -80,7 +80,7 @@ const App: React.FC<Props> = (props) => {
   const { dataSource, showSearch, leftColumns, rightColumns } = props;
   const [targetKeys, setTargetKeys] = useState<string[]>();
 
-  const onChange = (nextTargetKeys: string[]) => {
+  const onChange = (nextTargetKeys: any) => {
     props.onChange && props.onChange(nextTargetKeys);
     setTargetKeys(nextTargetKeys);
   };

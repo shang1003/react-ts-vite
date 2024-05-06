@@ -8,12 +8,7 @@ import {
 } from "@ant-design/icons";
 import "./index.less";
 
-const open = (args: {
-  title: string;
-  description: string;
-  type: string;
-  onClose?: () => void;
-}) => {
+const open = (args: { title: string; description: string; type: string; onClose?: () => void }) => {
   const { title, type = "error", description = "", onClose } = args;
 
   let iconColor = "#F5222D";
@@ -36,11 +31,9 @@ const open = (args: {
     icon = <InfoCircleOutlined style={{ color: iconColor }} />;
   }
 
-  const duration = type === "error" || type === "warn" ? 0 : 4.5;
-
   notification.open({
     message: title,
-    duration,
+    duration: 3,
     icon,
     description,
     className: "notify",

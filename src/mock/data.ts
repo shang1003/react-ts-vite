@@ -39,7 +39,7 @@ Mock.mock("/api/user-count", "get", [
   { registration_date: "2022-8-26", registration_count: 2 },
   { registration_date: "2022-8-30", registration_count: 23 },
 ]);
-Mock.mock("/api/userinfo", "get", { username: "MOCK" });
+Mock.mock("/api/userinfo", "get", { username: "MOCK", id: '1' });
 Mock.mock("/api/login", "post", (option) => {
   const { body } = option;
   const { username } = JSON.parse(body);

@@ -23,6 +23,6 @@
 
     "types": ["@types/node"]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/utils/index.tsx"],
   "exclude": ["node_modules", "dist"]
 }

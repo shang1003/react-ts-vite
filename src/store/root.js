@@ -1,20 +1,44 @@
-import { observable, action, makeObservable } from "mobx";
+import { observable, action, makeObservable, makeAutoObservable } from "mobx";
+import { ORGADM, OTHER_ROLE, TEACHER_ROLE } from "~/utils/constants";
 class Root {
   constructor() {
     this.lang = localStorage.getItem("lang") || "zh";
-    this.username = "";
+    this.refreshKey = 0;
+    this.userinfo = {
+      username: "",
+      english_name: "",
+      id: "",
+      role: "teacher",
+      avatar: "",
+    };
     makeObservable(this, {
       lang: observable,
-      username: observable,
+      userinfo: observable,
+      refreshKey: observable,
       setLang: action,
-      setUsername: action,
+      setUserinfo: action,
+      refresh: action,
     });
+    // makeAutoObservable(this)
+  }
+
+  get isOrgadmRole() {
+    return this.userinfo.role == ORGADM;
+  }
+  get isTeacherRole() {
+    return this.userinfo.role == TEACHER_ROLE;
+  }
+  get isOtherRole() {
+    return OTHER_ROLE.includes(this.userinfo.role);
   }
   setLang = (lang) => {
     this.lang = lang;
   };
-  setUsername = (name) => {
-    this.username = name;
+  setUserinfo = (info) => {
+    this.userinfo = info;
   };
+  refresh() {
+    this.refreshKey = Date.now();
+  }
 }
 export default new Root();
