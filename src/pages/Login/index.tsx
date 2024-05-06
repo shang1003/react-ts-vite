@@ -27,14 +27,14 @@ export const Login = () => {
     {
       name: "username",
       type: "input",
-      placeholder: t("username"),
+      placeholder: "orgadm",
       prefix: <UserOutlined />,
       required: true,
     },
     {
       name: "password",
       type: "input-password",
-      placeholder: t("password"),
+      placeholder: "1234",
       prefix: <LockOutlined />,
       required: true,
     },

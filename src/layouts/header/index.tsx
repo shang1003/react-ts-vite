@@ -99,7 +99,7 @@ export const HeaderWrapper: React.FC<props> = observer(({ collapsed, setCollapse
     if (key === "logout") {
       logout().then(() => {
         navigate("/login");
-        localStorage.clear();
+        localStorage.removeItem("token");
       });
     } else if (key === "upload") {
       setModalData({

@@ -2,7 +2,7 @@ import { observable, action, makeObservable, makeAutoObservable } from "mobx";
 import { ORGADM, OTHER_ROLE, TEACHER_ROLE } from "~/utils/constants";
 class Root {
   constructor() {
-    this.lang = localStorage.getItem("lang") || "en";
+    this.lang = localStorage.getItem("lang") || "zh";
     this.refreshKey = 0;
     this.userinfo = {
       username: "",

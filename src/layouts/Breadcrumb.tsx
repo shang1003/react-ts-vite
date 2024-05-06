@@ -31,6 +31,7 @@ function App() {
     "recharge-record": t("recharge record"),
     "teacher-salary-list": t("teacher salary"),
     "send-textbook-records": t("send textbook records"),
+    bonus: t("bonus"),
   };
   const pathSnippets = location.pathname
     .split("/")
