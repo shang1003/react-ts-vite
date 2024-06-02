@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useFetch } from "~/hooks";
 import { Button } from "antd";
-import { getTeacherList } from "~/client/salary";
 import { getUserListInfo } from "~/client/user";
 import { bind } from "~/client/student";
 import { FormModal } from "~/components/modal/Modal";
@@ -35,7 +34,6 @@ export const Bind: React.FC<any> = (props) => {
       name: "teacher",
       label: t("bind teacher"),
       type: "select",
-      required: true,
       labelInValue: true,
       showSearch: true,
       filterOption: (input: string, option: any) => (option?.label ?? "").includes(input),
@@ -66,7 +64,7 @@ export const Bind: React.FC<any> = (props) => {
         <FormModal
           {...{
             submit: (values) => {
-              const { label: teacher_name, value: teacher_id } = values.teacher;
+              const { label: teacher_name, value: teacher_id } = values?.teacher || {};
               const { label: sales_person_name, value: sales_person_id } = values?.sales || {};
               return bind({
                 id: item.id,

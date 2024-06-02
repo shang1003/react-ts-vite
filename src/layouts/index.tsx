@@ -24,6 +24,9 @@ const MainContent: React.FC = function () {
         <HeaderWrapper {...{ collapsed, setCollapsed: handleToggleCollapsed }} />
         <Content style={contentStyle}>
           {<Breadcrumb />}
+          {/*
+          <Suspense> 允许你显示回退，直到其子级完成加载。
+          */}
           <Suspense fallback={<PageLoading />}>
             <Outlet />
           </Suspense>

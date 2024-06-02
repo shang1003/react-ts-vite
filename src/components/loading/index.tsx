@@ -6,7 +6,7 @@ const PageLoading: React.FC = () => {
         textAlign: "center",
       }}
     >
-      <Spin size="large" />
+      <Spin size='large' />
     </div>
   );
 };

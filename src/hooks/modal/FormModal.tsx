@@ -11,7 +11,7 @@ interface ModalProps {
   title?: string;
   top?: number;
   height?: number;
-  isShowTip?: boolean,
+  isShowTip?: boolean;
   width?: number;
   okText?: string;
   cancelText?: string;
@@ -42,52 +42,53 @@ export const useFormModal = ({
   const [isShow, toggle] = useToggle(false);
   const formRef = useRef<any>(null);
   const { t } = useTranslation();
-
   const FormModal = forwardRef(() => {
-    const [submmitLoading, setSubmmitLoading] = useState(false)
-    return <Modal
-      title={title || t("create")}
-      open={isShow}
-      style={{ top }}
-      width={width}
-      okText={okText}
-      cancelText={cancelText}
-      onCancel={() => toggle(false)}
-      confirmLoading={submmitLoading}
-      onOk={() => {
-        formRef?.current?.validateFields().then((values: any) => {
-          setSubmmitLoading(true)
-          const { successTip, failTip } = formProps || {};
-          submit({ id, ...values }).then(
-            () => {
-              isShowTip && Notify.success(t("success"), successTip || t("edit success"));
-              toggle(false);
-              setSubmmitLoading(false)
-              refresh && refresh();
-            },
-            (err = {}) => {
-              const {
-                response: {
-                  data: { message = "" },
-                },
-              } = err;
-              isShowTip && Notify.error(t("error"), failTip || t(message));
-              setSubmmitLoading(false)
-              refresh && refresh();
-              toggle(false);
-            }
-          );
-        });
-      }}
-    >
-      <div style={{ height }}>
-        <DynamicForm
-          ref={formRef}
-          formProps={{ ...formProps, ...defaultFormProps }}
-          formItems={formItems || []}
-        />
-      </div>
-    </Modal>
-  })
+    const [submmitLoading, setSubmmitLoading] = useState(false);
+    return (
+      <Modal
+        title={title || t("create")}
+        open={isShow}
+        style={{ top }}
+        width={width}
+        okText={okText}
+        cancelText={cancelText}
+        onCancel={() => toggle(false)}
+        confirmLoading={submmitLoading}
+        onOk={() => {
+          formRef?.current?.validateFields().then((values: any) => {
+            setSubmmitLoading(true);
+            const { successTip, failTip } = formProps || {};
+            submit({ id, ...values }).then(
+              () => {
+                isShowTip && Notify.success(t("success"), successTip || t("edit success"));
+                toggle(false);
+                setSubmmitLoading(false);
+                refresh && refresh();
+              },
+              (err = {}) => {
+                const {
+                  response: {
+                    data: { message = "" },
+                  },
+                } = err;
+                isShowTip && Notify.error(t("error"), failTip || t(message));
+                setSubmmitLoading(false);
+                refresh && refresh();
+                toggle(false);
+              }
+            );
+          });
+        }}
+      >
+        <div style={{ height }}>
+          <DynamicForm
+            ref={formRef}
+            formProps={{ ...formProps, ...defaultFormProps }}
+            formItems={formItems || []}
+          />
+        </div>
+      </Modal>
+    );
+  });
   return [toggle, FormModal, formRef];
 };

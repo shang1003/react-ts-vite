@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Profiler, useState } from "react";
 import { Button, Space, Tag, Radio, message, Input, Select } from "antd";
 import { useFetch, useRefresh } from "~/hooks";
 import { useFormModal } from "~/hooks/modal/FormModal";
@@ -366,7 +366,7 @@ const TableCom: React.FC = () => {
         columns={columns}
         data={data}
         actionsWidth={200}
-        scrollY='calc(100vh - 228px)'
+        scrollY='calc(100vh - 270px)'
         loading={loading}
         actions={actionConfigs}
         refresh={refresh}
